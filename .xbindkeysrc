@@ -1,0 +1,17 @@
+"dmenu_run"
+  Mod4 + p
+"amixer -q set Master 0"
+  XF86AudioMute
+"amixer -q set Master 2dB+"
+  XF86AudioRaiseVolume
+"amixer -q set Master 2dB-"
+  XF86AudioLowerVolume
+"mpc toggle"
+  XF86AudioPlay
+"mpc stop"
+  XF86AudioStop
+"mpc next"
+  XF86AudioNext
+"mpc prev"
+  XF86AudioPrev
+

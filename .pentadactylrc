@@ -1,0 +1,14 @@
+"hintkeys
+set hintkeys=sadfjklewcmpgh
+highlight -a Hint text-transform: uppercase; padding: 0 2px 0 1px; background-color: yellow; font: 10px "Nunito Light";
+highlight -a HintElem background-color: transparent;
+
+"tab numbering
+set go+=n
+
+"search
+set defsearch=d
+
+"switch ; and :
+nnoremap ; :
+nnoremap : ;

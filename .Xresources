@@ -1,0 +1,25 @@
+Xcursor.theme: Neutral_Plus 
+!XFT
+
+Xft.dpi:        96
+Xft.antialias:  true
+Xft.rgba:       rgba
+Xft.hinting:    true
+Xft.hintstyle:  hintfull
+
+!URXVT
+URxvt.termName:		rxvt-256color
+URxvt.scrollBar:	false
+URxvt.buffered:		true
+URxvt.loginShell: true
+URxvt.font: xft:Anka/Coder-9
+URxvt.perl-ext-common:	default,url-select
+URxvt.keysym.M-u:	perl:url-select:select_next
+URxvt.urlLauncher:	firefox
+URxvt.underlineURLs:	true
+URxvt.transparent: true
+URxvt.shading: 40
+URxvt.geometry: 79x26
+
+!COLOR THEME
+#include "/home/meinhimmel/.config/Xcolors/doomcide"
