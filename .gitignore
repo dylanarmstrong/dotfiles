@@ -20,4 +20,5 @@
 .pentadactyl/info/default/command-history
 .pentadactyl/info/default/register-ring
 .config/Trolltech.conf
+.gitk
 *.swp
