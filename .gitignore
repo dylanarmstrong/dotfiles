@@ -24,3 +24,4 @@
 *.swp
 .pentadactyl/info/default/local-marks
 .links
+.VirtualBox
