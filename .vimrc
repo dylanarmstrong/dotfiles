@@ -46,7 +46,6 @@ set nobackup
 set nowritebackup
 set directory=$HOME/.vim/tmp
 set mouse=a
-set autochdir
 set noerrorbells
 set numberwidth=4
 set novisualbell
