@@ -1,8 +1,7 @@
 export ZSH=$HOME/.oh-my-zsh
 
-export ZSH_THEME="miloshadzic"
-#export ZSH_THEME="darkblood"
-#export ZSH_THEME="mein"
+#export ZSH_THEME="miloshadzic"
+export ZSH_THEME="miloshadzic-mine"
 
 export EDITOR="vim"
 export TERM="rxvt-256color"
