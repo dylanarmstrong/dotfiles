@@ -23,6 +23,7 @@ set expandtab
 
 " Neat tab completion
 set wildmenu
+set wildmode=longest:full,full
 
 " highlight long lines
 set cc=80
@@ -31,7 +32,7 @@ set cc=80
 set ignorecase
 set smartcase
 
-" my options
+" random options
 let g:clipbrdDefaultRed = '+'
 inoremap jj <Esc>
 nnoremap JJJJ <Nop>
@@ -41,16 +42,28 @@ set number
 set clipboard+=unnamed  
 set encoding=utf-8
 set runtimepath+=$HOME/.vim/autoload
+set nobackup
+set nowritebackup
+set directory=$HOME/.vim/tmp
+set mouse=a
+set autochdir
+set noerrorbells
+set numberwidth=4
+set novisualbell
+set scrolloff=2
+nnoremap <ESC><ESC> :set hlsearch!<CR>
 
 " Copy
 map <leader>cc ;w !xsel -i -b<CR>
 map <leader>cp ;w !xsel -i -p<CR>
 map <leader>cs ;w !xsel -i -s<CR>
+
 " Paste
 map <leader>pp ;r!xsel -p<CR>
 map <leader>ps ;r!xsel -s<CR>
 map <leader>pb ;r!xsel -b<CR>
 
+" Taglist settings
 let Tlist_Use_Right_Window=1
 let Tlist_Exit_OnlyWindow=1
 let Tlist_Use_SingleClick=1
