@@ -6,4 +6,3 @@ alias e='exit'
 alias p='`xsel -p`'
 alias c='clear'
 alias ps='ps aux'
-alias git-filter="git filter-branch -f --index-filter 'git rm -r --cached --ignore-unmatch $1' --prune-empty -- --all"
