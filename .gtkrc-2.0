@@ -1,9 +1,9 @@
 # -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT
-include "/usr/share/themes/Shiki-Wine-Flat/gtk-2.0/gtkrc"
-gtk-theme-name="Shiki-Wine-Flat"
+include "/usr/share/themes/Shiki-Wine/gtk-2.0/gtkrc"
+
 style "user-font"
 {
-  font_name="Oxygen 8"
+  font_name="Sans 8"
 }
 widget_class "*" style "user-font"
 
