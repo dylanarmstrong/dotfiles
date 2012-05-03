@@ -6,12 +6,12 @@
   XF86AudioRaiseVolume
 "amixer -q set Master 2dB-"
   XF86AudioLowerVolume
-"mpc toggle"
+"ncmpcpp toggle"
   XF86AudioPlay
-"mpc stop"
+"ncmpcpp stop"
   XF86AudioStop
-"mpc next"
+"ncmpcpp next"
   XF86AudioNext
-"mpc prev"
+"ncmpcpp prev"
   XF86AudioPrev
 

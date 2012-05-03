@@ -1,6 +1,6 @@
 # -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT
 include "/usr/share/themes/Shiki-Wine/gtk-2.0/gtkrc"
-
+gtk-theme-name: Shiki-Wine
 style "user-font"
 {
   font_name="Sans 8"
