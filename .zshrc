@@ -5,7 +5,7 @@ export ZSH_THEME="miloshadzic"
 export EDITOR="vim"
 export TERM="rxvt-256color"
 
-export PATH=/sbin:$PATH:$HOME/bin
+export PATH=/sbin:/usr/sbin:$PATH:$HOME/bin
 
 plugins=(git github bundler)
 
