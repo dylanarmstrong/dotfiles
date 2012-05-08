@@ -5,5 +5,5 @@ LC_COLLATE=C
 alias e='exit'
 alias c='clear'
 alias ps='ps aux'
-
+alias vim='vim -X'
 export MANPAGER=vimmanpager
