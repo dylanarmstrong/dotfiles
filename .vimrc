@@ -52,15 +52,8 @@ set novisualbell
 set scrolloff=2
 nnoremap <ESC><ESC> :set hlsearch!<CR>
 
-" Copy
-map <leader>cc ;w !xsel -i -b<CR>
-map <leader>cp ;w !xsel -i -p<CR>
-map <leader>cs ;w !xsel -i -s<CR>
-
 " Paste
 map <leader>pp ;r!xsel -p<CR>
-map <leader>ps ;r!xsel -s<CR>
-map <leader>pb ;r!xsel -b<CR>
 
 " Taglist settings
 let Tlist_Use_Right_Window=1
@@ -71,18 +64,9 @@ let Tlist_WinWidth=53
 let Tlist_Inc_Winwidth=0
 nnoremap <F3> :TlistToggle<CR>
 
-" Syntax highlighting on
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
-  colorscheme molokai
-endif
-
-" set gui settings
-if has('gui_running')
-  set guioptions=
-  set guifont=Anka/Coder
-endif
+syntax on
+set hlsearch
+colorscheme molokai
 
 " File type detection and language-specific indentatition
 filetype plugin indent on

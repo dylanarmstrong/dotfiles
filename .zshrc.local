@@ -1,8 +1,6 @@
 LANG=en_US.UTF-8
 LC_ALL=$LANG
 LC_COLLATE=C
-alias v='gvim --remote-silent'
 alias e='exit'
-alias p='`xsel -p`'
 alias c='clear'
 alias ps='ps aux'
