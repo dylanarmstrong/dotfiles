@@ -1,6 +1,7 @@
 LANG=en_US.UTF-8
 LC_ALL=$LANG
 LC_COLLATE=C
+#bindkey -v
 alias e='exit'
 alias c='clear'
 alias ps='ps aux'
