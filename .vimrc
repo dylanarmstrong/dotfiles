@@ -101,8 +101,9 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-" Map w!! to write current buffer with superuser privileges
-cmap w!! w !sudo tee % >/dev/null<CR>
+" Map W to write current buffer with superuser privileges
+command W :execute ':silent w !sudo tee % >/dev/null' | :edit! 
+command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
 
 " Map leader-f to open FuzzyFinder
 map <leader>f ;FufFile<cr>
