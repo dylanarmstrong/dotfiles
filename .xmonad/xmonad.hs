@@ -33,7 +33,7 @@ myXPConfig = defaultXPConfig
     , bgHLight = "" ++ myUrgentBGColor ++ ""
     , borderColor = "" ++ myFocusedBorderColor ++ ""
     , promptBorderWidth = 1
-    , position = Bottom
+    , position = Top
     , height = 16
     , historySize = 100
     }
