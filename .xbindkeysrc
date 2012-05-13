@@ -1,3 +1,5 @@
+"dmenu_run"
+  Mod4 + p
 "amixer -q set Master 0"
   XF86AudioMute
 "amixer -q set Master 2dB+"
