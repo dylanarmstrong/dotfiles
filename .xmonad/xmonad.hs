@@ -11,7 +11,7 @@ import XMonad.Prompt.Shell
 
 import XMonad.Layout.Spacing
 
-myTerminal      = "urxvtc -e tmux"
+myTerminal      = "urxvtc"
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
 myBorderWidth   = 1
