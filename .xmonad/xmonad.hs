@@ -76,6 +76,13 @@ myLayout = spacing 3 $ Tall 1 (3/100) (1/2)
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat ]
+myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
+    [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
+                                       >> windows W.shiftMaster))
+    , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
+    , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
+                                       >> windows W.shiftMaster))
+    ]
 myEventHook = mempty
 myLogHook = return ()
 myStartupHook = return ()
@@ -89,9 +96,11 @@ defaults = defaultConfig {
         normalBorderColor  = myNormalBorderColor,
         focusedBorderColor = myFocusedBorderColor,
         keys               = myKeys,
+        mouseBindings      = myMouseBindings,
         layoutHook         = myLayout,
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
         logHook            = myLogHook,
         startupHook        = myStartupHook
     }
+
