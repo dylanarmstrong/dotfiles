@@ -4,6 +4,8 @@ xsetroot -solid \#3f3f3f
 xsetroot -cursor_name left_ptr
 xrdb -merge ~/.Xresources
 
+xset s off
+
 urxvtd -q -o -f &
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0" 
 unclutter -root -idle 3 &
