@@ -4,8 +4,6 @@
 LANG=en_US.UTF-8
 LC_ALL=$LANG
 LC_COLLATE=C
-export VDPAU_NVIDIA_NO_OVERLAY=1
-export MANPAGER=vimmanpager
 
 # options
 setopt autocd
@@ -34,6 +32,8 @@ setopt hist_verify
 # environment
 export EDITOR=vim
 export PATH=/sbin:/usr/sbin:/usr/local/games:$PATH:$HOME/bin
+export VDPAU_NVIDIA_NO_OVERLAY=1
+export MANPAGER=vimmanpager
 
 # keys
 bindkey -e
