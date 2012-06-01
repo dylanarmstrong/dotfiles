@@ -9,6 +9,7 @@ alias e='exit'
 alias c='clear'
 alias ps='ps aux'
 alias vim='vim -X'
+alias emerge='nocorrect emerge'
 
 export VDPAU_NVIDIA_NO_OVERLAY=1
 export MANPAGER=vimmanpager

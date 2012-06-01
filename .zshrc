@@ -7,7 +7,7 @@ export TERM="rxvt-256color"
 
 export PATH=/sbin:/usr/sbin:/usr/local/games:$PATH:$HOME/bin
 
-plugins=(git github bundler)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.zshrc.local
