@@ -89,13 +89,12 @@ alias grep='grep --color=auto'
 
 # prompt
 setopt prompt_subst
-autoload -Uz vcs_info
+autoload -Uz add-zsh-hook vcs_info
 
 zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:*' get-revision true
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
-zstyle ':vcs_info:*' formats '%F{2}%b%f+ '
+zstyle ':vcs_info:*' formats '%F{2}%b%u%f '
 zstyle ':vcs_info:*' unstagedstr '%F{5}+'
 
 vcs_info_wrapper() {
@@ -104,6 +103,7 @@ vcs_info_wrapper() {
     echo "%{$fg[green]%}${vcs_info_msg_0_}%{$reset_color%}$del"
   fi
 }
+add-zsh-hook precmd vcs_info_wrapper
 # %F{5} 
 
 PROMPT="%{$fg[cyan]%}%1~%{$fg[red]%}|$(vcs_info_wrapper)%{$fg[cyan]%}>%{$fg_no_bold[default]%} "
