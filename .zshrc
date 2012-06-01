@@ -88,14 +88,11 @@ alias ls='ls --color'
 alias grep='grep --color=auto'
 
 # prompt
-
-# get the name of the branch we are on
 function git_prompt_info() {
   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
   echo "$GIT_PROMPT_PREFIX${ref#refs/heads/}$(parse_git_dirty)$GIT_PROMPT_SUFFIX"
 }
 
-# Checks if working tree is dirty
 parse_git_dirty() {
   if [[ -n $(git status -s "--ignore-submodules=dirty" 2> /dev/null) ]]; then
     echo "$GIT_PROMPT_DIRTY"
