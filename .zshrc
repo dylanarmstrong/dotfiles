@@ -104,6 +104,8 @@ vcs_info_wrapper() {
   fi
 }
 add-zsh-hook precmd vcs_info_wrapper
-# %F{5} 
 
+# %F{5} 
+vcs_info
+RPROMPT="${vcs_info_msg_0_}"
 PROMPT="%{$fg[cyan]%}%1~%{$fg[red]%}|$(vcs_info_wrapper)%{$fg[cyan]%}>%{$fg_no_bold[default]%} "
