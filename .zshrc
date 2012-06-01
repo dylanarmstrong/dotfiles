@@ -123,20 +123,6 @@ zstyle ':vcs_info:git*' formats $VCS_INFO_GIT_FMT
 zstyle ':vcs_info:git*' actionformats $VCS_INFO_GITACTION_FMT
 zstyle ':vcs_info:git*:*' stagedstr $VCS_INFO_STAGED_FMT
 
-# Call vcs_info as precmd before every prompt.
-_vcspromptprecmd() {
-    vcs_info
-}
-add-zsh-hook precmd _vcspromptprecmd
-
-# Must run vcs_info when changing directories.
-_vcspromptchpwd() {
-    FORCE_RUN_VCS_INFO=1
-}
-add-zsh-hook chpwd _vcspromptchpwd
-
-# Default to displaying on the right
-
 vcs_info_wrapper() {
   vcs_info
   if [ -n "$vcs_info_msg_0_" ]; then
@@ -144,7 +130,4 @@ vcs_info_wrapper() {
   fi
 }
 # %F{5} 
-
-vcs_info
-
-PROMPT="%{$fg[cyan]%}%1~%{$fg[red]%}|${vcs_info_msg_0_}%{$fg[cyan]%}>%{$fg_no_bold[default]%} "
+PROMPT="%{$fg[cyan]%}%1~%{$fg[red]%}|$(vcs_info_wrapper)%{$fg[cyan]%}>%{$fg_no_bold[default]%} "
