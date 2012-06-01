@@ -103,9 +103,23 @@ vcs_info_wrapper() {
     echo "%{$fg[green]%}${vcs_info_msg_0_}%{$reset_color%}$del"
   fi
 }
+
+_vcspromptprecmd() {
+    vcs_info
+}
+add-zsh-hook precmd _vcspromptprecmd
 add-zsh-hook precmd vcs_info_wrapper
 
 # %F{5} 
 vcs_info
-RPROMPT="${vcs_info_msg_0_}"
-PROMPT="%{$fg[cyan]%}%1~%{$fg[red]%}|$(vcs_info_wrapper)%{$fg[cyan]%}>%{$fg_no_bold[default]%} "
+
+
+function prompt_precmd() { vcs_info }
+function set_prompt { PROMPT="${vcs_info_msg_0_}" }
+
+autoload -U add-zsh-hook
+add-zsh-hook precmd prompt_precmd
+add-zsh-hook precmd set_prompt
+
+#RPROMPT="${vcs_info_msg_0_}"
+#PROMPT="%{$fg[cyan]%}%1~%{$fg[red]%}|$(vcs_info_wrapper)%{$fg[cyan]%}>%{$fg_no_bold[default]%} "
