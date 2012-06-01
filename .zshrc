@@ -98,9 +98,9 @@ function git_prompt_info() {
 # Checks if working tree is dirty
 parse_git_dirty() {
   if [[ -n $(git status -s "--ignore-submodules=dirty" 2> /dev/null) ]]; then
-    echo "asdf"
+    echo "$GIT_PROMPT_DIRTY"
   else
-    echo "fdsa"
+    echo "$GIT_PROMPT_CLEAN"
   fi
 }
 
