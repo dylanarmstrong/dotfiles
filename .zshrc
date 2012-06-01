@@ -97,29 +97,9 @@ zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{
 zstyle ':vcs_info:*' formats '%F{2}%b%u%f '
 zstyle ':vcs_info:*' unstagedstr '%F{5}+'
 
-vcs_info_wrapper() {
-  vcs_info
-  if [ -n "$vcs_info_msg_0_" ]; then
-    echo "%{$fg[green]%}${vcs_info_msg_0_}%{$reset_color%}$del"
-  fi
-}
-
-_vcspromptprecmd() {
-    vcs_info
-}
-add-zsh-hook precmd _vcspromptprecmd
-add-zsh-hook precmd vcs_info_wrapper
-
 # %F{5} 
-vcs_info
-
 
 function prompt_precmd() { vcs_info }
-function set_prompt { PROMPT="${vcs_info_msg_0_}" }
-
-autoload -U add-zsh-hook
+function set_prompt { PROMPT="%{$fg[cyan]%}%1~%{$fg[red]%}|${vcs_info_msg_0_}%{$fg[cyan]%}>%{$fg_no_bold[default]%} " }
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
-
-#RPROMPT="${vcs_info_msg_0_}"
-#PROMPT="%{$fg[cyan]%}%1~%{$fg[red]%}|$(vcs_info_wrapper)%{$fg[cyan]%}>%{$fg_no_bold[default]%} "
