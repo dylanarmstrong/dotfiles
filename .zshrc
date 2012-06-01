@@ -88,22 +88,46 @@ alias ls='ls --color'
 alias grep='grep --color=auto'
 
 # prompt
-function git_prompt_info() {
-  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  echo "$GIT_PROMPT_PREFIX${ref#refs/heads/}$(parse_git_dirty)$GIT_PROMPT_SUFFIX"
-}
+#setopt prompt_subst
+#autoload -Uz vcs_info
+#zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+#zstyle ':vcs_info:*' formats '%F{2}%b%f '
+#zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 
-parse_git_dirty() {
-  if [[ -n $(git status -s "--ignore-submodules=dirty" 2> /dev/null) ]]; then
-    echo "$GIT_PROMPT_DIRTY"
-  else
-    echo "$GIT_PROMPT_CLEAN"
+# this plugin enables vcs_info for zsh
+autoload -Uz add-zsh-hook vcs_info
+
+export VCS_INFO_UNSTAGED_FMT='%F{5}+'
+export VCS_INFO_STRAGED_FMT='^'
+export VCS_INFO_BRANCH_FMT='%b'
+export VCS_INFO_HGREV_FMT='%r'
+export VCS_INFO_HGBOOKMARK_FMT=''
+export VCS_INFO_TIMESINCE_FMT=':$s'
+export VCS_INFO_HG_FMT='%s:%b%m@%i%u'
+export VCS_INFO_HGACTION_FMT='%s:%b%m@%i%u:%a'
+export VCS_INFO_GIT_FMT='%s:%b%m@%10.10i%u'
+export VCS_INFO_GITACTION_FMT='%s:%b%m@%10.10i%u:%a'
+
+zstyle ':vcs_info:*' enable git
+
+zstyle ':vcs_info:hg*:*' get-bookmarks true
+zstyle ':vcs_info:*' get-revision true
+zstyle ':vcs_info:*' check-for-changes true
+
+zstyle ':vcs_info:*:*' unstagedstr $VCS_INFO_UNSTAGED_FMT
+zstyle ':vcs_info:*:*' branchformat $VCS_INFO_BRANCH_FMT
+zstyle ':vcs_info:*:*' hgrevformat $VCS_INFO_HGREV_FMT
+zstyle ':vcs_info:*' formats $VCS_INFO_HG_FMT
+zstyle ':vcs_info:*' actionformats $VCS_INFO_HGACTION_FMT
+zstyle ':vcs_info:git*' formats $VCS_INFO_GIT_FMT
+zstyle ':vcs_info:git*' actionformats $VCS_INFO_GITACTION_FMT
+zstyle ':vcs_info:git*:*' stagedstr $VCS_INFO_STAGED_FMT
+
+vcs_info_wrapper() {
+  vcs_info
+  if [ -n "$vcs_info_msg_0_" ]; then
+    echo "%{$fg[green]%}${vcs_info_msg_0_}%{$reset_color%}$del"
   fi
 }
-
-GIT_PROMPT_PREFIX="%{$reset_color%}%{$fg[green]%}"
-GIT_PROMPT_SUFFIX="%{$reset_color%} "
-GIT_PROMPT_DIRTY="%{$fg[red]%}*%{$reset_color%}"
-GIT_PROMPT_CLEAN=""
-
-PROMPT="%{$fg[cyan]%}%1~%{$fg[red]%}|$(git_prompt_info)%{$fg[cyan]%}>%{$fg_no_bold[default]%} "
+# %F{5} 
+PROMPT="%{$fg[cyan]%}%1~%{$fg[red]%}|$(vcs_info_wrapper)%{$fg[cyan]%}>%{$fg_no_bold[default]%} "
