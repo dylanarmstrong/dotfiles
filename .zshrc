@@ -1,4 +1,4 @@
-# dylan's zshrc
+# the zshrc file
 
 # important shiznit
 LANG=en_US.UTF-8
@@ -104,6 +104,6 @@ zstyle ':vcs_info:*' formats '%F{2}%b%u%f '
 zstyle ':vcs_info:*' unstagedstr '%F{1}*'
 
 function prompt_precmd() { vcs_info }
-function set_prompt { PROMPT="%F{4}%1~%F{1}|${vcs_info_msg_0_}%F{4}>%{$fg_no_bold[default]%} " }
+function set_prompt { PROMPT="%F{38}%1~%F{1}|${vcs_info_msg_0_}%F{38}>%f " }
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
