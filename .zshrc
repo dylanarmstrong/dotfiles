@@ -87,19 +87,23 @@ alias c='clear'
 alias ls='ls --color'
 alias grep='grep --color=auto'
 
+# useful color function
+function spectrum_ls() {
+  for code in {000..255}; do
+    print -P -- "$code: %F{$code}Test%f"
+  done
+}
+
 # prompt
 setopt prompt_subst
 autoload -Uz add-zsh-hook vcs_info
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
 zstyle ':vcs_info:*' formats '%F{2}%b%u%f '
-zstyle ':vcs_info:*' unstagedstr '%F{5}+'
-
-# %F{5} 
+zstyle ':vcs_info:*' unstagedstr '%F{1}*'
 
 function prompt_precmd() { vcs_info }
-function set_prompt { PROMPT="%{$fg[cyan]%}%1~%{$fg[red]%}|${vcs_info_msg_0_}%{$fg[cyan]%}>%{$fg_no_bold[default]%} " }
+function set_prompt { PROMPT="%F{4}%1~%F{1}|${vcs_info_msg_0_}%F{4}>%{$fg_no_bold[default]%} " }
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
