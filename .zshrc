@@ -145,4 +145,6 @@ vcs_info_wrapper() {
 }
 # %F{5} 
 
+vcs_info
+
 PROMPT="%{$fg[cyan]%}%1~%{$fg[red]%}|${vcs_info_msg_0_}%{$fg[cyan]%}>%{$fg_no_bold[default]%} "
