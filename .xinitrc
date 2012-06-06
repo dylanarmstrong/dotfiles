@@ -14,7 +14,9 @@ exec xbindkeys &
 
 #exec $HOME/src/evilwm/evilwm -nosoliddrag -fn Fixed -fg "#69B8ED" -bg "#4983A9" -snap 10 -term "urxvtc" -mask1 mod4 -mask2 mod4
 
-exec evilwm -nosoliddrag -fg "#69B8ED" -bg "#4983A9" -snap 10 -term "urxvtc" -mask1 mod4 -mask2 mod4
+#exec evilwm -nosoliddrag -fg "#69B8ED" -bg "#4983A9" -snap 10 -term "urxvtc" -mask1 mod4 -mask2 mod4
+#exec musca
+exec ratpoison
 #exec subtle
 #exec herbstluftwm
 #exec spectrwm
