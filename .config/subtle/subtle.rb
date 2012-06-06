@@ -133,8 +133,8 @@ style :all do
   icon        "#757575"
   border      "#303030", 0
   padding     0, 3
-  font        "-*-*-*-*-*-*-14-*-*-*-*-*-*-*"
-  #font        "xft:sans-8"
+  #font        "-*-*-*-*-*-*-14-*-*-*-*-*-*-*"
+  font        "xft:sans-8"
 end
 
 # Style for the all views
