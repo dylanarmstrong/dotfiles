@@ -1,4 +1,4 @@
-"dmenu_run"
+"dmenu_run -fn 'xft:Envy Code R:pixelsize=10'"
   Mod4 + p
 "amixer -q set Master 0"
   XF86AudioMute

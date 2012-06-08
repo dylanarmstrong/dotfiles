@@ -1,531 +1,813 @@
 # -*- encoding: utf-8 -*-
 #
-# This program can be distributed under the terms of the GNU GPL.
-# See the file COPYING.
+# Author::  Christoph Kappel <unexist@subforge.org>
+# Version:: $Id$
+# License:: GNU GPLv2
 #
-# $Id: .config/subtle/subtle.rb,v 426 2012/05/23 00:03:48 unexist $
+# = Subtle default configuration
+#
+# This file will be installed as default and can also be used as a starter for
+# an own custom configuration file. The system wide config usually resides in
+# +/etc/xdg/subtle+ and the user config in +HOME/.config/subtle+, both locations
+# are dependent on the locations specified by +XDG_CONFIG_DIRS+ and
+# +XDG_CONFIG_HOME+.
 #
 
-require "socket"
+#
+# == Options
+#
+# Following options change behaviour and sizes of the window manager:
+#
 
-# Contrib {{{
-begin
-  require "#{ENV["HOME"]}/.config/subtle-contrib/ruby/launcher.rb"
-  require "#{ENV["HOME"]}/.config/subtle-contrib/ruby/selector.rb"
+# Window move/resize steps in pixel per keypress
+set :increase_step, 5
 
-  Subtle::Contrib::Selector.font  = "xft:Envy Code R:pixelsize=13"
-  Subtle::Contrib::Launcher.fonts = [
-    "xft:Envy Code R:pixelsize=80",
-    "xft:Envy Code R:pixelsize=9"
-  ]
+# Window screen border snapping
+set :border_snap, 10
 
-  Subtle::Contrib::Launcher.browser_screen_num = 0
-rescue LoadError
-end # }}}
+# Default starting gravity for windows. Comment out to use gravity of
+# currently active client
+set :default_gravity, :center
 
-# Options {{{
-set :increase_step,     5
-set :border_snap,       10
-set :default_gravity,   :center
-set :urgent_dialogs,    false
-set :honor_size_hints,  false
-set :gravity_tiling,    false
-#set :click_to_focus,    false
+# Make dialog windows urgent and draw focus
+set :urgent_dialogs, false
+
+# Honor resize size hints globally
+set :honor_size_hints, false
+
+# Enable gravity tiling for all gravities
+set :gravity_tiling, false
+
+# Enable click-to-focus focus model
+set :click_to_focus, false
+
+# Skip pointer movement on e.g. gravity change
 set :skip_pointer_warp, false
-# }}}
 
-# Screens {{{
+# Skip pointer movement to urgent windows
+set :skip_urgent_warp, false
+
+# Set the WM_NAME of subtle (Java quirk)
+# set :wmname, "LG3D"
+
+#
+# == Screen
+#
+# Generally subtle comes with two panels per screen, one on the top and one at
+# the bottom. Each panel can be configured with different panel items and
+# sublets screen wise. The default config uses top panel on the first screen
+# only, it's up to the user to enable the bottom panel or disable either one
+# or both.
+
+# === Properties
+#
+# [*stipple*]    This property adds a stipple pattern to both screen panels.
+#
+#                Example: stipple "~/stipple.xbm"
+#                         stipple Subtlext::Icon.new("~/stipple.xbm")
+#
+# [*top*]        This property adds a top panel to the screen.
+#
+#                Example: top [ :views, :title ]
+#
+# [*bottom*]     This property adds a bottom panel to the screen.
+#
+#                Example: bottom [ :views, :title ]
+
+#
+# Following items are available for the panels:
+#
+# [*:views*]     List of views with buttons
+# [*:title*]     Title of the current active window
+# [*:tray*]      Systray icons (Can be used only once)
+# [*:keychain*]  Display current chain (Can be used only once)
+# [*:sublets*]   Catch-all for installed sublets
+# [*:sublet*]    Name of a sublet for direct placement
+# [*:spacer*]    Variable spacer (free width / count of spacers)
+# [*:center*]    Enclose items with :center to center them on the panel
+# [*:separator*] Insert separator
+#
+# Empty panels are hidden.
+#
+# === Links
+#
+# http://subforge.org/projects/subtle/wiki/Multihead
+# http://subforge.org/projects/subtle/wiki/Panel
+#
+
 screen 1 do
-  top     [:title, :spacer, :views, :center, :clock, :fuzzytime, :separator, :cpu, :sublets, :center]
-  bottom  []
-  view    0
+  top    [ :views, :title, :spacer, :keychain, :spacer, :tray, :sublets ]
+  bottom [ ]
 end
 
-screen 2 do
-  top     [:mpd, :separator, :volume, :spacer, :title, :tray, :center, :views, :center]
-  bottom  []
-  view    5
-end
+# Example for a second screen:
+#screen 2 do
+#  top    [ :views, :title, :spacer ]
+#  bottom [ ]
+#end
 
-screen 3 do
-  top     [:views, :spacer, :title, :center, :wifi, :jdownloader, :center]
-  bottom  []
-  view    1
-end
-# }}}
+#
+# == Styles
+#
+# Styles define various properties of styleable items in a CSS-like syntax.
+#
+# If no background color is given no color will be set. This will ensure a
+# custom background pixmap won't be overwritten.
+#
+# Following properties are available for most the styles:
+#
+# [*foreground*] Foreground text color
+# [*background*] Background color
+# [*margin*]     Outer spacing
+# [*border*]     Border color and size
+# [*padding*]    Inner spacing
+# [*font*]       Font string (xftontsel or xft)
+#
+# === Link
+#
+# http://subforge.org/projects/subtle/wiki/Styles
 
-# Styles {{{
+# Style for all style elements
 style :all do
-  padding    2, 6, 2, 6
-  background "#1a1a1a"
-  font       "xft:Envy Code R:pixelsize=9"
+  background  "#202020"
+  icon        "#757575"
+  border      "#303030", 0
+  padding     0, 3
+  font        "-*-*-*-*-*-*-14-*-*-*-*-*-*-*"
+  #font        "xft:sans-8"
 end
 
-style :title do
-  foreground "#FFFFFF"
-end
-
+# Style for the all views
 style :views do
-  foreground "#7c7c72"
-  icon       "#7c7c72"
+  foreground  "#757575"
 
+  # Style for the active views
   style :focus do
-    foreground    "#ffffff"
-    icon          "#ffffff"
-    border_bottom "#acaa53", 2
+    foreground  "#fecf35"
   end
 
-  style :occupied do
-    foreground    "#7c7c72"
-    border_bottom "#949269", 2
-  end
-
+  # Style for urgent window titles and views
   style :urgent do
-    foreground "#c0bd5c"
-    icon       "#c0bd5c"
+    foreground  "#ff9800"
   end
 
-  style :visible do
-    padding_top 0
-    border_top  "#494948", 2
+  # Style for occupied views (views with clients)
+  style :occupied do
+    foreground  "#b8b8b8"
   end
 end
 
+# Style for sublets
 style :sublets do
-  foreground "#7c7c72"
-  icon       "#7c7c72"
+  foreground  "#757575"
 end
 
+# Style for separator
 style :separator do
-  foreground "#acaa53"
-  separator  "∞"
+  foreground  "#757575"
+  separator   "|"
 end
 
+# Style for focus window title
+style :title do
+  foreground  "#fecf35"
+end
+
+# Style for active/inactive windows
 style :clients do
-  active   "#7c7c72", 2
-  inactive "#494948", 2
-  margin   2
+  active    "#303030", 2
+  inactive  "#202020", 2
+  margin    0
+  width     50
 end
 
+# Style for subtle
 style :subtle do
-  panel      "#1a1a1a"
-  background "#595959"
-  stipple    "#595959"
+  margin      0, 0, 0, 0
+  panel       "#202020"
+  background  "#3d3d3d"
+  stipple     "#757575"
 end
-# }}}
 
-# Gravities {{{
+#
+# == Gravities
+#
+# Gravities are predefined sizes a window can be set to. There are several ways
+# to set a certain gravity, most convenient is to define a gravity via a tag or
+# change them during runtime via grab. Subtler and subtlext can also modify
+# gravities.
+#
+# A gravity consists of four values which are a percentage value of the screen
+# size. The first two values are x and y starting at the center of the screen
+# and he last two values are the width and height.
+#
+# === Example
+#
+# Following defines a gravity for a window with 100% width and height:
+#
+#   gravity :example, [ 0, 0, 100, 100 ]
+#
+# === Link
+#
+# http://subforge.org/projects/subtle/wiki/Gravity
+#
+
+# Top left
 gravity :top_left,       [   0,   0,  50,  50 ]
 gravity :top_left66,     [   0,   0,  50,  66 ]
 gravity :top_left33,     [   0,   0,  50,  34 ]
 
+# Top
 gravity :top,            [   0,   0, 100,  50 ]
-gravity :top75,          [   0,   0, 100,  75 ]
 gravity :top66,          [   0,   0, 100,  66 ]
 gravity :top33,          [   0,   0, 100,  34 ]
 
+# Top right
 gravity :top_right,      [  50,   0,  50,  50 ]
 gravity :top_right66,    [  50,   0,  50,  66 ]
 gravity :top_right33,    [  50,   0,  50,  33 ]
 
+# Left
 gravity :left,           [   0,   0,  50, 100 ]
 gravity :left66,         [   0,   0,  66, 100 ]
 gravity :left33,         [   0,   0,  33, 100 ]
 
+# Center
 gravity :center,         [   0,   0, 100, 100 ]
 gravity :center66,       [  17,  17,  66,  66 ]
 gravity :center33,       [  33,  33,  33,  33 ]
 
+# Right
 gravity :right,          [  50,   0,  50, 100 ]
 gravity :right66,        [  34,   0,  66, 100 ]
 gravity :right33,        [  67,   0,  33, 100 ]
 
+# Bottom left
 gravity :bottom_left,    [   0,  50,  50,  50 ]
 gravity :bottom_left66,  [   0,  34,  50,  66 ]
 gravity :bottom_left33,  [   0,  67,  50,  33 ]
-gravity :bottom_left25,  [   0,  75,  50,  25 ]
 
+# Bottom
 gravity :bottom,         [   0,  50, 100,  50 ]
 gravity :bottom66,       [   0,  34, 100,  66 ]
 gravity :bottom33,       [   0,  67, 100,  33 ]
 
+# Bottom right
 gravity :bottom_right,   [  50,  50,  50,  50 ]
 gravity :bottom_right66, [  50,  34,  50,  66 ]
 gravity :bottom_right33, [  50,  67,  50,  33 ]
-gravity :bottom_right25, [  50,  75,  50,  25 ]
 
+# Gimp
 gravity :gimp_image,     [  10,   0,  80, 100 ]
 gravity :gimp_toolbox,   [   0,   0,  10, 100 ]
 gravity :gimp_dock,      [  90,   0,  10, 100 ]
 
-gravity :dia_toolbox,    [   0,   0,  15, 100 ]
-gravity :dia_diagram,    [  15,   0,  85, 100 ]
-# }}}
+#
+# == Grabs
+#
+# Grabs are keyboard and mouse actions within subtle, every grab can be
+# assigned either to a key and/or to a mouse button combination. A grab
+# consists of a chain and an action.
+#
+# === Finding keys
+#
+# The best resource for getting the correct key names is
+# */usr/include/X11/keysymdef.h*, but to make life easier here are some hints
+# about it:
+#
+# * Numbers and letters keep their names, so *a* is *a* and *0* is *0*
+# * Keypad keys need *KP_* as prefix, so *KP_1* is *1* on the keypad
+# * Strip the *XK_* from the key names if looked up in
+#   /usr/include/X11/keysymdef.h
+# * Keys usually have meaningful english names
+# * Modifier keys have special meaning (Alt (A), Control (C), Meta (M),
+#   Shift (S), Super (W))
+#
+# === Chaining
+#
+# Chains are a combination of keys and modifiers to one or a list of keys
+# and can be used in various ways to trigger an action. In subtle, there are
+# two ways to define chains for grabs:
+#
+#   1. *Default*: Add modifiers to a key and use it for a grab
+#
+#      *Example*: grab "W-Return", "urxvt"
+#
+#   2. *Chain*: Define a list of grabs that need to be pressed in order
+#
+#      *Example*: grab "C-y Return", "urxvt"
+#
+# ==== Mouse buttons
+#
+# [*B1*]  = Button1 (Left mouse button)
+# [*B2*]  = Button2 (Middle mouse button)
+# [*B3*]  = Button3 (Right mouse button)
+# [*B4*]  = Button4 (Mouse wheel up)
+# [*B5*]  = Button5 (Mouse wheel down)
+# [*...*]
+# [*B20*] = Button20 (Are you sure that this is a mouse and not a keyboard?)
+#
+# ==== Modifiers
+#
+# [*A*] = Alt key (Mod1)
+# [*C*] = Control key
+# [*M*] = Meta key (Mod3)
+# [*S*] = Shift key
+# [*W*] = Super/Windows key (Mod4)
+# [*G*] = Alt Gr (Mod5)
+#
+# === Action
+#
+# An action is something that happens when a grab is activated, this can be one
+# of the following:
+#
+# [*symbol*] Run a subtle action
+# [*string*] Start a certain program
+# [*array*]  Cycle through gravities
+# [*lambda*] Run a Ruby proc
+#
+# === Example
+#
+# This will create a grab that starts a urxvt when Alt+Enter are pressed:
+#
+#   grab "A-Return", "urxvt"
+#   grab "C-a c",    "urxvt"
+#
+# === Link
+#
+# http://subforge.org/projects/subtle/wiki/Grabs
+#
 
-# Grabs {{{
-# Host specific
-host     = Socket.gethostname
-modkey   = "W"
-gravkeys = [ "KP_7", "KP_8", "KP_9", "KP_4", "KP_5", "KP_6", "KP_1", "KP_2", "KP_3" ]
+# Jump to view1, view2, ...
+grab "W-S-1", :ViewJump1
+grab "W-S-2", :ViewJump2
+grab "W-S-3", :ViewJump3
+grab "W-S-4", :ViewJump4
 
-if "telas" == host or "mockra" == host #< Netbooks
-  gravkeys = [ "q", "w", "e", "a", "s", "d", "y", "x", "c" ]
-elsif "test" == host #< Usually VMs
-  modkey = "A"
+# Switch current view
+grab "W-1", :ViewSwitch1
+grab "W-2", :ViewSwitch2
+grab "W-3", :ViewSwitch3
+grab "W-4", :ViewSwitch4
+
+# Select next and prev view */
+grab "KP_Add",      :ViewNext
+grab "KP_Subtract", :ViewPrev
+
+# Move mouse to screen1, screen2, ...
+grab "W-A-1", :ScreenJump1
+grab "W-A-2", :ScreenJump2
+grab "W-A-3", :ScreenJump3
+grab "W-A-4", :ScreenJump4
+
+# Force reload of config and sublets
+grab "W-C-r", :SubtleReload
+
+# Force restart of subtle
+grab "W-C-S-r", :SubtleRestart
+
+# Quit subtle
+grab "W-C-q", :SubtleQuit
+
+# Move current window
+grab "W-B1", :WindowMove
+
+# Resize current window
+grab "W-B3", :WindowResize
+
+# Toggle floating mode of window
+grab "W-f", :WindowFloat
+
+# Toggle fullscreen mode of window
+grab "W-space", :WindowFull
+
+# Toggle sticky mode of window (will be visible on all views)
+grab "W-s", :WindowStick
+
+# Toggle zaphod mode of window (will span across all screens)
+grab "W-equal", :WindowZaphod
+
+# Raise window
+grab "W-r", :WindowRaise
+
+# Lower window
+grab "W-l", :WindowLower
+
+# Select next windows
+grab "W-Left",  :WindowLeft
+grab "W-Down",  :WindowDown
+grab "W-Up",    :WindowUp
+grab "W-Right", :WindowRight
+
+# Kill current window
+grab "W-S-k", :WindowKill
+
+# Cycle between given gravities
+grab "W-KP_7", [ :top_left,     :top_left66,     :top_left33     ]
+grab "W-KP_8", [ :top,          :top66,          :top33          ]
+grab "W-KP_9", [ :top_right,    :top_right66,    :top_right33    ]
+grab "W-KP_4", [ :left,         :left66,         :left33         ]
+grab "W-KP_5", [ :center,       :center66,       :center33       ]
+grab "W-KP_6", [ :right,        :right66,        :right33        ]
+grab "W-KP_1", [ :bottom_left,  :bottom_left66,  :bottom_left33  ]
+grab "W-KP_2", [ :bottom,       :bottom66,       :bottom33       ]
+grab "W-KP_3", [ :bottom_right, :bottom_right66, :bottom_right33 ]
+
+# In case no numpad is available e.g. on notebooks
+#grab "W-q", [ :top_left,     :top_left66,     :top_left33     ]
+#grab "W-w", [ :top,          :top66,          :top33          ]
+#grab "W-e", [ :top_right,    :top_right66,    :top_right33    ]
+#grab "W-a", [ :left,         :left66,         :left33         ]
+#grab "W-s", [ :center,       :center66,       :center33       ]
+#grab "W-d", [ :right,        :right66,        :right33        ]
+#
+# QUERTZ
+#grab "W-y", [ :bottom_left,  :bottom_left66,  :bottom_left33  ]
+#
+# QWERTY
+#grab "W-z", [ :bottom_left,  :bottom_left66,  :bottom_left33  ]
+#
+#grab "W-x", [ :bottom,       :bottom66,       :bottom33       ]
+#grab "W-c", [ :bottom_right, :bottom_right66, :bottom_right33 ]
+
+# Exec programs
+grab "W-Return", "urxvt"
+
+# Run Ruby lambdas
+grab "S-F2" do |c|
+  puts c.name
 end
 
-# Views and screens
-(1..4).each do |i|
-  grab modkey + "-#{i}",   "ViewSwitch#{i}".to_sym
-  grab modkey + "-S-#{i}", "ViewJump#{i}".to_sym
-  grab modkey + "-F#{i}",  "ScreenJump#{i}".to_sym
+grab "S-F3" do
+  puts Subtlext::VERSION
 end
 
-# Windows
-grab modkey + "-B1",      :WindowMove
-grab modkey + "-B3",      :WindowResize
-grab modkey + "-S-f",     :WindowFloat
-grab modkey + "-S-space", :WindowFull
-grab modkey + "-S-s",     :WindowStick
-grab modkey + "-S-equal", :WindowZaphod
-grab modkey + "-S-r",     :WindowRaise
-grab modkey + "-S-l",     :WindowLower
-grab modkey + "-S-k",     :WindowKill
-grab modkey + "-S-h", lambda { |c| c.retag }
+#
+# == Tags
+#
+# Tags are generally used in subtle for placement of windows. This placement is
+# strict, that means that - aside from other tiling window managers - windows
+# must have a matching tag to be on a certain view. This also includes that
+# windows that are started on a certain view will not automatically be placed
+# there.
+#
+# There are to ways to define a tag:
+#
+# === Simple
+#
+# The simple way just needs a name and a regular expression to just handle the
+# placement:
+#
+# Example:
+#
+#  tag "terms", "terms"
+#
+# === Extended
+#
+# Additionally tags can do a lot more then just control the placement - they
+# also have properties than can define and control some aspects of a window
+# like the default gravity or the default screen per view.
+#
+# Example:
+#
+#  tag "terms" do
+#    match   "xterm|[u]?rxvt"
+#    gravity :center
+#  end
+#
+# === Default
+#
+# Whenever a window has no tag it will get the default tag and be placed on the
+# default view. The default view can either be set by the user with adding the
+# default tag to a view by choice or otherwise the first defined view will be
+# chosen automatically.
+#
+# === Properties
+#
+# [*borderless*] This property enables the borderless mode for tagged clients.
+#
+#                Example: borderless true
+#                Links:    http://subforge.org/projects/subtle/wiki/Tagging#Borderless
+#                          http://subforge.org/projects/subtle/wiki/Clients#Borderless
+#
+# [*fixed*]      This property enables the fixed mode for tagged clients.
+#
+#                Example: fixed true
+#                Links:   http://subforge.org/projects/subtle/wiki/Tagging#Fixed
+#                         http://subforge.org/projects/subtle/wiki/Clients#Fixed
+#
+# [*float*]      This property enables the float mode for tagged clients.
+#
+#                Example: float true
+#                Links:   http://subforge.org/projects/subtle/wiki/Tagging#Float
+#                         http://subforge.org/projects/subtle/wiki/Clients#Float
+#
+# [*full*]       This property enables the fullscreen mode for tagged clients.
+#
+#                Example: full true
+#                Links:   http://subforge.org/projects/subtle/wiki/Tagging#Fullscreen
+#                         http://subforge.org/projects/subtle/wiki/Clients#Fullscreen
+#
+# [*geometry*]   This property sets a certain geometry as well as floating mode
+#                to the tagged client, but only on views that have this tag too.
+#                It expects an array with x, y, width and height values whereas
+#                width and height must be >0.
+#
+#                Example: geometry [100, 100, 50, 50]
+#                Link:    http://subforge.org/projects/subtle/wiki/Tagging#Geometry
+#
+# [*gravity*]    This property sets a certain to gravity to the tagged client,
+#                but only on views that have this tag too.
+#
+#                Example: gravity :center
+#                Link:    http://subforge.org/projects/subtle/wiki/Tagging#Gravity
+#
+# [*match*]      This property adds matching patterns to a tag, a tag can have
+#                more than one. Matching works either via plaintext, regex
+#                (see man regex(7)) or window id. Per default tags will only
+#                match the WM_NAME and the WM_CLASS portion of a client, this
+#                can be changed with following possible values:
+#
+#                [*:name*]      Match the WM_NAME
+#                [*:instance*]  Match the first (instance) part from WM_CLASS
+#                [*:class*]     Match the second (class) part from WM_CLASS
+#                [*:role*]      Match the window role
+#                [*:type*]      Match the window type
+#
+#                Examples: match instance: "urxvt"
+#                          match [:role, :class] => "test"
+#                          match "[xa]+term"
+#                Link:     http://subforge.org/projects/subtle/wiki/Tagging#Match
+#
+# [*position*]   Similar to the geometry property, this property just sets the
+#                x/y coordinates of the tagged client, but only on views that
+#                have this tag, too. It expects an array with x and y values.
+#
+#                Example: position [ 10, 10 ]
+#                Link:    http://subforge.org/projects/subtle/wiki/Tagging#Position
+#
+# [*resize*]     This property enables the float mode for tagged clients. When set,
+#                subtle honors size hints, that define various size constraints like
+#                sizes for columns and rows of a terminal.
+#
+#                Example: resize true
+#                Links:   http://subforge.org/projects/subtle/wiki/Tagging#Resize
+#                         http://subforge.org/projects/subtle/wiki/Clients#Resize
+#
+# [*stick*]      This property enables the stick mode for tagged clients. When set,
+#                clients are visible on all views, even when they don't have matching
+#                tags. On multihead, sticky clients keep the screen they are assigned
+#                on.
+#
+#                Supported values are either true or a number to specify a screen.
+#
+#                Example: stick true
+#                         stick 1
+#                Links:   http://subforge.org/projects/subtle/wiki/Tagging#Stick
+#                         http://subforge.org/projects/subtle/wiki/Clients#Stick
+#
+# [*type*]       This property sets the tagged client to be treated as a specific
+#                window type though as the window sets the type itself. Following
+#                types are possible:
+#
+#                [*:desktop*]  Treat as desktop window (_NET_WM_WINDOW_TYPE_DESKTOP)
+#                              Link: http://subforge.org/projects/subtle/wiki/Clients#Desktop
+#                [*:dock*]     Treat as dock window (_NET_WM_WINDOW_TYPE_DOCK)
+#                              Link: http://subforge.org/projects/subtle/wiki/Clients#Dock
+#                [*:toolbar*]  Treat as toolbar windows (_NET_WM_WINDOW_TYPE_TOOLBAR)
+#                              Link: http://subforge.org/projects/subtle/wiki/Clients#Toolbar
+#                [*:splash*]   Treat as splash window (_NET_WM_WINDOW_TYPE_SPLASH)
+#                              Link: http://subforge.org/projects/subtle/wiki/Clients#Splash
+#                [*:dialog*]   Treat as dialog window (_NET_WM_WINDOW_TYPE_DIALOG)
+#                              Link: http://subforge.org/projects/subtle/wiki/Clients#Dialog
+#
+#                Example: type :desktop
+#                Link:    http://subforge.org/projects/subtle/wiki/Tagging#Type
+#
+# [*urgent*]     This property enables the urgent mode for tagged clients. When set,
+#                subtle automatically sets this client to urgent.
+#
+#                Example: urgent true
+#                Links:   http://subforge.org/projects/subtle/wiki/Tagging#Stick
+#                         http://subforge.org/projects/subtle/wiki/Clients#Urgent
+#
+# [*zaphod*]     This property enables the zaphod mode for tagged clients. When set,
+#                the client spans across all connected screens.
+#
+#                Example: zaphod true
+#                Links:   http://subforge.org/projects/subtle/wiki/Tagging#Zaphod
+#                         http://subforge.org/projects/subtle/wiki/Clients#Zaphod
+#
+#
+# === Link
+#
+# http://subforge.org/projects/subtle/wiki/Tagging
+#
 
-# Movement
-{
- WindowLeft: [ "Left", "h" ], WindowDown:  [ "Down",  "j" ],
- WindowUp:   [ "Up",   "k" ], WindowRight: [ "Right", "l" ]
-}.each do |k, v|
-  grab "%s-%s" % [ modkey, v.first ], k
-  grab "%s-%s" % [ modkey, v.last  ], k
-end
+# Simple tags
+tag "terms",   "xterm|[u]?rxvt"
+tag "browser", "uzbl|opera|firefox|navigator"
 
-# Reload/restart
-grab modkey + "-C-q",     :SubtleQuit
-grab modkey + "-C-r",     :SubtleReload
-grab modkey + "-C-A-r",   :SubtleRestart
-
-# Gravity keys and focus
-gravities = [
-  [:top_left, :top_left33, :top_left66],
-  [:top, :top33, :top66, :top75],
-  [:top_right, :top_right33, :top_right66],
-  [:left, :left33, :left66],
-  [:center, :center33, :center66],
-  [:right, :right33, :right66],
-  [:bottom_left, :bottom_left25, :bottom_left33, :bottom_left66],
-  [:bottom, :bottom33, :bottom66],
-  [:bottom_right, :bottom_right25, :bottom_right33, :bottom_right66]
-]
-
-gravities.each_index do |i|
-  # Set gravities
-  grab "%s-%s" % [ modkey, gravkeys[i] ], gravities[i]
-
-  # Focus client with gravity
-  grab "%s-C-%s" % [ modkey, gravkeys[i] ], lambda { |cur|
-    idx     = 0
-    clients = Subtlext::Client.visible.select { |c|
-      gravities[i].include?(c.gravity.name.to_sym)
-    }
-
-    # Cycle through clients with same gravity
-    if clients.include?(cur)
-      idx = clients.index(cur) + 1
-      idx = 0 if idx >= clients.size
-    end
-
-    clients[idx].focus
-  }
-end
-
-# Multimedia keys
-grab "XF86AudioMute",        :VolumeToggle
-grab "XF86AudioRaiseVolume", :VolumeRaise
-grab "XF86AudioLowerVolume", :VolumeLower
-grab "XF86AudioPlay",        :MpdToggle
-grab "XF86AudioStop",        :MpdStop
-grab "XF86AudioNext",        :MpdNext
-grab "XF86AudioPrev",        :MpdPrevious
-
-grab modkey + "-m", "mpc current | tr -d '\n' | xclip"
-
-# Programs
-grab modkey + "-Return", "urxvt"
-grab modkey + "-g", "gvim"
-grab modkey + "-f", "firefox -no-remote -profileManager"
-grab modkey + "-c", "chromium"
-
-# Contrib
-grab "W-x" do
-  Subtle::Contrib::Launcher.run
-end
-
-grab "W-z" do
-  Subtle::Contrib::Selector.run
-end
-
-# Scratchpad
-grab "W-y" do
-  if (c = Subtlext::Client.first("scratch"))
-    c.toggle_stick
-    c.focus
-  elsif (c = Subtlext::Subtle.spawn("urxvt -name scratch"))
-    c.tags  = []
-    c.flags = [ :stick ]
-  end
-end
-
-# Pychrom
-grab modkey + "-p" do
-  if (t = Subtlext::Tray[:pychrom])
-    t.click
-  else
-    Subtlext::Subtle.spawn("pychrom")
-  end
-end
-
-# Tabbing
-grab modkey + "-Tab" do
-  Subtlext::Client.recent[1].focus
-end
-
-# Set layout
-grab modkey + "-numbersign" do
-  # Find stuff
-  view   = Subtlext::View.current
-  tag    = view.tags.first
-  client = view.clients.first
-  urxvt1 = Subtlext::Client['urxvt1']
-  urxvt2 = Subtlext::Client['urxvt2']
-
-  # Update tags
-  urxvt1 + tag
-  urxvt2 + tag
-
-  # Update gravities
-  sym = view.name.to_sym
-  client.gravity = { sym => :top75 }
-  urxvt1.gravity = { sym => :bottom_right25 }
-  urxvt2.gravity = { sym => :bottom_left25 }
-end
-# }}}
-
-# Tags {{{
-tag "terms" do
-  match    instance: "xterm|urxvt"
-  gravity  :center
-  resize   true
-end
-
-tag "browser" do
-  match "navigator|(google\-)?chrom[e|ium]|firefox|dwb"
-
-  if "mockra" == host or "proteus" == host
-    gravity :top75
-  else
-    gravity :center
-  end
-end
-
+# Placement
 tag "editor" do
-  match  "[g]?vim|eclipse"
+  match  "[g]?vim"
   resize true
-
-  if "mockra" == host or "proteus" == host
-    gravity :top75
-  else
-    gravity :center
-  end
 end
 
-tag "xeph640" do
-  match    "xeph640"
-  position [ 82, 549 ]
+tag "fixed" do
+  geometry [ 10, 10, 100, 100 ]
+  stick    true
 end
 
-tag "xeph800" do
-  match    "xeph800"
-  position [ 855, 172 ]
+tag "resize" do
+  match  "sakura|gvim"
+  resize true
 end
 
-tag "android" do
-  match "SDL_App"
+tag "gravity" do
+  gravity :center
 end
 
-tag "mplayer" do
-  match   "mplayer"
-  float   true
-  stick   1
-end
-
+# Modes
 tag "stick" do
-  match  "dialog|subtly|python|gtk.rb|display|pychrom|skype|xev|evince|exe|<unknown>|plugin-container"
-  stick  true
-  float  true
-end
-
-tag "urgent" do
-  stick  true
-  urgent true
-  float  true
-end
-
-tag "powerfolder" do
-  match "de-dal33t-powerfolder-PowerFolder"
+  match "mplayer"
   float true
   stick true
 end
 
-tag "dialogs" do
-  match  "sun-awt-X11-XDialogPeer"
-  match type: [ :dialog, :splash ]
-  stick true
+tag "float" do
+  match "display"
+  float true
 end
 
-tag "three" do
-  match    "urxvt2"
-  gravity  :bottom_right
+# Gimp
+tag "gimp_image" do
+  match   :role => "gimp-image-window"
+  gravity :gimp_image
 end
 
-tag "three25" do
-  match    "urxvt2"
-  gravity  :bottom_right25
+tag "gimp_toolbox" do
+  match   :role => "gimp-toolbox$"
+  gravity :gimp_toolbox
 end
 
-tag "two" do
-  match    "urxvt2"
-  gravity  :bottom
+tag "gimp_dock" do
+  match   :role => "gimp-dock"
+  gravity :gimp_dock
 end
 
-tag "three25" do
-  match    "urxvt1"
-  gravity  :bottom_right25
+tag "gimp_scum" do
+  match role: "gimp-.*|screenshot"
 end
 
-tag "seven" do
-  match    "urxvt1"
-  gravity  :top_left
-end
+#
+# == Views
+#
+# Views are the virtual desktops in subtle, they show all windows that share a
+# tag with them. Windows that have no tag will be visible on the default view
+# which is the view with the default tag or the first defined view when this
+# tag isn't set.
+#
+# Like tags views can be defined in two ways:
+#
+# === Simple
+#
+# The simple way is exactly the same as for tags:
+#
+# Example:
+#
+#   view "terms", "terms"
+#
+# === Extended
+#
+# The extended way for views is also similar to the tags, but with fewer
+# properties.
+#
+# Example:
+#
+#  view "terms" do
+#    match "terms"
+#    icon  "/usr/share/icons/icon.xbm"
+#  end
+#
+# === Properties
+#
+# [*match*]      This property adds a matching pattern to a view. Matching
+#                works either via plaintext or regex (see man regex(7)) and
+#                applies to names of tags.
+#
+#                Example: match "terms"
+#
+# [*dynamic*]    This property hides unoccupied views, views that display no
+#                windows.
+#
+#                Example: dynamic true
+#
+# [*icon*]       This property adds an icon in front of the view name. The
+#                icon can either be path to an icon or an instance of
+#                Subtlext::Icon.
+#
+#                Example: icon "/usr/share/icons/icon.xbm"
+#                         icon Subtlext::Icon.new("/usr/share/icons/icon.xbm")
+#
+# [*icon_only*]  This property hides the view name from the view buttons, just
+#                the icon will be visible.
+#
+#                Example: icon_only true
+#
+#
+# === Link
+#
+# http://subforge.org/projects/subtle/wiki/Tagging
+#
 
-tag "eight" do
-  match    "urxvt1"
-  gravity  :top
-end
+view "terms", "terms|default"
+view "www",   "browser"
+view "gimp",  "gimp_.*"
+view "dev",   "editor"
 
-tag "gimp" do
-  match role: "gimp.*"
+#
+# == Sublets
+#
+# Sublets are Ruby scripts that provide data for the panel and can be managed
+# with the sur script that comes with subtle.
+#
+# === Example
+#
+#  sur install clock
+#  sur uninstall clock
+#  sur list
+#
+# === Configuration
+#
+# All sublets have a set of configuration values that can be changed directly
+# from the config of subtle.
+#
+# There are three default properties, that can be be changed for every sublet:
+#
+# [*interval*]    Update interval of the sublet
+# [*foreground*]  Default foreground color
+# [*background*]  Default background color
+#
+# sur can also give a brief overview about properties:
+#
+# === Example
+#
+#   sur config clock
+#
+# The syntax of the sublet configuration is similar to other configuration
+# options in subtle:
+#
+# === Example
+#
+#  sublet :clock do
+#    interval      30
+#    foreground    "#eeeeee"
+#    background    "#000000"
+#    format_string "%H:%M:%S"
+#  end
+#
+#  === Link
+#
+# http://subforge.org/projects/subtle/wiki/Sublets
+#
 
-  on_match do |c|
-    c.gravity = ("gimp_" + c.role.split("-")[1]).to_sym
-  end
-end
+#
+# == Hooks
+#
+# And finally hooks are a way to bind Ruby scripts to a certain event.
+#
+# Following hooks exist so far:
+#
+# [*:client_create*]    Called whenever a window is created
+# [*:client_configure*] Called whenever a window is configured
+# [*:client_focus*]     Called whenever a window gets focus
+# [*:client_kill*]      Called whenever a window is killed
+#
+# [*:tag_create*]       Called whenever a tag is created
+# [*:tag_kill*]         Called whenever a tag is killed
+#
+# [*:view_create*]      Called whenever a view is created
+# [*:view_configure*]   Called whenever a view is configured
+# [*:view_jump*]        Called whenever the view is switched
+# [*:view_kill*]        Called whenever a view is killed
+#
+# [*:tile*]             Called on whenever tiling would be needed
+# [*:reload*]           Called on reload
+# [*:start*]            Called on start
+# [*:exit*]             Called on exit
+#
+# === Example
+#
+# This hook will print the name of the window that gets the focus:
+#
+#   on :client_focus do |c|
+#     puts c.name
+#   end
+#
+# === Link
+#
+# http://subforge.org/projects/subtle/wiki/Hooks
+#
 
-tag "dia" do
-  match "dia"
-
-  on_match do |c|
-    c.gravity = ("dia_" + c.role.split("_").first).to_sym
-  end
-end
-
-tag "inkscape" do
-  match "inkscape"
-end
-# }}}
-
-# Views {{{
-if "mockra" == host or "proteus" == host
-  www_re    = "browser|three25|three25"
-  test_re   = "xeph[0-9]+|three25"
-  editor_re = "editor|three25|three25"
-  icons     = true
-else
-  www_re    = "browser"
-  test_re   = "xeph[0-9]+|eight|three$|test"
-  editor_re = "editor"
-  icons     = true
-end
-
-iconpath = "#{ENV["HOME"]}/.local/share/icons"
-
-space = {
-  :cannon  => Subtlext::Icon.new("#{iconpath}/cannon.xbm"),
-  :ufo     => Subtlext::Icon.new("#{iconpath}/ufo.xbm"),
-  :shelter => Subtlext::Icon.new("#{iconpath}/shelter.xbm"),
-  :terms   => Subtlext::Icon.new("#{iconpath}/invader1.xbm"),
-  :www     => Subtlext::Icon.new("#{iconpath}/invader2.xbm"),
-  :void    => Subtlext::Icon.new("#{iconpath}/invader3.xbm"),
-  :sketch  => Subtlext::Icon.new("#{iconpath}/invader4.xbm"),
-  :test    => Subtlext::Icon.new("#{iconpath}/invader5.xbm"),
-  :editor  => Subtlext::Icon.new("#{iconpath}/invader6.xbm")
-}
-
-view "terms" do
-  match     "terms|eight|two"
-  #icon      "#{iconpath}/terminal.xbm"
-  icon      Subtlext::Icon.new("#{iconpath}/cannon.xbm")
-  icon_only icons
-end
-
-view "www" do
-  match     www_re
-  #icon      "#{iconpath}/world.xbm"
-  icon      Subtlext::Icon.new("#{iconpath}/ufo.xbm")
-  icon_only icons
-end
-
-view "void" do
-  match     "default|void|powerfolder|pms"
-  #icon      "#{iconpath}/quote.xbm"
-  icon      Subtlext::Icon.new("#{iconpath}/invader3.xbm")
-  icon_only icons
-end
-
-view "sketch" do
-  match     "inkscape|dia|gimp|android"
-  #icon      "#{iconpath}/paint.xbm"
-  icon      Subtlext::Icon.new("#{iconpath}/invader4.xbm")
-  icon_only icons
-end
-
-view "test" do
-  match     test_re
-  #icon      "#{iconpath}/bug.xbm"
-  icon      Subtlext::Icon.new("#{iconpath}/invader5.xbm")
-  icon_only icons
-end
-
-view "editor" do
-  match     editor_re
-  #icon      "#{iconpath}/ruby.xbm"
-  icon      Subtlext::Icon.new("#{iconpath}/invader6.xbm")
-  icon_only icons
-end
-
-on :view_focus do |v|
-  views = Hash[*Subtlext::Screen.all.map { |s|
-    [ s.view.name.to_sym, space[space.keys[s.id]] ] }.flatten
-  ]
-
-  Subtlext::View.all.each do |va|
-    sym = va.name.to_sym
-
-    if views.keys.include?(sym)
-      va.icon.copy_area(views[sym])
-    else
-      va.icon.copy_area(space[va.name.to_sym])
-    end
-  end
-
-  Subtlext::Subtle.render
-end
-# }}}
-
-# Sublets {{{
-sublet :clock do
-  format_string "%a %b %d,"
-end
-# }}}
+# vim:ts=2:bs=2:sw=2:et:fdm=marker
