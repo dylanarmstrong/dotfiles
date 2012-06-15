@@ -12,12 +12,12 @@ unclutter -root -idle 3 &
 sh $HOME/.fehbg &
 exec xbindkeys &
 
-exec $HOME/src/evilwm/evilwm -nosoliddrag -fn Fixed -fg "#69B8ED" -bg "#4983A9" -snap 10 -term "urxvtc" -mask1 mod4 -mask2 mod4
+#exec $HOME/src/evilwm/evilwm -nosoliddrag -fn Fixed -fg "#69B8ED" -bg "#4983A9" -snap 10 -term "urxvtc" -mask1 mod4 -mask2 mod4
 #exec $HOME/src/evilpoison/evilpoison 
 #exec $HOME/src/monsterwm/monsterwm
 #exec $HOME/src/scrotwm/linux/scrotwm
 
-#exec evilwm -nosoliddrag -fg "#69B8ED" -bg "#4983A9" -snap 10 -term "urxvtc" -mask1 mod4 -mask2 mod4
+exec evilwm -nosoliddrag -fg "#69B8ED" -bg "#4983A9" -snap 10 -term "urxvtc" -mask1 mod4 -mask2 mod4
 #exec musca
 #exec ratpoison
 #exec subtle
