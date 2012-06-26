@@ -1,11 +1,11 @@
 "dmenu_run -fn 'xft:Envy Code R:pixelsize=10'"
   Mod4 + p
-"amixer -q set Master 0"
-  XF86AudioMute
-"amixer -q set Master 2dB+"
-  XF86AudioRaiseVolume
-"amixer -q set Master 2dB-"
-  XF86AudioLowerVolume
+#"amixer -q set Master 0"
+#  XF86AudioMute
+#"amixer -q set Master 2dB+"
+#  XF86AudioRaiseVolume
+#"amixer -q set Master 2dB-"
+#  XF86AudioLowerVolume
 "ncmpcpp toggle"
   XF86AudioPlay
 "ncmpcpp stop"
