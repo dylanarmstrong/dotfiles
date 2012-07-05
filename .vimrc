@@ -26,7 +26,7 @@ set wildmenu
 set wildmode=longest:full,full
 
 " highlight long lines
-set cc=80
+" set cc=80
 
 " case insensitive searching except when string contains upper case characters
 set ignorecase
@@ -77,7 +77,7 @@ set showmatch
 set incsearch
 
 " For all text files set width to 78 characters
-autocmd FileType text setlocal textwidth=78
+" autocmd FileType text setlocal textwidth=78
 
 " Set title when running inside a terminal
 set title
@@ -108,7 +108,7 @@ command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
 " Map leader-f to open FuzzyFinder
 map <leader>f ;FufFile<cr>
 " Maps leader-h to open FuzzyFinder's help search
-map <leader>h ;FufHelp<cr>
+" map <leader>h ;FufHelp<cr>
 map <leader>b ;FufBuffer<cr>
 
 " Maps leader-R to reload .vimrc
