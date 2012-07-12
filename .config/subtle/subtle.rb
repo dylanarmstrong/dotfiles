@@ -1,17 +1,11 @@
 # -*- encoding: utf-8 -*-
 #
-# This program can be distributed under the terms of the GNU GPL.
-# See the file COPYING.
-#
-# $Id: .config/subtle/subtle.rb,v 426 2012/05/23 00:03:48 unexist $
-#
 
 require "socket"
 
-# Contrib {{{
 begin
-  require "#{ENV["HOME"]}/.config/subtle-contrib/ruby/launcher.rb"
-  require "#{ENV["HOME"]}/.config/subtle-contrib/ruby/selector.rb"
+  require "#{ENV["HOME"]}/.config/subtle/ruby/launcher.rb"
+  require "#{ENV["HOME"]}/.config/subtle/ruby/selector.rb"
 
   Subtle::Contrib::Selector.font  = "xft:Envy Code R:pixelsize=13"
   Subtle::Contrib::Launcher.fonts = [
@@ -19,95 +13,102 @@ begin
     "xft:Envy Code R:pixelsize=10"
   ]
 
-  Subtle::Contrib::Launcher.browser_screen_num = 0
 rescue LoadError
-end # }}}
-
-# Options {{{
-set :increase_step,     5
-set :border_snap,       10
-set :default_gravity,   :center
-set :urgent_dialogs,    false
-set :honor_size_hints,  false
-set :gravity_tiling,    false
-#set :click_to_focus,    false
-set :skip_pointer_warp, false
-# }}}
-
-# Screens {{{
-screen 1 do
-  top     [:title, :spacer, :views, :sublets]
-  bottom  [:mpd, :spacer, :clock, :fuzzytime]
-  view    0
 end
 
-# Styles {{{
+grab "W-p" do
+  Subtle::Contrib::Launcher.run
+end
+
+grab "W-Tab" do
+  Subtle::Contrib::Selector.run
+end
+
+set :increase_step, 5
+set :border_snap, 10
+set :default_gravity, :center
+set :urgent_dialogs, false
+set :honor_size_hints, false
+set :gravity_tiling, false
+set :click_to_focus, false
+set :skip_pointer_warp, false
+set :skip_urgent_warp, false
+
+screen 1 do
+  top    [ :title, :spacer, :fuzzytime, :separator, :views]
+  bottom [ ]
+end
+
 style :all do
-  padding    2, 6, 2, 6
-  background "#1a1a1a"
-  font       "xft:Envy Code R:pixelsize=10"
+  #background  "#202020"
+  #icon        "#757575"
+  #border      "#303030", 0
+  padding     0, 3
+  #padding     2, 6, 2, 6
+  #font        "xft:Terminus:pixelsize=10"
+  font        "-*-*-*-*-*-*-10-*-*-*-*-*-*-*"
+  #font        "xft:sans-8"
 end
 
 style :title do
   foreground "#FFFFFF"
 end
 
+# Style for the all views
 style :views do
-  foreground "#7c7c72"
-  icon       "#7c7c72"
+  foreground  "#757575"
 
+  # Style for the active views
   style :focus do
-    foreground    "#ffffff"
-    icon          "#ffffff"
-    border_bottom "#acaa53", 2
+    foreground  "#69B8ED"
   end
 
-  style :occupied do
-    foreground    "#7c7c72"
-    border_bottom "#949269", 2
-  end
-
+  # Style for urgent window titles and views
   style :urgent do
-    foreground "#c0bd5c"
-    icon       "#c0bd5c"
+    foreground  "#ff9800"
   end
 
-  style :visible do
-    padding_top 0
-    border_top  "#494948", 2
+  # Style for occupied views (views with clients)
+  style :occupied do
+    foreground  "#4983A9"
   end
 end
 
+# Style for sublets
 style :sublets do
-  foreground "#7c7c72"
-  icon       "#7c7c72"
+  foreground  "#757575"
 end
 
+# Style for separator
 style :separator do
-  foreground "#acaa53"
-  separator  "∞"
+  foreground  "#757575"
+  separator   "|"
 end
 
+# Style for focus window title
+style :title do
+  foreground  "#69B8ED"
+end
+
+# Style for active/inactive windows
 style :clients do
-  active   "#7c7c72", 2
-  inactive "#494948", 2
-  margin   2
+  active    "#69B8ED", 2
+  inactive  "#4983A9", 2
+  margin    4
 end
 
+# Style for subtle
 style :subtle do
-  panel      "#1a1a1a"
-  background "#595959"
-  stipple    "#595959"
+  margin      0, 0, 0, 0
+  panel       "#202020"
+  stipple     "#757575"
 end
-# }}}
 
-# Gravities {{{
 gravity :top_left,       [   0,   0,  50,  50 ]
 gravity :top_left66,     [   0,   0,  50,  66 ]
 gravity :top_left33,     [   0,   0,  50,  34 ]
 
 gravity :top,            [   0,   0, 100,  50 ]
-gravity :top75,          [   0,   0, 100,  75 ]
 gravity :top66,          [   0,   0, 100,  66 ]
 gravity :top33,          [   0,   0, 100,  34 ]
 
@@ -130,7 +131,6 @@ gravity :right33,        [  67,   0,  33, 100 ]
 gravity :bottom_left,    [   0,  50,  50,  50 ]
 gravity :bottom_left66,  [   0,  34,  50,  66 ]
 gravity :bottom_left33,  [   0,  67,  50,  33 ]
-gravity :bottom_left25,  [   0,  75,  50,  25 ]
 
 gravity :bottom,         [   0,  50, 100,  50 ]
 gravity :bottom66,       [   0,  34, 100,  66 ]
@@ -139,238 +139,77 @@ gravity :bottom33,       [   0,  67, 100,  33 ]
 gravity :bottom_right,   [  50,  50,  50,  50 ]
 gravity :bottom_right66, [  50,  34,  50,  66 ]
 gravity :bottom_right33, [  50,  67,  50,  33 ]
-gravity :bottom_right25, [  50,  75,  50,  25 ]
 
 gravity :gimp_image,     [  10,   0,  80, 100 ]
 gravity :gimp_toolbox,   [   0,   0,  10, 100 ]
 gravity :gimp_dock,      [  90,   0,  10, 100 ]
 
-gravity :dia_toolbox,    [   0,   0,  15, 100 ]
-gravity :dia_diagram,    [  15,   0,  85, 100 ]
-# }}}
-
-# Grabs {{{
-modkey   = "W"
-gravkeys = [ "q", "w", "e", "a", "s", "d", "y", "x", "c" ]
-
-# Views and screens
 (1..4).each do |i|
-  grab modkey + "-#{i}",   "ViewSwitch#{i}".to_sym
-  grab modkey + "-S-#{i}", "ViewJump#{i}".to_sym
-  grab modkey + "-F#{i}",  "ScreenJump#{i}".to_sym
+  grab "W-#{i}",   "ViewSwitch#{i}".to_sym
+  grab "W-S-#{i}", "ViewJump#{i}".to_sym
 end
 
-grab modkey + "-Left", :ViewPrev
-grab modkey + "-Right", :ViewNext
+grab "W-Left", :ViewPrev
+grab "W-Right", :ViewNext
 
-# Windows
-grab modkey + "-B1",      :WindowMove
-grab modkey + "-B3",      :WindowResize
-grab modkey + "-S-f",     :WindowFloat
-grab modkey + "-S-space", :WindowFull
-grab modkey + "-S-s",     :WindowStick
-grab modkey + "-S-equal", :WindowZaphod
-grab modkey + "-S-r",     :WindowRaise
-grab modkey + "-S-l",     :WindowLower
-grab modkey + "-S-k",     :WindowKill
-grab modkey + "-S-h", lambda { |c| c.retag }
+grab "W-C-r", :SubtleReload
+grab "W-C-S-r", :SubtleRestart
+grab "W-C-q", :SubtleQuit
 
-# Movement
-{
- WindowLeft: [ "Left", "h" ], WindowDown:  [ "Down",  "j" ],
- WindowUp:   [ "Up",   "k" ], WindowRight: [ "Right", "l" ]
-}.each do |k, v|
-  grab "%s-%s" % [ modkey, v.first ], k
-  grab "%s-%s" % [ modkey, v.last  ], k
+grab "W-f", :WindowFloat
+grab "W-space", :WindowFull
+grab "W-S-s", :WindowStick
+grab "W-r", :WindowRaise
+grab "W-l", :WindowLower
+grab "W-S-k", :WindowKill
+
+grab "W-q", [ :top_left,     :top_left66,     :top_left33     ]
+grab "W-w", [ :top,          :top66,          :top33          ]
+grab "W-e", [ :top_right,    :top_right66,    :top_right33    ]
+grab "W-a", [ :left,         :left66,         :left33         ]
+grab "W-s", [ :center,       :center66,       :center33       ]
+grab "W-d", [ :right,        :right66,        :right33        ]
+grab "W-z", [ :bottom_left,  :bottom_left66,  :bottom_left33  ]
+grab "W-x", [ :bottom,       :bottom66,       :bottom33       ]
+grab "W-c", [ :bottom_right, :bottom_right66, :bottom_right33 ]
+
+grab "W-Return", "urxvtc"
+grab "W-S-o", "luakit"
+
+grab "S-F2" do |c|
+  puts c.name
 end
 
-# Reload/restart
-grab modkey + "-C-q",     :SubtleQuit
-grab modkey + "-C-r",     :SubtleReload
-grab modkey + "-C-A-r",   :SubtleRestart
-
-# Gravity keys and focus
-gravities = [
-  [:top_left, :top_left33, :top_left66],
-  [:top, :top33, :top66, :top75],
-  [:top_right, :top_right33, :top_right66],
-  [:left, :left33, :left66],
-  [:center, :center33, :center66],
-  [:right, :right33, :right66],
-  [:bottom_left, :bottom_left25, :bottom_left33, :bottom_left66],
-  [:bottom, :bottom33, :bottom66],
-  [:bottom_right, :bottom_right25, :bottom_right33, :bottom_right66]
-]
-
-gravities.each_index do |i|
-  # Set gravities
-  grab "%s-%s" % [ modkey, gravkeys[i] ], gravities[i]
-
-  # Focus client with gravity
-  grab "%s-C-%s" % [ modkey, gravkeys[i] ], lambda { |cur|
-    idx     = 0
-    clients = Subtlext::Client.visible.select { |c|
-      gravities[i].include?(c.gravity.name.to_sym)
-    }
-
-    # Cycle through clients with same gravity
-    if clients.include?(cur)
-      idx = clients.index(cur) + 1
-      idx = 0 if idx >= clients.size
-    end
-
-    clients[idx].focus
-  }
+grab "S-F3" do
+  puts Subtlext::VERSION
 end
 
-# Multimedia keys
-grab "XF86AudioMute",        :VolumeToggle
-grab "XF86AudioRaiseVolume", :VolumeRaise
-grab "XF86AudioLowerVolume", :VolumeLower
-grab "XF86AudioPlay",        :MpdToggle
-grab "XF86AudioStop",        :MpdStop
-grab "XF86AudioNext",        :MpdNext
-grab "XF86AudioPrev",        :MpdPrevious
+grab "W-S-d", "xinput --set-prop 'bcm5974' 'Device Enabled' 0"
+grab "W-S-r", "xinput --set-prop 'bcm5974' 'Device Enabled' 1"
 
-# Programs
-grab modkey + "-Return", "urxvt"
-grab modkey + "-f", "firefox"
+tag "terms",   "xterm|[u]?rxvt[c]?"
+tag "browser", "uzbl|firefox|jumanji|luakit|surf|dwb|google-chrome"
 
-# Contrib
-grab modkey + "-p" do
-  Subtle::Contrib::Launcher.run
+tag "fixed" do
+  geometry [ 10, 10, 100, 100 ]
+  stick    true
 end
 
-grab modkey + "-o" do
-  Subtle::Contrib::Selector.run
-end
-
-# Scratchpad
-grab modkey + "-y" do
-  if (c = Subtlext::Client.first("scratch"))
-    c.toggle_stick
-    c.focus
-  elsif (c = Subtlext::Subtle.spawn("urxvt -name scratch"))
-    c.tags  = []
-    c.flags = [ :stick ]
-  end
-end
-
-# Tabbing
-grab modkey + "-Tab" do
-  Subtlext::Client.recent[1].focus
-end
-
-# Tags {{{
-tag "terms" do
-  match    instance: "xterm|urxvt"
-  gravity  :center
-  resize   true
-end
-
-tag "browser" do
-  match "navigator|(google\-)?chrom[e|ium]|firefox|dwb"
+tag "gravity" do
   gravity :center
 end
 
+# Modes
 tag "mplayer" do
-  match   "mplayer"
-  float   true
-  stick   1
+  match "mplayer"
+  float true
 end
 
-tag "stick" do
-  match  "dialog|subtly|python|gtk.rb|display|pychrom|skype|xev|evince|exe|<unknown>|plugin-container"
-  stick  true
-  float  true
+tag "float" do
+  match "display"
+  float true
 end
 
-tag "urgent" do
-  stick  true
-  urgent true
-  float  true
-end
-
-tag "dialogs" do
-  match  "sun-awt-X11-XDialogPeer"
-  match type: [ :dialog, :splash ]
-  stick true
-end
-
-tag "gimp" do
-  match role: "gimp.*"
-
-  on_match do |c|
-    c.gravity = ("gimp_" + c.role.split("-")[1]).to_sym
-  end
-end
-# }}}
-
-# Views {{{
-www_re    = "browser"
-icons     = true
-
-iconpath = "#{ENV["HOME"]}/.local/share/icons"
-
-space = {
-  :cannon  => Subtlext::Icon.new("#{iconpath}/cannon.xbm"),
-  :ufo     => Subtlext::Icon.new("#{iconpath}/ufo.xbm"),
-  :shelter => Subtlext::Icon.new("#{iconpath}/shelter.xbm"),
-  :terms   => Subtlext::Icon.new("#{iconpath}/invader1.xbm"),
-  :www     => Subtlext::Icon.new("#{iconpath}/invader2.xbm"),
-  :void    => Subtlext::Icon.new("#{iconpath}/invader3.xbm"),
-  :sketch  => Subtlext::Icon.new("#{iconpath}/invader4.xbm"),
-  :test    => Subtlext::Icon.new("#{iconpath}/invader5.xbm"),
-  :editor  => Subtlext::Icon.new("#{iconpath}/invader6.xbm")
-}
-
-view "terms" do
-  match     "terms"
-  icon      Subtlext::Icon.new("#{iconpath}/cannon.xbm")
-  icon_only icons
-end
-
-view "www" do
-  match     www_re
-  #icon      "#{iconpath}/world.xbm"
-  icon      Subtlext::Icon.new("#{iconpath}/ufo.xbm")
-  icon_only icons
-end
-
-view "void" do
-  match     "default"
-  #icon      "#{iconpath}/quote.xbm"
-  icon      Subtlext::Icon.new("#{iconpath}/invader3.xbm")
-  icon_only icons
-end
-
-view "sketch" do
-  match     "gimp"
-  icon      Subtlext::Icon.new("#{iconpath}/invader4.xbm")
-  icon_only icons
-end
-
-on :view_focus do |v|
-  views = Hash[*Subtlext::Screen.all.map { |s|
-    [ s.view.name.to_sym, space[space.keys[s.id]] ] }.flatten
-  ]
-
-  Subtlext::View.all.each do |va|
-    sym = va.name.to_sym
-
-    if views.keys.include?(sym)
-      va.icon.copy_area(views[sym])
-    else
-      va.icon.copy_area(space[va.name.to_sym])
-    end
-  end
-
-  Subtlext::Subtle.render
-end
-# }}}
-
-# Sublets {{{
-sublet :clock do
-  format_string "%a %b %d,"
-end
-# }}}
+view "1", "terms|default"
+view "2",   "browser"
+view "3",   "mplayer"

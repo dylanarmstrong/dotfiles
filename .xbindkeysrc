@@ -1,5 +1,5 @@
-"dmenu_run -fn 'xft:Envy Code R:pixelsize=10'"
-  Mod4 + p
+#"dmenu_run -fn 'xft:Envy Code R:pixelsize=10'"
+#  Mod4 + p
 
 # using pommed for audio now
 #"amixer -q set Master 0"
@@ -9,18 +9,18 @@
 #"amixer -q set Master 2dB-"
 #  XF86AudioLowerVolume
 
-"ncmpcpp toggle"
-  XF86AudioPlay
-"ncmpcpp stop"
-  XF86AudioStop
-"ncmpcpp next"
-  XF86AudioNext
-"ncmpcpp prev"
-  XF86AudioPrev
+#"ncmpcpp toggle"
+#  XF86AudioPlay
+#"ncmpcpp stop"
+#  XF86AudioStop
+#"ncmpcpp next"
+#  XF86AudioNext
+#"ncmpcpp prev"
+#  XF86AudioPrev
 
 # disables mouse with d (die) and r (revive)
 "xinput --set-prop 'bcm5974' 'Device Enabled' 0"
-  Mod4 + d
+  Mod4 + y
 "xinput --set-prop 'bcm5974' 'Device Enabled' 1"
-  Mod4 + r
+  Mod4 + u
 

@@ -5,14 +5,17 @@ Xft.dpi:        96
 Xft.antialias:  true
 Xft.rgba:       rgba
 Xft.hinting:    true
-Xft.hintstyle:  hintfull
+Xft.hintstyle:  hintslight
 
 !URXVT
 URxvt.termName:		rxvt-256color
 URxvt.scrollBar:	false
 URxvt.buffered:		true
 URxvt.loginShell: true
-URxvt.font: xft:Anka/Coder-9
+
+!URxvt.font: xft:Anka/Coder-9
+URxvt.font: xft:terminus:pixelsize=12
+
 URxvt.perl-ext-common:	default,url-select,keyboard-select,clipboard
 URxvt.keysym.M-c: perl:clipboard:copy
 URxvt.keysym.M-v: perl:clipboard:paste
@@ -21,7 +24,7 @@ URxvt.keysym.M-Escape: perl:keyboard-select:activate
 URxvt.keysym.M-s: perl:keyboard-select:search
 URxvt.keysym.M-u:	perl:url-select:select_next
 
-URxvt.urlLauncher:	firefox
+URxvt.urlLauncher:	luakit
 URxvt.underlineURLs:	true
 URxvt.transparent: true
 URxvt.shading: 40
