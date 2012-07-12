@@ -15,7 +15,7 @@ URxvt.buffered:		true
 URxvt.loginShell: true
 
 !URxvt.font: xft:Anka/Coder-9
-URxvt.font: xft:terminus:pixelsize=10:size=10
+URxvt.font: xft:terminus:pixelsize=10
 !URxvt.font: -*-Fixed-medium-*-*-*-10-*-*-*-*-*-*-*
 
 URxvt.perl-ext-common:	default,url-select,keyboard-select,clipboard
