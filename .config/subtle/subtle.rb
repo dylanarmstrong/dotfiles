@@ -43,15 +43,11 @@ style :all do
   #background  "#202020"
   #icon        "#757575"
   #border      "#303030", 0
-  padding     0, 3
+  padding     0, 1
   #padding     2, 6, 2, 6
   #font        "xft:Terminus:pixelsize=10"
   font        "-*-*-*-*-*-*-10-*-*-*-*-*-*-*"
   #font        "xft:sans-8"
-end
-
-style :title do
-  foreground "#FFFFFF"
 end
 
 # Style for the all views
@@ -87,14 +83,14 @@ end
 
 # Style for focus window title
 style :title do
-  foreground  "#69B8ED"
+  foreground  "#757575"
 end
 
 # Style for active/inactive windows
 style :clients do
-  active    "#69B8ED", 2
-  inactive  "#4983A9", 2
-  margin    4
+  active    "#69B8ED", 1
+  inactive  "#4983A9", 1
+  margin    0
 end
 
 # Style for subtle
