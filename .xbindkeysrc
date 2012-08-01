@@ -1,6 +1,9 @@
 "dmenu_run -fn 'xft:terminus:pixelsize=10'"
   Mod4 + p
 
+"luakit"
+  Mod4 + Shift + o
+
 # using pommed for audio now
 #"amixer -q set Master 0"
 #  XF86AudioMute
