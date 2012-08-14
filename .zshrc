@@ -38,6 +38,8 @@ export MANPAGER=vimmanpager
 # keys
 # bindkey -e
 bindkey -v
+bindkey -M vicmd "k" history-beginning-search-backward
+bindkey -M vicmd "j" history-beginning-search-forward
 bindkey "\e[B" history-beginning-search-forward
 bindkey "\e[A" history-beginning-search-backward
 bindkey " " magic-space
