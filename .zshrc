@@ -36,7 +36,8 @@ export VDPAU_NVIDIA_NO_OVERLAY=1
 export MANPAGER=vimmanpager
 
 # keys
-bindkey -e
+# bindkey -e
+bindkey -v
 bindkey "\e[B" history-beginning-search-forward
 bindkey "\e[A" history-beginning-search-backward
 bindkey " " magic-space
