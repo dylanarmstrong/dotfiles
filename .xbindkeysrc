@@ -4,6 +4,9 @@
 "luakit"
   Mod4 + Shift + o
 
+"firefox"
+  Mod4 + Shift + i
+
 # using pommed for audio now
 #"amixer -q set Master 0"
 #  XF86AudioMute
