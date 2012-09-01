@@ -91,6 +91,7 @@ alias e='exit'
 alias c='clear'
 alias ls='ls --color'
 alias grep='grep --color=auto'
+alias eix-sync='eix-sync -H' 
 
 # useful color function
 function spectrum_ls() {
