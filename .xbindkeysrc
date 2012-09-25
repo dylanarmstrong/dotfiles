@@ -7,6 +7,9 @@
 "firefox"
   Mod4 + Shift + i
 
+"google-chrome"
+  Mod4 + Shift + u
+
 # using pommed for audio now
 #"amixer -q set Master 0"
 #  XF86AudioMute
