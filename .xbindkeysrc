@@ -29,7 +29,7 @@
 
 # disables mouse with d (die) and r (revive)
 "xinput --set-prop 'bcm5974' 'Device Enabled' 0"
-  Mod4 + d
+  Mod4 + Shift + d
 "xinput --set-prop 'bcm5974' 'Device Enabled' 1"
-  Mod4 + r
+  Mod4 + Shift + r
 
