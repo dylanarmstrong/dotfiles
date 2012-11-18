@@ -29,7 +29,7 @@ URxvt.keysym.M-u:	perl:url-select:select_next
 URxvt.urlLauncher:	luakit
 URxvt.underlineURLs:	true
 URxvt.transparent: true
-URxvt.shading: 15
+URxvt.shading: 4
 URxvt.geometry: 79x26
 
 !COLOR THEME

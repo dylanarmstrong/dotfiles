@@ -1,4 +1,9 @@
 !thayer colors
+
+!*background: #101010
+!*foreground: #d0d0d0
+!*cursorcolor: #d0d0d0
+
 !black
 *color0: #1B1D1E
 *color8: #505354
