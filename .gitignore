@@ -4,6 +4,7 @@
 .cache
 .config/google-chrome
 .config/gtk-2.0
+.config/htop
 .config/luakit/plugins
 .dmenu_cache
 .fehbg
@@ -12,13 +13,16 @@
 .lesshst
 .local
 .macromedia
+.mozilla
 .mplayer
 .pki
 .purple
 .serverauth*
 .ssh
 .vim-fuf-data
+.vim/bundle/taglist/.netrwhist
 .vim/tmp
 .viminfo
+.vimperator/info
 .zcompdump
 .zsh_history

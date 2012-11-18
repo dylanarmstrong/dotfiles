@@ -1,0 +1,9 @@
+set runtimepath=~/.vimperator
+set defsearch=d
+set maxitems=4
+colorscheme mine
+
+nnoremap ; :
+nnoremap : ;
+nnoremap <silent> < :tabmove! -1<CR>
+nnoremap <silent> > :tabmove! +1<CR>
