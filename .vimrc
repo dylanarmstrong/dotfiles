@@ -66,7 +66,7 @@ nnoremap <F3> :TlistToggle<CR>
 
 syntax on
 set hlsearch
-colorscheme molokai
+colorscheme dante
 
 " File type detection and language-specific indentatition
 filetype plugin indent on

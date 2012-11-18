@@ -29,8 +29,8 @@ URxvt.keysym.M-u:	perl:url-select:select_next
 URxvt.urlLauncher:	luakit
 URxvt.underlineURLs:	true
 URxvt.transparent: true
-URxvt.shading: 40
+URxvt.shading: 15
 URxvt.geometry: 79x26
 
 !COLOR THEME
-#include "/home/meinhimmel/.config/Xcolors/doomcide"
+#include "/home/asdf/.config/Xcolors/doomcide"
