@@ -1,10 +1,10 @@
 /*
 !.*
-.cache
 .Xauthority
+.cache
+.config/google-chrome
 .config/gtk-2.0
 .config/luakit/plugins
-.config/google-chrome
 .dmenu_cache
 .fehbg
 .gitconfig
@@ -12,7 +12,9 @@
 .lesshst
 .local
 .macromedia
+.mplayer
 .pki
+.purple
 .serverauth*
 .ssh
 .vim-fuf-data
