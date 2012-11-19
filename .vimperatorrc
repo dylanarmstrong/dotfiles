@@ -1,9 +1,16 @@
+" options
+set toolbars=nomenu,noaddons,nonavigation,nobookmarks
 set runtimepath=~/.vimperator
 set defsearch=d
-set maxitems=4
+set maxitems=9
+
+" theme
 colorscheme mine
 
-nnoremap ; :
-nnoremap : ;
+" keybindings
 nnoremap <silent> < :tabmove! -1<CR>
 nnoremap <silent> > :tabmove! +1<CR>
+nnoremap m :bmarks<space>
+nnoremap v :tab viewsource<CR>
+nnoremap ; :
+nnoremap : ;

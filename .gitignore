@@ -8,6 +8,7 @@
 .config/luakit/plugins
 .dmenu_cache
 .fehbg
+.fontconfig/
 .gitconfig
 .gstreamer-0.10
 .lesshst
