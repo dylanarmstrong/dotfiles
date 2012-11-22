@@ -5,6 +5,7 @@
 .config/google-chrome
 .config/gtk-2.0
 .config/htop
+.config/menus
 .config/luakit/plugins
 .dmenu_cache
 .fehbg
