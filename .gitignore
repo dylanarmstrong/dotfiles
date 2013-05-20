@@ -1,6 +1,8 @@
 /*
 !.*
 .Xauthority
+.elinks
+.lastpass
 .cache
 .config/google-chrome
 .config/gtk-2.0
