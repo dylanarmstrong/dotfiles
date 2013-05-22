@@ -1,7 +1,7 @@
 " options
 set toolbars=nomenu,noaddons,nonavigation,nobookmarks
 set runtimepath=~/.vimperator
-set defsearch=g
+" set defsearch=g
 set maxitems=9
 
 " theme
