@@ -1,10 +1,13 @@
 /*
 !.*
+.VirtualBox
 .Xauthority
 .adobe
 .cache
+.config/Trolltech.conf
 .config/google-chrome
 .config/gtk-2.0
+.config/hexchat
 .config/htop
 .config/jumanji
 .config/luakit/plugins
