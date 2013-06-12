@@ -92,6 +92,7 @@ alias c='clear'
 alias ls='ls --color'
 alias grep='grep --color=auto'
 alias eix-sync='eix-sync -H' 
+alias virtualbox='for m in vbox{drv,netadp,netflt}; do sudo modprobe $m; done && VirtualBox'
 
 # useful color function
 function spectrum_ls() {
