@@ -3,6 +3,7 @@
 .VirtualBox
 .Xauthority
 .adobe
+.android
 .cache
 .config/Trolltech.conf
 .config/google-chrome
@@ -34,5 +35,6 @@
 .viminfo
 .vimperator/info
 .weechat
+.wireshark
 .zcompdump
 .zsh_history
