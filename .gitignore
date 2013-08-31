@@ -25,9 +25,11 @@
 .macromedia
 .mozilla
 .mplayer
+.pip
 .pki
 .purple
 .serverauth*
+.sqlite_history
 .ssh
 .vim-fuf-data
 .vim/bundle/taglist/.netrwhist
@@ -36,5 +38,6 @@
 .vimperator/info
 .weechat
 .wireshark
+.xsel.log
 .zcompdump
 .zsh_history

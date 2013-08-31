@@ -18,6 +18,9 @@ URxvt.loginShell: true
 URxvt.font: xft:terminus:pixelsize=10
 !URxvt.font: -*-Fixed-medium-*-*-*-10-*-*-*-*-*-*-*
 
+URxvt.clipboard.copycmd: xclip -i -selection clipboard
+URxvt.clipboard.pastecmd: xclip -o -selection clipboard
+
 URxvt.perl-ext-common:	default,url-select,keyboard-select,clipboard
 URxvt.keysym.M-c: perl:clipboard:copy
 URxvt.keysym.M-v: perl:clipboard:paste
@@ -26,8 +29,9 @@ URxvt.keysym.M-Escape: perl:keyboard-select:activate
 URxvt.keysym.M-s: perl:keyboard-select:search
 URxvt.keysym.M-u:	perl:url-select:select_next
 
-URxvt.urlLauncher:	luakit
-URxvt.underlineURLs:	true
+URxvt.urlLauncher: jumanji
+URxvt.url-select.button: 1
+URxvt.underlineURLs: true
 URxvt.transparent: true
 URxvt.shading: 4
 URxvt.geometry: 79x26
