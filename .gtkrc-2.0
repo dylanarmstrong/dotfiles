@@ -1,14 +1,13 @@
 # -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT
-include "/usr/share/themes/Shiki-Wine/gtk-2.0/gtkrc"
+include "/usr/share/themes/MurrinaAquaIsh/gtk-2.0/gtkrc"
 
-gtk-theme-name="Shiki-Wine"
+gtk-theme-name = "MurrinaAquaIsh"
 
-style "user-font"
-{
+style "user-font" {
   font_name="Liberation Sans 8"
 }
 widget_class "*" style "user-font"
 
-include "/home/meinhimmel/.gtkrc-2.0.mine"
+include "/home/asdf/.gtkrc-2.0.mine"
 
 # -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT
