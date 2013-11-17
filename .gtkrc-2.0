@@ -1,9 +1,8 @@
 # -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT
-include "/usr/share/themes/MurrinaAquaIsh/gtk-2.0/gtkrc"
+include "/usr/share/themes/Shiki-Wine/gtk-2.0/gtkrc"
 
-gtk-theme-name = "MurrinaAquaIsh"
-
-style "user-font" {
+style "user-font"
+{
   font_name="Liberation Sans 8"
 }
 widget_class "*" style "user-font"

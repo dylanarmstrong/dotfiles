@@ -6,13 +6,16 @@
 .android
 .cache
 .config/Trolltech.conf
+.config/UDP Software
 .config/google-chrome
 .config/gtk-2.0
 .config/hexchat
 .config/htop
 .config/jumanji
+.config/libreoffice
 .config/luakit/plugins
 .config/menus
+.config/ranger
 .dmenu_cache
 .elinks
 .fehbg
@@ -26,7 +29,10 @@
 .mozilla
 .mplayer
 .pip
+.pkg.portage_lockfile
 .pki
+.pulse
+.pulse-cookie
 .purple
 .serverauth*
 .sqlite_history
