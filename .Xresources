@@ -29,7 +29,7 @@ URxvt.keysym.M-Escape: perl:keyboard-select:activate
 URxvt.keysym.M-s: perl:keyboard-select:search
 URxvt.keysym.M-u:	perl:url-select:select_next
 
-URxvt.urlLauncher: jumanji
+URxvt.urlLauncher: firefox
 URxvt.url-select.button: 1
 URxvt.underlineURLs: true
 URxvt.transparent: true
