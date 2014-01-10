@@ -1,12 +1,19 @@
-# -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT
-include "/usr/share/themes/Shiki-Wine/gtk-2.0/gtkrc"
+# <-- Theme --> #
+gtk-theme-name="Shiki-Wine"
+gtk-icon-theme-name="Faenza"
 
-style "user-font"
-{
-  font_name="Liberation Sans 8"
-}
-widget_class "*" style "user-font"
+# <-- Cursor --> #
+gtk-cursor-theme-name="ComixCursors-Blue"
+gtk-cursor-theme-size=18
 
+# <-- Font --> #
+gtk-font-name="Liberation Sans 8"
+
+# <-- Toolbar --> #
+# gtk-toolbar-style=GTK_TOOLBAR_BOTH
+# gtk-toolbar-icon-size=GTK_ICON_SIZE_SMALL_TOOLBAR
+# gtk-button-images=1
+# gtk-menu-images=1
+
+# <-- Mine --> #
 include "/home/asdf/.gtkrc-2.0.mine"
-
-# -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT

@@ -5,6 +5,9 @@ LANG=en_US.UTF-8
 LC_ALL=$LANG
 LC_COLLATE=C
 
+# random
+EIX_LIMITS=0
+
 # options
 setopt autocd
 setopt sh_word_split

@@ -1,6 +1,7 @@
-!Xcursor.theme: Neutral_Plus 
-!XFT
+!RANDOM
+Xcursor.theme: ComixCursors-Blue 
 
+!XFT
 Xft.dpi:        96
 Xft.antialias:  true
 Xft.rgba:       rgba

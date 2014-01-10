@@ -8,6 +8,7 @@
 .config/Trolltech.conf
 .config/UDP Software
 .config/google-chrome
+.config/google-chrome-beta
 .config/gtk-2.0
 .config/hexchat
 .config/htop
@@ -22,6 +23,7 @@
 .fontconfig/
 .gitconfig
 .gstreamer-0.10
+.icons
 .lastpass
 .lesshst
 .local
