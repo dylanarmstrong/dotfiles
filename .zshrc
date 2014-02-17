@@ -37,6 +37,8 @@ export EDITOR=vim
 export PATH=/sbin:/usr/sbin:/usr/local/games:$PATH:$HOME/bin
 export VDPAU_NVIDIA_NO_OVERLAY=1
 export MANPAGER=vimmanpager
+#export PANEL_FIFO=/tmp/panel-fifo
+export XDG_CONFIG_HOME=$HOME/.config
 
 # keys
 bindkey -e

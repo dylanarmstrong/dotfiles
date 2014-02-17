@@ -1,10 +1,10 @@
 #!/bin/sh
 
-xsetroot -solid \#3f3f3f
+#xsetroot -solid \#3f3f3f
 xsetroot -cursor_name left_ptr
 xrdb -merge ~/.Xresources
 
-xset s off
+#xset s off
 
 urxvtd -q -o -f &
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0" 
@@ -17,13 +17,12 @@ exec xbindkeys &
 #exec $HOME/src/goomwwm/goomwwm
 #exec $HOME/src/monsterwm/monsterwm
 #exec $HOME/src/scrotwm/linux/scrotwm
-
 exec evilwm -nosoliddrag -fg "#69B8ED" -bg "#4983A9" -snap 10 -term "urxvtc" -mask1 mod4 -mask2 mod4
 #exec musca
 #exec ratpoison
 #exec subtle
 #exec scrotwm
-#exec herbstluftwm
+#exec herbstluftwm --autostart $HOME/.config/herbstluftwm/autostart
 #exec spectrwm
 #exec wmfs
 #exec awesome
