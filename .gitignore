@@ -17,10 +17,12 @@
 .config/luakit/plugins
 .config/menus
 .config/ranger
+.config/user-dirs.dirs
 .dmenu_cache
 .elinks
 .fehbg
 .fontconfig/
+.fonts/
 .gitconfig
 .gstreamer-0.10
 .icons
