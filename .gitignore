@@ -35,6 +35,7 @@
 .pip
 .pkg.portage_lockfile
 .pki
+.pentadactyl/info
 .pulse
 .pulse-cookie
 .purple
