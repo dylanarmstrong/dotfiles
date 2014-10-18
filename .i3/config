@@ -13,6 +13,10 @@ client.unfocused  #222222 #222222 #ffffff #ffffff
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# go away mousy 
+bindsym $mod+Shift+d exec xinput --set-prop 'bcm5974' 'Device Enabled' 0
+bindsym $mod+Shift+m exec xinput --set-prop 'bcm5974' 'Device Enabled' 1
+
 # start a terminal
 bindsym $mod+Return exec urxvtc
 
