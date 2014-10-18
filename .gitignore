@@ -24,10 +24,12 @@
 .fontconfig/
 .fonts/
 .gitconfig
+.gnome
 .gstreamer-0.10
 .icons
 .lastpass
 .lesshst
+.links
 .local
 .macromedia
 .mozilla

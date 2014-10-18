@@ -20,7 +20,8 @@ bindsym $mod+Return exec urxvtc
 bindsym $mod+Escape kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run -nb black -p run
+bindsym $mod+d exec dmenu_run -fn 'xft:terminus:pixelsize=10'
+# bindsym $mod+d exec dmenu_run -nb black -p run
 
 # change focus
 bindsym $mod+h focus left
