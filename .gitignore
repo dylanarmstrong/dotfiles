@@ -20,11 +20,13 @@
 .config/user-dirs.dirs
 .dmenu_cache
 .elinks
+.emacs.d
 .fehbg
 .fontconfig/
 .fonts/
 .gitconfig
 .gnome
+.gnupg
 .gstreamer-0.10
 .icons
 .lastpass
