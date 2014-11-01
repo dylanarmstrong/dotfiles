@@ -111,6 +111,9 @@ map <leader>f ;FufFile<cr>
 " map <leader>h ;FufHelp<cr>
 map <leader>b ;FufBuffer<cr>
 
+" Map for less 
+nnoremap <leader>m :w <BAR> !lessc % > %:t:r.css<CR><space>
+
 " Maps leader-R to reload .vimrc
 map <leader>R ;source ~/.vimrc<cr>
 
