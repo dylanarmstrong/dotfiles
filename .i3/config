@@ -1,125 +1,133 @@
-# Options key
 set $mod Mod4
 
-# Font
-#font pango:Liberation Sans 8
-font xft:Cousine bold 7.5
+# font
+#font pango:DejaVu Sans Mono 10
+font pango:Ubuntu 11
 
-# Colors
-new_window pixel 1
-client.focused    #0190bc #0190bc #ffffff #21b0dc
-client.unfocused  #222222 #222222 #ffffff #ffffff
-
-# Use Mouse+$mod to drag floating windows to their wanted position
+# basics
 floating_modifier $mod
+focus_follows_mouse no
+force_focus_wrapping yes
 
-# go away mousy 
-bindsym $mod+Shift+d exec xinput --set-prop 'bcm5974' 'Device Enabled' 0
-bindsym $mod+Shift+m exec xinput --set-prop 'bcm5974' 'Device Enabled' 1
+# scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
 
-# start a terminal
+# names
+set $w1   tmux
+set $w2   www
+set $w3   chromium
+set $w4   mplayer
+set $w5   5
+set $w6   6
+set $w7   7
+set $w8   8
+set $w9   9
+set $w10  10
+
+# bindings
 bindsym $mod+Return exec urxvtc
+bindsym $mod+Shift+q kill
+bindsym $mod+p exec dmenu_run -fn 'xft:terminus:pixelsize=16'
+bindsym XF86MonBrightnessUp exec bl-brightness up
+bindsym XF86MonBrightnessDown exec bl-brightness down
+bindsym XF86KbdBrightnessUp exec kb-brightness up
+bindsym XF86KbdBrightnessDown exec kb-brightness down
+bindsym $mod+Shift+d exec xinput --set-prop 'bcm5974' 'Device Enabled' 0
+bindsym $mod+Shift+r exec xinput --set-prop 'bcm5974' 'Device Enabled' 1
+bindsym XF86AudioLowerVolume exec amixer -q -c 1 -M sset Master 4-%
+bindsym XF86AudioRaiseVolume exec amixer -q -c 1 -M sset Master 4+%
+bindsym XF86AudioMute exec amixer -q -c 1 -M sset Master toggle
 
-# kill focused window
-bindsym $mod+Escape kill
-
-# start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run -fn 'xft:terminus:pixelsize=10'
-# bindsym $mod+d exec dmenu_run -nb black -p run
-
-# change focus
+# focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
+bindsym $mod+d focus parent
+bindsym $mod+b focus child
 
-# move focused window
+# move
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-# split in horizontal orientation
-bindsym $mod+minus split h
+# split
+bindsym $mod+v split h
+bindsym $mod+g split v
 
-# split in vertical orientation
-bindsym $mod+backslash split v
-
-# enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen
-
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
-
-# toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
-
-# change focus between tiling / floating windows
+# toggles
+bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+f floating toggle
 bindsym $mod+space focus mode_toggle
 
-# focus the parent container
-bindsym $mod+a focus parent
+# layouts
+#bindsym $mod+s layout stacking
+bindsym $mod+n layout tabbed
+bindsym $mod+m layout toggle split
 
-# focus the child container
-#bindsym $mod+d focus child
-
-# switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+4 workspace 4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
-bindsym $mod+Right workspace next
+# switch workspace
+bindsym $mod+1 workspace $w1
+bindsym $mod+2 workspace $w2
+bindsym $mod+3 workspace $w3
+bindsym $mod+4 workspace $w4
+bindsym $mod+5 workspace $w5
+bindsym $mod+6 workspace $w6
+bindsym $mod+7 workspace $w7
+bindsym $mod+8 workspace $w8
+bindsym $mod+9 workspace $w9
+bindsym $mod+0 workspace $w10
 bindsym $mod+Left workspace prev
+bindsym $mod+Right workspace next
 
-# move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+4 move container to workspace 4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+# move containers to workspace
+bindsym $mod+semicolon move workspace to output right
+bindsym $mod+Shift+1 move container to workspace $w
+bindsym $mod+Shift+2 move container to workspace $w2
+bindsym $mod+Shift+3 move container to workspace $w3
+bindsym $mod+Shift+4 move container to workspace $w4
+bindsym $mod+Shift+5 move container to workspace $w5
+bindsym $mod+Shift+6 move container to workspace $w6
+bindsym $mod+Shift+7 move container to workspace $w7
+bindsym $mod+Shift+8 move container to workspace $w8
+bindsym $mod+Shift+9 move container to workspace $w9
+bindsym $mod+Shift+0 move container to workspace $w10
 
-# reload the configuration file
-bindsym $mod+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+z reload
+bindsym $mod+Shift+x restart
+bindsym $mod+Shift+z exit
 
-# resize window (you can also use the mouse for that)
+# decoration
+new_window pixel 1
+
+# gray
+set $blue               #005588
+set $gray1              #484848
+set $gray2              #333333
+client.focused          $gray1 $gray1 #FFFFFF #333333
+client.focused_inactive $gray2 $gray2 #FFFFFF #000000
+client.unfocused        $gray2 $gray2 #FFFFFF #000000
+
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+  bindsym h resize shrink width 10 px or 10 ppt
+  bindsym j resize grow height 10 px or 10 ppt
+  bindsym k resize shrink height 10 px or 10 ppt
+  bindsym l resize grow width 10 px or 10 ppt
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
 }
 
 bindsym $mod+r mode "resize"
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
 bar {
-        status_command i3status --config ~/.i3/i3status.conf
+#  status_command i3status --config $HOME/.i3/i3status.conf
+  status_command $HOME/bin/conky-wrapper
+  colors {
+    statusline          #AAAAAA
+    background          #333333
+    focused_workspace   $gray2 $gray2 #FFFFFF
+    inactive_workspace  $gray1 $gray1 #AAAAAA
+  }
 }

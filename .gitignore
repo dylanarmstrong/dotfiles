@@ -7,6 +7,7 @@
 .cache
 .config/Trolltech.conf
 .config/UDP Software
+.config/chromium
 .config/google-chrome
 .config/google-chrome-beta
 .config/gtk-2.0
@@ -36,10 +37,10 @@
 .macromedia
 .mozilla
 .mplayer
+.pentadactyl/info
 .pip
 .pkg.portage_lockfile
 .pki
-.pentadactyl/info
 .pulse
 .pulse-cookie
 .purple

@@ -34,7 +34,7 @@ setopt hist_verify
 
 # environment
 export EDITOR=vim
-export PATH=/sbin:/usr/sbin:/usr/local/games:$PATH:$HOME/bin
+export PATH=/sbin:/usr/sbin:$HOME/.cabal/bin:/usr/local/games:$PATH:$HOME/bin
 export VDPAU_NVIDIA_NO_OVERLAY=1
 export MANPAGER=vimmanpager
 #export PANEL_FIFO=/tmp/panel-fifo
@@ -98,6 +98,7 @@ alias ls='ls --color'
 alias grep='grep --color=auto'
 alias eix-sync='eix-sync -H' 
 alias virtualbox='for m in vbox{drv,netadp,netflt}; do sudo modprobe $m; done && VirtualBox'
+alias tam='tmux attach'
 
 # useful color function
 function spectrum_ls() {

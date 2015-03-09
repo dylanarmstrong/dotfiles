@@ -1,4 +1,4 @@
-"dmenu_run -fn 'xft:terminus:pixelsize=10'"
+"dmenu_run -fn 'xft:terminus:pixelsize=16'"
   Mod4 + p
 
 "jumanji"
@@ -9,6 +9,18 @@
 
 "google-chrome-beta"
   Mod4 + Shift + u
+
+"bl-brightness up"
+XF86MonBrightnessUp
+
+"bl-brightness down"
+XF86MonBrightnessDown
+
+"kb-brightness up"
+XF86KbdBrightnessUp
+
+"kb-brightness down"
+XF86KbdBrightnessDown
 
 # using pommed for audio now
 #"amixer -q set Master 0"
