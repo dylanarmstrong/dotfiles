@@ -6,7 +6,6 @@ xrdb -merge $HOME/.Xresources
 urxvtd -q -o -f &
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 unclutter -root -idle 3 &
-sh $HOME/.fehbg &
 #exec xbindkeys &
 
 # xrandr 1920x1080 (16:9)  #
@@ -23,6 +22,8 @@ sh $HOME/.fehbg &
 xrandr --newmode "1680x1050_60.00" 146.25 1680 1784 1960 2240 1050 1053 1059 1089
 xrandr --addmode eDP1 1680x1050_60.00
 xrandr --output eDP1 --mode 1680x1050_60.00
+
+sh $HOME/.fehbg &
 
 exec i3
 #exec evilwm -nosoliddrag -fg "#69B8ED" -bg "#4983A9" -snap 10 -term "urxvtc" -mask1 mod4 -mask2 mod4

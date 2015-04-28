@@ -123,3 +123,7 @@ add-zsh-hook precmd set_prompt
 
 # ntfs colors
 eval $(dircolors -b $HOME/.dir_colors)
+
+# base16
+BASE16_SHELL="$HOME/.config/base16/base16-monokai.light.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL

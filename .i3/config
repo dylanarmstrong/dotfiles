@@ -15,10 +15,10 @@ bindsym $mod+minus scratchpad show
 
 # names
 set $w1   tmux
-set $w2   www
+set $w2   fox
 set $w3   chromium
-set $w4   mplayer
-set $w5   5
+set $w4   mpv
+set $w5   irc
 set $w6   6
 set $w7   7
 set $w8   8
@@ -83,7 +83,7 @@ bindsym $mod+Right workspace next
 
 # move containers to workspace
 bindsym $mod+semicolon move workspace to output right
-bindsym $mod+Shift+1 move container to workspace $w
+bindsym $mod+Shift+1 move container to workspace $w1
 bindsym $mod+Shift+2 move container to workspace $w2
 bindsym $mod+Shift+3 move container to workspace $w3
 bindsym $mod+Shift+4 move container to workspace $w4

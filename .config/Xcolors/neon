@@ -1,27 +1,30 @@
-!Colorful-Neon
-! Black
-*color0: #5A5A5A
-!*color0: #262729
-*color8: #554444
-!*color8: #3E3E3E
-! Red
-*color1: #FF4747
-*color9: #FF6767
-! Green
-*color2: #AFC81C
-*color10: #BFC81C
-! Yellow
-*color3: #FDD338
-*color11: #F4D461
-! Blue
-*color4: #619AF4
-*color12: #5496FF
-! Purple
-*color5: #5F5A90
-*color13: #826AB1
-! Cyan
-*color6: #47E0FF
-*color14: #2ED9FB
-! White
-*color7: #FFFFFF
-*color15: #DEDEDE
+!Neon theme
+
+*background: #0f1214
+*foreground: #d9d9d9
+*cursorcolor: #d9d9d9
+
+!black
+ *color0:  #333333
+ *color8:  #555555
+!red
+ *color1:  #ff9070
+ *color9:  #ff3900
+!green
+ *.color2:  #87ca00
+ *.color10: #aaff00
+!yellow
+ *.color3:  #ffff70
+ *.color11: #ffff00
+!blue
+ *.color4:  #73e9ff
+ *.color12: #06d8ff
+!magenta
+ *.color5:  #ff70c1
+ *.color13: #ff0090
+!cyan
+ *.color6:  #73eeff
+ *.color14: #05e0ff
+!white
+ *.color7:  #c2c9cf
+ *.color15: #d9d9d9
