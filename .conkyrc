@@ -1,0 +1,40 @@
+background no
+out_to_console yes
+out_to_x no
+update_interval 2
+total_run_times 0
+short_units yes
+pad_percents 3
+override_utf8_locale yes
+TEXT
+, [
+    {
+      "full_text": " ❤ $acpitemp°C [$cpu%] ", 
+      "color": "\#DC322F"
+    },
+    {
+      "full_text": " ≣ ${memperc}% ↔ ${swapperc}% ", 
+      "color": "\#B58900"
+    },
+    ${if_up wlp3s0}
+      {
+        "full_text": " ≈ ${wireless_essid wlp3s0} [${wireless_link_qual_perc wlp3s0}%] ", 
+        "color": "\#33CC99"
+      }, 
+    $endif
+    {
+      "full_text": " ϟ [$battery_percent%] ", 
+      "color": "\#9933CC"
+    },
+    {
+      "full_text": " ♪ ${exec amixer -c 1 -M get Master | grep "Mono: Playback" | awk '{print $4}' | tr -d '[]'} ", 
+      "color": "\#268BD2"
+    },
+    {
+      "full_text": " ☉ ${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ ____ temperature 30}°C ",
+      "color": "\#DC322F"
+    },
+    {
+      "full_text": " ${time %a %b %d} ${time %H:%M} "
+    }
+  ]
