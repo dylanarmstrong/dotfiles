@@ -91,7 +91,7 @@ alias rm='nocorrect rm -v'
 alias mkdir='nocorrect mkdir -v'
 alias emerge='nocorrect emerge'
 alias vim='vim -X'
-alias ps='ps aux'
+#alias ps='ps aux'
 alias e='exit'
 alias c='clear'
 alias ls='ls --color'
@@ -125,5 +125,5 @@ add-zsh-hook precmd set_prompt
 eval $(dircolors -b $HOME/.dir_colors)
 
 # base16
-BASE16_SHELL="$HOME/.config/base16/base16-monokai.light.sh"
+BASE16_SHELL="$HOME/.config/base16/base16-monokai.dark.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL

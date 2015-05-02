@@ -7,16 +7,23 @@
 .cache
 .config/Trolltech.conf
 .config/UDP Software
+.config/VirtualBox
+.config/ananke
 .config/chromium
 .config/google-chrome
 .config/google-chrome-beta
 .config/gtk-2.0
+.config/gvbam
 .config/hexchat
+.config/higan
 .config/htop
 .config/jumanji
+.config/leafpad
 .config/libreoffice
+.config/lsnes
 .config/luakit/plugins
 .config/menus
+.config/phoenix
 .config/ranger
 .config/user-dirs.dirs
 .dmenu_cache

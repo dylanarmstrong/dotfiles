@@ -19,7 +19,7 @@ set $w2   fox
 set $w3   chromium
 set $w4   mpv
 set $w5   irc
-set $w6   6
+set $w6   vbox
 set $w7   7
 set $w8   8
 set $w9   9
@@ -101,13 +101,15 @@ bindsym $mod+Shift+z exit
 # decoration
 new_window pixel 1
 
-# gray
-set $blue               #005588
-set $gray1              #484848
-set $gray2              #333333
-client.focused          $gray1 $gray1 #FFFFFF #333333
-client.focused_inactive $gray2 $gray2 #FFFFFF #000000
-client.unfocused        $gray2 $gray2 #FFFFFF #000000
+set $color1 #272822
+set $color2 #383830
+set $color3 #f8f8f2
+set $color4 #75715e
+set $color5 #66d9ef
+
+client.focused          $color1 $color1 #FFFFFF #333333
+client.focused_inactive $color1 $color2 #FFFFFF #000000
+client.unfocused        $color1 $color2 #FFFFFF #000000
 
 mode "resize" {
   bindsym h resize shrink width 10 px or 10 ppt
@@ -122,12 +124,11 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 bar {
-#  status_command i3status --config $HOME/.i3/i3status.conf
   status_command $HOME/bin/conky-wrapper
   colors {
-    statusline          #AAAAAA
-    background          #333333
-    focused_workspace   $gray2 $gray2 #FFFFFF
-    inactive_workspace  $gray1 $gray1 #AAAAAA
+    statusline          $color3
+    background          $color1
+    focused_workspace   $color1 $color1 $color5
+    inactive_workspace  $color1 $color1 $color4
   }
 }

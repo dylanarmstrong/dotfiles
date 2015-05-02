@@ -37,8 +37,8 @@ URxvt.keysym.M-u:	perl:url-select:select_next
 URxvt.urlLauncher: firefox
 URxvt.url-select.button: 1
 URxvt.underlineURLs: true
-!URxvt.transparent: true
-!URxvt.shading: 4
+URxvt.transparent: true
+URxvt.shading: 4
 URxvt.geometry: 79x26
 
 !COLOR THEME
@@ -46,7 +46,6 @@ URxvt.geometry: 79x26
 
 ! Base16 Monokai
 ! Scheme: Wimer Hazenberg (http://www.monokai.nl)
-
 #define base00 #272822
 #define base01 #383830
 #define base02 #49483e
@@ -64,9 +63,9 @@ URxvt.geometry: 79x26
 #define base0E #ae81ff
 #define base0F #cc6633
 
-*.foreground:   base02
-*.background:   base07
-*.cursorColor:  base02
+*.foreground:   base05
+*.background:   base00
+*.cursorColor:  base05
 
 *.color0:       base00
 *.color1:       base08

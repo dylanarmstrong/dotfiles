@@ -66,9 +66,11 @@ nnoremap <F3> :TlistToggle<CR>
 
 syntax on
 set hlsearch
-" colorscheme wombat256
-let base16colorspace=256
-colorscheme base16-monokai
+
+" base16
+" let base16colorspace=256
+set background=dark
+colorscheme molokai
 
 " File type detection and language-specific indentatition
 filetype plugin indent on
