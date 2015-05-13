@@ -1,0 +1,2 @@
+# vim: ft=config
+player=mpv --cache 2048
