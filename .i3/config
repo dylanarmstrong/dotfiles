@@ -35,8 +35,8 @@ bindsym XF86KbdBrightnessUp exec kb-brightness up
 bindsym XF86KbdBrightnessDown exec kb-brightness down
 bindsym $mod+Shift+d exec xinput --set-prop 'bcm5974' 'Device Enabled' 0
 bindsym $mod+Shift+r exec xinput --set-prop 'bcm5974' 'Device Enabled' 1
-bindsym XF86AudioLowerVolume exec amixer -q -c 1 -M sset Master 4-%
-bindsym XF86AudioRaiseVolume exec amixer -q -c 1 -M sset Master 4+%
+bindsym XF86AudioLowerVolume exec amixer -q -c 1 -M sset Master 4%-
+bindsym XF86AudioRaiseVolume exec amixer -q -c 1 -M sset Master 4%+
 bindsym XF86AudioMute exec amixer -q -c 1 -M sset Master toggle
 
 # focus
