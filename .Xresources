@@ -2,7 +2,8 @@
 Xcursor.theme: ComixCursors-Blue 
 
 !XFT
-Xft.dpi:        96
+!Xft.dpi:        96
+Xft.dpi:        192
 Xft.antialias:  true
 Xft.rgba:       rgba
 Xft.hinting:    true
@@ -15,10 +16,11 @@ URxvt.scrollBar:	false
 URxvt.buffered:		true
 URxvt.loginShell: true
 
-URxvt.font: xft:Ubuntu Mono:pixelsize=20
+URxvt.font: xft:Ubuntu Mono:size=12
+!URxvt.font: xft:Ubuntu Mono:pixelsize=20
 !URxvt.font: xft:Inconsolata:pixelsize=16
 !URxvt.font: xft:Envy Code R:size=9
-!URxvt.font: xft:Dejavu Sans Mono:pixelsize=16
+!URxvt.font: xft:Dejavu Sans Mono:size=10
 !URxvt.font: xft:Anka/Coder-9
 !URxvt.font: xft:terminus:pixelsize=18
 !URxvt.font: -*-Fixed-medium-*-*-*-10-*-*-*-*-*-*-*

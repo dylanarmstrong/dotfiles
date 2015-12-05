@@ -10,6 +10,7 @@
 .config/VirtualBox
 .config/ananke
 .config/chromium
+.config/configstore
 .config/google-chrome
 .config/google-chrome-beta
 .config/gtk-2.0
@@ -56,6 +57,7 @@
 .ssh
 .vim-fuf-data
 .vim/bundle/taglist/.netrwhist
+.vim/bundle/vim-jade
 .vim/tmp
 .viminfo
 .vimperator/info

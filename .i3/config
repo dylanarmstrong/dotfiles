@@ -2,7 +2,7 @@ set $mod Mod4
 
 # font
 #font pango:DejaVu Sans Mono 10
-font pango:Ubuntu 11
+font pango:Ubuntu 8
 
 # basics
 floating_modifier $mod
@@ -20,15 +20,15 @@ set $w3   chromium
 set $w4   mpv
 set $w5   irc
 set $w6   vbox
-set $w7   7
-set $w8   8
-set $w9   9
+set $w7   code
+set $w8   game
+set $w9   derp
 set $w10  10
 
 # bindings
 bindsym $mod+Return exec urxvtc
 bindsym $mod+Shift+q kill
-bindsym $mod+p exec dmenu_run -fn 'xft:terminus:pixelsize=16'
+bindsym $mod+p exec dmenu_run -fn 'xft:Ubuntu Mono:size=10'
 bindsym XF86MonBrightnessUp exec bl-brightness up
 bindsym XF86MonBrightnessDown exec bl-brightness down
 bindsym XF86KbdBrightnessUp exec kb-brightness up
