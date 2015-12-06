@@ -26,6 +26,7 @@
 .config/menus
 .config/phoenix
 .config/ranger
+.config/sway
 .config/user-dirs.dirs
 .dmenu_cache
 .elinks
