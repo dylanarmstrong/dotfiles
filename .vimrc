@@ -68,7 +68,6 @@ syntax on
 set hlsearch
 
 " base16
-" let base16colorspace=256
 set background=dark
 colorscheme molokai
 

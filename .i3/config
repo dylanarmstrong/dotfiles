@@ -1,7 +1,6 @@
 set $mod Mod4
 
 # font
-#font pango:DejaVu Sans Mono 10
 font pango:Ubuntu 8
 
 # basics
@@ -23,7 +22,7 @@ set $w6   vbox
 set $w7   code
 set $w8   game
 set $w9   derp
-set $w10  ten
+set $w10  spot
 
 # bindings
 bindsym $mod+Return exec urxvtc
