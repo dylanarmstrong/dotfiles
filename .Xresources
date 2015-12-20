@@ -15,7 +15,7 @@ URxvt.scrollBar:	false
 URxvt.buffered:		true
 URxvt.loginShell: true
 
-URxvt.font: xft:Ubuntu Mono:size=12
+URxvt.font: xft:Roboto Mono for Powerline:size=10
 
 URxvt.clipboard.copycmd: xclip -i -selection clipboard
 URxvt.clipboard.pastecmd: xclip -o -selection clipboard
