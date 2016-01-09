@@ -21,6 +21,9 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 
+" i like cursor lines
+set cursorline
+
 " Neat tab completion
 set wildmenu
 set wildmode=longest:full,full
@@ -68,8 +71,8 @@ syntax on
 set hlsearch
 
 " base16
-set background=dark
-colorscheme molokai
+let base16colorspace=256
+colorscheme base16-eighties
 
 " File type detection and language-specific indentatition
 filetype plugin indent on

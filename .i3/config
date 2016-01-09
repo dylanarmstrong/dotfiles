@@ -1,7 +1,7 @@
 set $mod Mod4
 
 # font
-font pango:Ubuntu 8
+font pango:Roboto Mono 9
 
 # basics
 floating_modifier $mod
@@ -27,7 +27,7 @@ set $w10  spot
 # bindings
 bindsym $mod+Return exec urxvtc
 bindsym $mod+Shift+q kill
-bindsym $mod+p exec dmenu_run -fn 'xft:Ubuntu Mono:size=10'
+bindsym $mod+p exec dmenu_run -fn 'xft:Roboto Mono:size=10'
 bindsym XF86MonBrightnessUp exec bl-brightness up
 bindsym XF86MonBrightnessDown exec bl-brightness down
 bindsym XF86KbdBrightnessUp exec kb-brightness up
@@ -100,15 +100,15 @@ bindsym $mod+Shift+z exit
 # decoration
 new_window pixel 1
 
-set $color1 #272822
+set $color1 #e9e9e9
 set $color2 #383830
-set $color3 #f8f8f2
-set $color4 #75715e
-set $color5 #66d9ef
+set $color3 #333333
+set $color4 #909090
+set $color5 #11458a
 
-client.focused          $color1 $color1 #FFFFFF #333333
-client.focused_inactive $color1 $color2 #FFFFFF #000000
-client.unfocused        $color1 $color2 #FFFFFF #000000
+client.focused          $color1 $color1 $color3 $color3
+client.focused_inactive $color1 $color3 $color1 $color3
+client.unfocused        $color1 $color3 $color1 $color3
 
 mode "resize" {
   bindsym h resize shrink width 10 px or 10 ppt

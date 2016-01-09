@@ -1,0 +1,46 @@
+! color settings
+!----------------------------------------------------
+! easysid - yosmite_by_amdpastrana
+! Sunday, 01 November 2015 14:34 IST
+!
+
+*.background:  #e3e3e3
+*.foreground:  #333333
+
+! BLACK
+*.color0:      #e3e3e3
+*.color8:      #b9b9b9
+
+! RED
+*.color1:      #9e3c7c
+*.color9:      #9e3c7c
+
+! GREEN
+*.color2:      #2373b2
+*.color10:     #2373b2
+
+! YELLOW
+*.color3:      #b07d96
+*.color11:     #b07d96
+
+! BLUE
+*.color4:      #11458a
+*.color12:     #11458a
+
+! MAGENTA
+*.color5:      #9860ac
+*.color13:     #9860ac
+
+! CYAN
+*.color6:      #8182b9
+*.color14:     #8182b9
+
+! WHITE
+*.color7:      #909090
+*.color15:     #2a2a2a
+
+! man pages
+*.colorBD: 1
+*.colorUL: 4
+
+! vim: ft=xdefaults

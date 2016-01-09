@@ -23,8 +23,8 @@ setopt mark_dirs
 
 # history
 HISTFILE=$HOME/.zsh_history
-HISTSIZE=5000
-SAVEHIST=1000
+HISTSIZE=25000
+SAVEHIST=20000
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
@@ -35,10 +35,11 @@ setopt hist_verify
 # environment
 export EDITOR=vim
 export PATH=/sbin:/usr/sbin:$HOME/.cabal/bin:/usr/local/games:$HOME/bin:$PATH:$HOME/.local/bin
-export VDPAU_NVIDIA_NO_OVERLAY=1
 export MANPAGER=vimmanpager
-#export PANEL_FIFO=/tmp/panel-fifo
 export XDG_CONFIG_HOME=$HOME/.config
+export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
+# export GDK_SCALE=2
+# export QT_DEVICE_PIXEL_RATIO=2
 
 # keys
 bindkey -e
@@ -91,14 +92,22 @@ alias rm='nocorrect rm -v'
 alias mkdir='nocorrect mkdir -v'
 alias emerge='nocorrect emerge'
 alias vim='vim -X'
-#alias ps='ps aux'
 alias e='exit'
 alias c='clear'
 alias ls='ls --color'
 alias grep='grep --color=auto'
 alias eix-sync='eix-sync -H' 
 alias virtualbox='for m in vbox{drv,netadp,netflt}; do sudo modprobe $m; done && VirtualBox'
-alias tam='tmux attach'
+alias tmux='tmux -2'
+alias tam='tmux -2 attach'
+alias eix='eix.sh'
+alias es='emerge --search'
+alias eav='sudo emerge --ask --verbose'
+alias ev='sudo emerge --verbose'
+alias epv='emerge --pretend --verbose'
+alias chromium='chromium --force-device-scale-factor=1.75 --incognito'
+alias spotify='spotify --force-device-scale-factor=1.7'
+alias check-movies="rsstool -u 'rsstool/1.0.1rc2 (cmdline tool for rss)' --shtml --slf --template2=$HOME/documents/rss/ptp-template -i=$HOME/documents/rss/all-rss | sed -e 's/IMDb//g'"
 
 # useful color function
 function spectrum_ls() {
@@ -125,7 +134,7 @@ add-zsh-hook precmd set_prompt
 eval $(dircolors -b $HOME/.dir_colors)
 
 # base16
-BASE16_SHELL="$HOME/.config/base16/base16-monokai.dark.sh"
+BASE16_SHELL="$HOME/src/base16/base16-shell/base16-eighties.light.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
 ###-begin-npm-completion-###

@@ -5,12 +5,14 @@
 .adobe
 .android
 .cache
+.config/QtProject.conf
 .config/Trolltech.conf
 .config/UDP Software
 .config/VirtualBox
 .config/ananke
 .config/chromium
 .config/configstore
+.config/dconf
 .config/google-chrome
 .config/google-chrome-beta
 .config/gtk-2.0
@@ -18,8 +20,10 @@
 .config/hexchat
 .config/higan
 .config/htop
+.config/jd-gui.cfg
 .config/jumanji
 .config/leafpad
+.config/libaccounts-glib
 .config/libreoffice
 .config/lsnes
 .config/luakit/plugins
@@ -29,6 +33,7 @@
 .config/spotify
 .config/sway
 .config/user-dirs.dirs
+.config/wireshark
 .dmenu_cache
 .elinks
 .emacs.d
