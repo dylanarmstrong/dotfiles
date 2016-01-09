@@ -108,6 +108,7 @@ alias epv='emerge --pretend --verbose'
 alias chromium='chromium --force-device-scale-factor=1.75 --incognito'
 alias spotify='spotify --force-device-scale-factor=1.7'
 alias check-movies="rsstool -u 'rsstool/1.0.1rc2 (cmdline tool for rss)' --shtml --slf --template2=$HOME/documents/rss/ptp-template -i=$HOME/documents/rss/all-rss | sed -e 's/IMDb//g'"
+alias alsamixer="alsamixer -c 1"
 
 # useful color function
 function spectrum_ls() {
