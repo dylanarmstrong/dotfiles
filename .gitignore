@@ -24,10 +24,12 @@
 .config/jumanji
 .config/leafpad
 .config/libaccounts-glib
+.config/libfm
 .config/libreoffice
 .config/lsnes
 .config/luakit/plugins
 .config/menus
+.config/pcmanfm
 .config/phoenix
 .config/ranger
 .config/spotify
