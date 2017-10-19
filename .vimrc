@@ -1,50 +1,31 @@
-" Use vim instead of vi stuff
+" use vim instead of vi stuff
 set nocompatible
 
-" Set up Pathogen
-call pathogen#helptags()
-call pathogen#infect('~/.vim/bundle')
+" set up pathogen
+execute pathogen#infect()
 
 " change the leader from \ to ,
 let mapleader=","
 
-set laststatus=2
-set ttyfast
-
-" Background buffers
-set hidden
-" Bigger history
-set history=1000
-" Tabbing settings
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set expandtab
+" backspace is always being flaky
+set backspace=indent,eol,start
 
 " i like cursor lines
 set cursorline
 
-" Neat tab completion
+" neat tab completion and ignore files
 set wildmenu
 set wildmode=longest:full,full
+set wildignore=*/node_modules/*,*/elm-stuff/*
 
-" highlight long lines
-" set cc=80
-
-" case insensitive searching except when string contains upper case characters
+" case insensitive
 set ignorecase
 set smartcase
 
-" random options
-let g:clipbrdDefaultRed = '+'
-inoremap jj <Esc>
-nnoremap JJJJ <Nop>
-nnoremap ; :
-nnoremap : ;
+" options
 set number
-set clipboard+=unnamed  
+set clipboard+=unnamed
 set encoding=utf-8
-set runtimepath+=$HOME/.vim/autoload
 set nobackup
 set nowritebackup
 set directory=$HOME/.vim/tmp
@@ -53,104 +34,116 @@ set noerrorbells
 set numberwidth=4
 set novisualbell
 set scrolloff=2
+set laststatus=2
+set hidden
+set history=1000
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+
+" couple remaps
 nnoremap <ESC><ESC> :set hlsearch!<CR>
-
-" Paste
-map <leader>pp ;r!xsel -p<CR>
-
-" Taglist settings
-let Tlist_Use_Right_Window=1
-let Tlist_Exit_OnlyWindow=1
-let Tlist_Use_SingleClick=1
-let Tlist_Show_Menu=1
-let Tlist_WinWidth=53
-let Tlist_Inc_Winwidth=0
-nnoremap <F3> :TlistToggle<CR>
+inoremap jj <Esc>
+nnoremap JJJJ <Nop>
+nnoremap ; :
+nnoremap : ;
 
 syntax on
 set hlsearch
 
 " base16
 let base16colorspace=256
-colorscheme base16-eighties
+colorscheme base16-summerfruit
 
-" File type detection and language-specific indentatition
+" file type detection and language-specific indentatition
 filetype plugin indent on
 set autoindent
 
-" Sane search settings
+" sane search settings
 set showmatch
 set incsearch
 
-" For all text files set width to 78 characters
-" autocmd FileType text setlocal textwidth=78
-
-" Set title when running inside a terminal
+" set title when running inside a terminal
 set title
 
-" Bind pastemode to F2
+" bind pastemode to F2
 set pastetoggle=<F2>
 
-" Real men don't use arrow keys
+" real men don't use arrow keys
 map <up> <nop>
 map <down> <nop>
 map <left> <nop>
 map <right> <nop>
 
-" Sane behaviour for moving over lines
+" sane behaviour for moving over lines
 nnoremap j gj
 nnoremap k gk
 
-" Easy window navigation
+" syntax highlighting fix
+noremap <F12> <Esc>:syntax sync fromstart<CR>
+inoremap <F12> <C-o>:syntax sync fromstart<CR>
+
+" trim a string
+function! StrTrim(txt)
+  return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
+endfunction
+
+" basic code maintenance
+function! Clean()
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  %s/\t/\ \ /ge
+  %s/\s\+$//e
+  let @/=_s
+  call cursor(l, c)
+  set ff=unix
+endfunction
+:nnoremap <F7> :call Clean()<CR>
+
+" stop indenting my shit
+:nnoremap <F8> :setl noai nocin nosi inde=<CR>
+
+" easy window navigation
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 " Map W to write current buffer with superuser privileges
-command W :execute ':silent w !sudo tee % >/dev/null' | :edit! 
+command W :execute ':silent w !sudo tee % >/dev/null' | :edit!
 command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
-
-" Map leader-f to open FuzzyFinder
-map <leader>f ;FufFile<cr>
-" Maps leader-h to open FuzzyFinder's help search
-" map <leader>h ;FufHelp<cr>
-map <leader>b ;FufBuffer<cr>
-
-" Map for less 
-nnoremap <leader>m :w <BAR> !lessc % > %:t:r.css<CR><space>
 
 " Maps leader-R to reload .vimrc
 map <leader>R ;source ~/.vimrc<cr>
 
-map <leader>cd ;lcd %:h<cr>
+" ctags
+autocmd Filetype java set tags=$HOME/Documents/framework/.tags
+autocmd Filetype jsp set tags=$HOME/Documents/framework/.tags
 
-" Remove whitespace function from http://vimcasts.org/episodes/tidying-whitespace/
-function! <SID>StripTrailingWhitespaces()
-    " Preparation: save last search, and cursor position.
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    " Do the business:
-    %s/\s\+$//e
-    " Clean up: restore previous search history, and cursor position
-    let @/=_s
-    call cursor(l, c)
-endfunction
+" theos
+au BufNewFile,BufRead *.xm,*.xmm,*.l.mm setf logos
 
-function! Preserve(command)
-  " Preparation: save last search, and cursor position.
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  " Do the business:
-  execute a:command
-  " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
-endfunction
-nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
-nmap _= :call Preserve("normal gg=G")<CR>
+" be silent when grabbing scp files
+let g:netrw_silent=1
 
-autocmd BufWritePre *.py,*.rb,*.hs,*.js :call <SID>StripTrailingWhitespaces()
+" airline (bottom bar) theme
+let g:airline_theme='papercolor'
 
+" jsx
+let g:jsx_ext_required = 0
+
+" linting
+let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['python', 'javascript', 'javascript.jsx'], 'passive_filetypes': [] }
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['eslint']
+let b:syntastic_javascript_eslint_exec = StrTrim(system('npm-which eslint'))

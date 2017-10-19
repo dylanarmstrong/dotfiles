@@ -5,9 +5,6 @@ LANG=en_US.UTF-8
 LC_ALL=$LANG
 LC_COLLATE=C
 
-# random
-EIX_LIMITS=0
-
 # options
 setopt autocd
 setopt sh_word_split
@@ -23,8 +20,8 @@ setopt mark_dirs
 
 # history
 HISTFILE=$HOME/.zsh_history
-HISTSIZE=25000
-SAVEHIST=20000
+HISTSIZE=250000
+SAVEHIST=200000
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
@@ -34,12 +31,19 @@ setopt hist_verify
 
 # environment
 export EDITOR=vim
-export PATH=/sbin:/usr/sbin:$HOME/.cabal/bin:/usr/local/games:$HOME/bin:$PATH:$HOME/.local/bin
-export MANPAGER=vimmanpager
+export PATH=/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$HOME/.cabal/bin:$HOME/.cargo/bin:/usr/local/games:$HOME/bin:$HOME/.local/bin:$HOME/Library/Python/2.7/bin:$PATH
+export MANPAGER=vimpager
 export XDG_CONFIG_HOME=$HOME/.config
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
-# export GDK_SCALE=2
-# export QT_DEVICE_PIXEL_RATIO=2
+export THEOS=$HOME/src/theos
+export THEOS_DEVICE_IP=192.168.1.89
+export LC_CTYPE=C
+
+export HOMEBREW_GITHUB_API_TOKEN="bb9bfb1bb16bb9dcdf675f2aa33ce2025e047ffd"
+export HOMEBREW_NO_ANALYTICS=1
+
+# macos sierra tmux fix
+export EVENT_NOKQUEUE=1
 
 # keys
 bindkey -e
@@ -77,7 +81,7 @@ zstyle ':completion:predict:*' completer _complete
 zstyle ':completion::complete:*' use-cache 1
 zstyle ':completion::complete:*' cache-path $HOME/.zsh/cache/$HOST
 zstyle ':completion:*' expand 'yes'
-zstyle ':completion:*' squeeze-slashes 'yes' 
+zstyle ':completion:*' squeeze-slashes 'yes'
 zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:options' auto-description '%d'
@@ -88,33 +92,27 @@ zstyle ":completion:*" list-colors ""
 
 # aliases
 alias mv='nocorrect mv -v'
+alias cp='nocorrect cp -v'
 alias rm='nocorrect rm -v'
 alias mkdir='nocorrect mkdir -v'
-alias emerge='nocorrect emerge'
-alias vim='vim -X'
 alias e='exit'
 alias c='clear'
-alias ls='ls --color -F'
+alias ls='ls -GF'
 alias grep='grep --color=auto'
-alias eix-sync='eix-sync -H' 
-alias virtualbox='for m in vbox{drv,netadp,netflt}; do sudo modprobe $m; done && VirtualBox'
-alias tmux='tmux -2'
-alias tam='tmux -2 attach'
-alias eix='eix.sh'
-alias es='emerge --search'
-alias eav='sudo emerge --ask --verbose'
-alias ev='sudo emerge --verbose'
-alias epv='emerge --pretend --verbose'
-alias chromium='chromium --force-device-scale-factor=1.75 --incognito'
-alias spotify='spotify --force-device-scale-factor=1.7'
-alias check-movies="rsstool -u 'rsstool/1.0.1rc2 (cmdline tool for rss)' --shtml --slf --template2=$HOME/documents/rss/ptp-template -i=$HOME/documents/rss/all-rss | sed -e 's/IMDb//g'"
-alias alsamixer="alsamixer -c 1"
+alias tmux='tmux -u -2'
+alias tam='tmux -u -2 attach'
+#alias vim='nvim'
+#alias mitmproxy="mitmproxy -p 8080 --socks --palette light --no-mouse -z --anticache"
 
 # useful color function
 function spectrum_ls() {
   for code in {000..255}; do
     print -P -- "$code: %F{$code}Test%f"
   done
+}
+
+function rmd() {
+  pandoc $1 | lynx -stdin
 }
 
 # prompt
@@ -132,10 +130,10 @@ add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
 # ntfs colors
-eval $(dircolors -b $HOME/.dir_colors)
+#eval $(dircolors -b $HOME/.dir_colors)
 
 # base16
-BASE16_SHELL="$HOME/src/base16/base16-shell/base16-eighties.light.sh"
+BASE16_SHELL="$HOME/src/base16/base16-shell/scripts/base16-summerfruit.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
 ###-begin-npm-completion-###
@@ -191,3 +189,13 @@ elif type compctl &>/dev/null; then
   compctl -K _npm_completion npm
 fi
 ###-end-npm-completion-###
+
+if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
+  source /usr/local/opt/fzf/shell/key-bindings.zsh
+  source /usr/local/opt/fzf/shell/completion.zsh
+fi
+
+export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS='--color fg:242,bg:236,hl:65,fg+:15,bg+:239,hl+:108 --color info:108,prompt:109,spinner:108,pointer:168,marker:168'
