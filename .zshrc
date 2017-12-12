@@ -98,9 +98,13 @@ alias mkdir='nocorrect mkdir -v'
 alias e='exit'
 alias c='clear'
 alias ls='ls -GF'
+alias l='ls -GF'
 alias grep='grep --color=auto'
 alias tmux='tmux -u -2'
 alias tam='tmux -u -2 attach'
+alias gd='git diff'
+alias gc='git checkout'
+alias v='vim'
 #alias vim='nvim'
 #alias mitmproxy="mitmproxy -p 8080 --socks --palette light --no-mouse -z --anticache"
 
