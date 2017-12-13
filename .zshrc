@@ -39,7 +39,9 @@ export THEOS=$HOME/src/theos
 export THEOS_DEVICE_IP=192.168.1.89
 export LC_CTYPE=C
 
-export HOMEBREW_GITHUB_API_TOKEN="bb9bfb1bb16bb9dcdf675f2aa33ce2025e047ffd"
+# Private environment variables
+[ -r $HOME/.env ] && . $HOME/.env
+export HOMEBREW_GITHUB_API_TOKEN=$HOMEBREW_GITHUB_API_TOKEN
 export HOMEBREW_NO_ANALYTICS=1
 
 # macos sierra tmux fix
