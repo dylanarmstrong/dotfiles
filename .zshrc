@@ -106,8 +106,8 @@ alias tmux='tmux -u -2'
 alias tam='tmux -u -2 attach'
 alias gd='git diff'
 alias gc='git checkout'
-alias v='vim'
-#alias vim='nvim'
+alias v='nvim'
+alias vim='nvim'
 #alias mitmproxy="mitmproxy -p 8080 --socks --palette light --no-mouse -z --anticache"
 
 # useful color function
