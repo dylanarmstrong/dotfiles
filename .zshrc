@@ -131,7 +131,7 @@ zstyle ':vcs_info:*' formats '%F{2}%b%u%f '
 zstyle ':vcs_info:*' unstagedstr '%F{1}*'
 
 function prompt_precmd() { vcs_info }
-function set_prompt { PROMPT="%F{38}%1~%F{1}|${vcs_info_msg_0_}%F{38}>%f " }
+function set_prompt { PROMPT="%F{38}%1~ %F{38}${vcs_info_msg_0_}%F{1}>%f " }
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
@@ -205,3 +205,4 @@ export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS='--color fg:242,bg:236,hl:65,fg+:15,bg+:239,hl+:108 --color info:108,prompt:109,spinner:108,pointer:168,marker:168'
+
