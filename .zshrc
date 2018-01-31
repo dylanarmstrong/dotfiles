@@ -139,7 +139,7 @@ add-zsh-hook precmd set_prompt
 #eval $(dircolors -b $HOME/.dir_colors)
 
 # base16
-BASE16_SHELL="$HOME/src/base16/base16-shell/scripts/base16-summerfruit.sh"
+BASE16_SHELL="$HOME/src/base16/base16-shell/scripts/base16-summerfruit-light.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
 ###-begin-npm-completion-###

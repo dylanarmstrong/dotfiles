@@ -5,7 +5,7 @@ set nocompatible
 execute pathogen#infect()
 
 " change the leader from \ to ,
-let mapleader=","
+let mapleader=','
 
 " backspace is always being flaky
 set backspace=indent,eol,start
@@ -54,7 +54,7 @@ set hlsearch
 
 " base16
 let base16colorspace=256
-colorscheme base16-summerfruit
+colorscheme base16-summerfruit-light
 
 " file type detection and language-specific indentatition
 filetype plugin indent on
@@ -89,11 +89,11 @@ function! StrTrim(txt)
   return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
 endfunction
 
-" basic code maintenance
+" strip end of lines and change tabs to spaces
 function! Clean()
   let _s=@/
-  let l = line(".")
-  let c = col(".")
+  let l = line('.')
+  let c = col('.')
   %s/\t/\ \ /ge
   %s/\s\+$//e
   let @/=_s
@@ -147,3 +147,4 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['eslint']
 let b:syntastic_javascript_eslint_exec = StrTrim(system('npm-which eslint'))
+
