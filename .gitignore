@@ -29,6 +29,7 @@
 .config/lsnes
 .config/luakit/plugins
 .config/menus
+.config/nvim/plugged
 .config/pcmanfm
 .config/phoenix
 .config/ranger

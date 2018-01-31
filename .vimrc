@@ -36,7 +36,7 @@ set novisualbell
 set scrolloff=2
 set laststatus=2
 set hidden
-set history=1000
+set history=10000
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
