@@ -68,6 +68,7 @@
 .vim/bundle/taglist/.netrwhist
 .vim/bundle/vim-jade
 .vim/tmp
+.vim/.netrwhist
 .viminfo
 .vimperator/info
 .weechat
