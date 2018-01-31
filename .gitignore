@@ -65,8 +65,7 @@
 .sqlite_history
 .ssh
 .vim-fuf-data
-.vim/bundle/taglist/.netrwhist
-.vim/bundle/vim-jade
+.vim/colors
 .vim/tmp
 .vim/.netrwhist
 .viminfo
