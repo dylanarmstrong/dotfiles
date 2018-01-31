@@ -8,6 +8,12 @@ set softtabstop=2
 set numberwidth=4
 set expandtab
 
+" just stop please
+set nobackup
+set nowritebackup
+set history=10000
+set hidden
+
 " set title when running inside a terminal
 set title
 
@@ -46,6 +52,10 @@ map <right> <nop>
 " sane behaviour for moving over lines
 nnoremap j gj
 nnoremap k gk
+
+" syntax highlighting fix
+noremap <F12> <Esc>:syntax sync fromstart<CR>
+inoremap <F12> <C-o>:syntax sync fromstart<CR>
 
 " map W to write current buffer with superuser privileges
 command W :execute ':silent w !sudo tee % >/dev/null' | :edit!
