@@ -1,5 +1,14 @@
 # the zshrc file
 
+# need system for osx vs gentoo
+platform='unknown'
+uname=`uname`
+if [[ "$uname" == 'Linux' ]]; then
+  platform='linux'
+else
+  platform='osx'
+fi
+
 # important shiznit
 LANG=en_US.UTF-8
 LC_ALL=$LANG
@@ -40,18 +49,17 @@ export THEOS_DEVICE_IP=192.168.1.89
 export LC_CTYPE=C
 
 # Private environment variables
-[ -r $HOME/.env ] && . $HOME/.env
-export HOMEBREW_GITHUB_API_TOKEN=$HOMEBREW_GITHUB_API_TOKEN
-export HOMEBREW_NO_ANALYTICS=1
+if [[ $platform == 'osx' ]]; then
+  [ -r $HOME/.env ] && . $HOME/.env
+  export HOMEBREW_GITHUB_API_TOKEN=$HOMEBREW_GITHUB_API_TOKEN
+  export HOMEBREW_NO_ANALYTICS=1
 
-# macos sierra tmux fix
-export EVENT_NOKQUEUE=1
+  # macos sierra tmux fix
+  export EVENT_NOKQUEUE=1
+fi
 
 # keys
 bindkey -e
-# bindkey -v
-# bindkey -M vicmd "k" history-beginning-search-backward
-# bindkey -M vicmd "j" history-beginning-search-forward
 bindkey "\e[B" history-beginning-search-forward
 bindkey "\e[A" history-beginning-search-backward
 bindkey "^L" forward-word
@@ -99,8 +107,6 @@ alias rm='nocorrect rm -v'
 alias mkdir='nocorrect mkdir -v'
 alias e='exit'
 alias c='clear'
-alias ls='ls -GF'
-alias l='ls -GF'
 alias grep='grep --color=auto'
 alias tmux='tmux -u -2'
 alias tam='tmux -u -2 attach'
@@ -108,6 +114,27 @@ alias gd='git diff'
 alias gc='git checkout'
 alias v='nvim'
 alias vim='nvim'
+alias check-movies="rsstool -u 'rsstool/1.0.1rc2 (cmdline tool for rss)' --shtml --slf --template2=$HOME/documents/rss/ptp-template -i=$HOME/documents/rss/all-rss | sed -e 's/IMDb//g'"
+
+if [[ $platform == 'linux' ]]; then
+  alias ls='ls -F --color=auto'
+  alias l='ls -F --color=auto'
+  alias emerge='nocorrect emerge'
+  alias eix-sync='eix-sync -H' 
+  alias es='emerge --search'
+  alias eav='sudo emerge --ask --verbose'
+  alias ev='sudo emerge --verbose'
+  alias epv='emerge --pretend --verbose'
+  alias chromium='chromium --force-device-scale-factor=1.75 --incognito'
+  alias alsamixer="alsamixer -c 1"
+  alias spotify='spotify --force-device-scale-factor=1.7'
+  alias virtualbox='for m in vbox{drv,netadp,netflt}; do sudo modprobe $m; done && VirtualBox'
+  alias dwarftherapist="QT_AUTO_SCREEN_SCALE_FACTOR=1 dwarftherapist"
+else
+  alias ls='ls -GF'
+  alias l='ls -GF'
+fi
+
 #alias mitmproxy="mitmproxy -p 8080 --socks --palette light --no-mouse -z --anticache"
 
 # useful color function

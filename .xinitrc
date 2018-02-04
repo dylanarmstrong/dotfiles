@@ -8,6 +8,8 @@ unclutter -root -idle 3 &
 
 xrandr --dpi 192
 
+redshift -l 40.741895:-73.989308 -g 0.8 -m randr &
+
 sh $HOME/.fehbg &
 
 dbus-launch i3
