@@ -14,7 +14,7 @@ bindsym $mod+minus scratchpad show
 
 # names
 set $w1   tmux
-set $w2   chromium
+set $w2   chrome
 set $w3   fox
 set $w4   mpv
 set $w5   irc
@@ -25,9 +25,9 @@ set $w9   derp
 set $w10  spot
 
 # bindings
-bindsym $mod+Return exec urxvtc
+bindsym $mod+Return exec st
 bindsym $mod+Shift+q kill
-bindsym $mod+p exec dmenu_run -fn 'xft:Noto Mono:size=10'
+bindsym $mod+p exec dmenu_run -fn 'xft:Noto Sans:size=10'
 bindsym XF86MonBrightnessUp exec bl-brightness up
 bindsym XF86MonBrightnessDown exec bl-brightness down
 bindsym XF86KbdBrightnessUp exec kb-brightness up

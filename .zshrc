@@ -10,9 +10,10 @@ else
 fi
 
 # important shiznit
-LANG=en_US.UTF-8
-LC_ALL=$LANG
-LC_COLLATE=C
+export LANG=en_US.UTF-8
+export LC_ALL=$LANG
+export LC_COLLATE=C
+export LC_CTYPE=C
 
 # options
 setopt autocd
@@ -41,12 +42,10 @@ setopt hist_verify
 # environment
 export EDITOR=vim
 export PATH=/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$HOME/.cabal/bin:$HOME/.cargo/bin:/usr/local/games:$HOME/bin:$HOME/.local/bin:$HOME/Library/Python/2.7/bin:$PATH
-export MANPAGER=vimpager
 export XDG_CONFIG_HOME=$HOME/.config
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export THEOS=$HOME/src/theos
 export THEOS_DEVICE_IP=192.168.1.89
-export LC_CTYPE=C
 
 # Private environment variables
 if [[ $platform == 'osx' ]]; then
@@ -108,13 +107,11 @@ alias mkdir='nocorrect mkdir -v'
 alias e='exit'
 alias c='clear'
 alias grep='grep --color=auto'
-alias tmux='tmux -u -2'
-alias tam='tmux -u -2 attach'
 alias gd='git diff'
 alias gc='git checkout'
-alias v='nvim'
-alias vim='nvim'
 alias check-movies="rsstool -u 'rsstool/1.0.1rc2 (cmdline tool for rss)' --shtml --slf --template2=$HOME/documents/rss/ptp-template -i=$HOME/documents/rss/all-rss | sed -e 's/IMDb//g'"
+alias tmux='tmux -u -2'
+alias tam='tmux -u -2 attach'
 
 if [[ $platform == 'linux' ]]; then
   alias ls='ls -F --color=auto'
@@ -125,12 +122,14 @@ if [[ $platform == 'linux' ]]; then
   alias eav='sudo emerge --ask --verbose'
   alias ev='sudo emerge --verbose'
   alias epv='emerge --pretend --verbose'
-  alias chromium='chromium --force-device-scale-factor=1.75 --incognito'
   alias alsamixer="alsamixer -c 1"
   alias spotify='spotify --force-device-scale-factor=1.7'
   alias virtualbox='for m in vbox{drv,netadp,netflt}; do sudo modprobe $m; done && VirtualBox'
   alias dwarftherapist="QT_AUTO_SCREEN_SCALE_FACTOR=1 dwarftherapist"
 else
+  # this is messing with my esc key on linux?
+  alias v='nvim'
+  alias vim='nvim'
   alias ls='ls -GF'
   alias l='ls -GF'
 fi
