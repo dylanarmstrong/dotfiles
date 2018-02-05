@@ -8,9 +8,6 @@ set softtabstop=2
 set numberwidth=4
 set expandtab
 
-" change the leader from \ to ,
-let mapleader=','
-
 " just stop please
 set nobackup
 set nowritebackup
