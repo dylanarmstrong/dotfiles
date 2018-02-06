@@ -127,9 +127,6 @@ if [[ $platform == 'linux' ]]; then
   alias virtualbox='for m in vbox{drv,netadp,netflt}; do sudo modprobe $m; done && VirtualBox'
   alias dwarftherapist="QT_AUTO_SCREEN_SCALE_FACTOR=1 dwarftherapist"
 else
-  # this is messing with my esc key on linux?
-  alias v='nvim'
-  alias vim='nvim'
   alias ls='ls -GF'
   alias l='ls -GF'
 fi
