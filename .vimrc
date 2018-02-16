@@ -53,8 +53,10 @@ syntax on
 set hlsearch
 
 " base16
-let base16colorspace=256
-colorscheme base16-summerfruit-light
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
 
 " file type detection and language-specific indentatition
 filetype plugin indent on

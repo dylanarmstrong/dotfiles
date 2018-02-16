@@ -104,6 +104,7 @@ alias mv='nocorrect mv -v'
 alias cp='nocorrect cp -v'
 alias rm='nocorrect rm -v'
 alias mkdir='nocorrect mkdir -v'
+alias bc='bc -l'
 alias e='exit'
 alias c='clear'
 alias grep='grep --color=auto'
@@ -117,7 +118,7 @@ if [[ $platform == 'linux' ]]; then
   alias ls='ls -F --color=auto'
   alias l='ls -F --color=auto'
   alias emerge='nocorrect emerge'
-  alias eix-sync='eix-sync -H' 
+  alias eix-sync='eix-sync -H'
   alias es='emerge --search'
   alias eav='sudo emerge --ask --verbose'
   alias ev='sudo emerge --verbose'
@@ -162,8 +163,8 @@ add-zsh-hook precmd set_prompt
 #eval $(dircolors -b $HOME/.dir_colors)
 
 # base16
-BASE16_SHELL="$HOME/src/base16/base16-shell/scripts/base16-summerfruit-light.sh"
-[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+BASE16_SHELL=$HOME/src/base16/base16-shell/
+[ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 ###-begin-npm-completion-###
 #
