@@ -45,7 +45,7 @@ export PATH=/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$HOME/.cabal/bin:$HOM
 export XDG_CONFIG_HOME=$HOME/.config
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export THEOS=$HOME/src/theos
-export THEOS_DEVICE_IP=192.168.1.89
+export THEOS_DEVICE_IP=192.168.1.46
 
 # Private environment variables
 if [[ $platform == 'osx' ]]; then
@@ -155,7 +155,7 @@ zstyle ':vcs_info:*' formats '%F{2}%b%u%f '
 zstyle ':vcs_info:*' unstagedstr '%F{1}*'
 
 function prompt_precmd() { vcs_info }
-function set_prompt { PROMPT="%F{38}%1~ %F{38}${vcs_info_msg_0_}%F{1}>%f " }
+function set_prompt { PROMPT="%F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f " }
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
