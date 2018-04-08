@@ -113,6 +113,7 @@ alias gc='git checkout'
 alias check-movies="rsstool -u 'rsstool/1.0.1rc2 (cmdline tool for rss)' --shtml --slf --template2=$HOME/documents/rss/ptp-template -i=$HOME/documents/rss/all-rss | sed -e 's/IMDb//g'"
 alias tmux='tmux -u -2'
 alias tam='tmux -u -2 attach'
+alias lsh='ls -Flath | head'
 
 if [[ $platform == 'linux' ]]; then
   alias ls='ls -F --color=auto'
