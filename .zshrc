@@ -114,6 +114,7 @@ alias check-movies="rsstool -u 'rsstool/1.0.1rc2 (cmdline tool for rss)' --shtml
 alias tmux='tmux -u -2'
 alias tam='tmux -u -2 attach'
 alias lsh='ls -Flath | head'
+alias vim='nvim'
 
 if [[ $platform == 'linux' ]]; then
   alias ls='ls -F --color=auto'
