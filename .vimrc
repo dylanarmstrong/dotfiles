@@ -41,7 +41,7 @@ set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
-set synmaxcol=800
+"set synmaxcol=800
 
 " couple remaps
 nnoremap <ESC><ESC> :set hlsearch!<CR>
