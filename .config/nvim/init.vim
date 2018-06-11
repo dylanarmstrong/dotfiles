@@ -32,13 +32,6 @@ set pastetoggle=<F2>
 " i just dont care for \
 let mapleader=','
 
-" colors
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-endif
-set termguicolors
-
 " i like cursor lines
 set cursorline
 
@@ -81,6 +74,7 @@ Plug('https://github.com/tpope/vim-fugitive')
 Plug('https://github.com/vim-airline/vim-airline')
 Plug('https://github.com/vim-airline/vim-airline-themes')
 Plug('https://github.com/wavded/vim-stylus')
+Plug('https://github.com/chriskempson/base16-vim')
 call plug#end()
 
 " airline (bottom bar) theme
@@ -91,4 +85,11 @@ let g:netrw_silent=1
 
 " jsx
 let g:jsx_ext_required = 0
+
+" colors
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
+set termguicolors
 
