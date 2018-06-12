@@ -14,9 +14,6 @@ set nowritebackup
 set history=10000
 set hidden
 
-" set title when running inside a terminal
-set title
-
 " better search
 set ignorecase
 set smartcase
