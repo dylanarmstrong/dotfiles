@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "baseUrl": "/Users/asdf/Documents/src/oni/node_modules"
+  }
+}
