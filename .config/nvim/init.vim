@@ -51,28 +51,55 @@ nnoremap k gk
 noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
 
+" ctags
+autocmd Filetype java set tags=$HOME/Documents/framework/.tags
+autocmd Filetype jsp set tags=$HOME/Documents/framework/.tags
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+" strip end of lines and change tabs to spaces
+function! Clean()
+  let _s=@/
+  let l = line('.')
+  let c = col('.')
+  %s/\t/\ \ /ge
+  %s/\s\+$//e
+  let @/=_s
+  call cursor(l, c)
+  set ff=unix
+endfunction
+nnoremap <F7> :call Clean()<CR>
+
 " map W to write current buffer with superuser privileges
 command W :execute ':silent w !sudo tee % >/dev/null' | :edit!
 command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
 
-" ctags
-autocmd Filetype java set tags=$HOME/Documents/framework/.tags
-autocmd Filetype jsp set tags=$HOME/Documents/framework/.tags
-
 " plugins
 call plug#begin()
 Plug('https://github.com/ElmCast/elm-vim')
-Plug('https://github.com/ctrlpvim/ctrlp.vim')
 Plug('https://github.com/leafgarland/typescript-vim')
 Plug('https://github.com/mxw/vim-jsx.git')
-Plug('https://github.com/pangloss/vim-javascript.git')
+Plug('https://github.com/pangloss/vim-javascript')
 Plug('https://github.com/posva/vim-vue.git')
-Plug('https://github.com/tpope/vim-fugitive')
 Plug('https://github.com/vim-airline/vim-airline')
 Plug('https://github.com/vim-airline/vim-airline-themes')
 Plug('https://github.com/wavded/vim-stylus')
 Plug('https://github.com/chriskempson/base16-vim')
+Plug('https://github.com/machakann/vim-sandwich')
+Plug('https://github.com/mileszs/ack.vim')
+Plug('https://github.com/tpope/vim-fugitive')
+Plug('https://github.com/tpope/vim-markdown')
+Plug('/usr/local/opt/fzf')
 call plug#end()
+
+" FZF instead of ctrlp
+nnoremap <C-p> :FZF<CR>
+
+" Thank you HN, easy macro use
+noremap <Space> @q
+
+" Use ack.vim instead of ag.vim
+let g:ackprg='ag --vimgrep --smart-case'
+cnoreabbrev ag Ack
 
 " airline (bottom bar) theme
 let g:airline_theme='papercolor'
