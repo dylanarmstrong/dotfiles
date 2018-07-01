@@ -93,6 +93,13 @@ call plug#end()
 
 " FZF instead of ctrlp
 nnoremap <C-p> :FZF<CR>
+let g:fzf_colors= {
+      \ 'fg': ['fg', 'Normal'],
+      \ 'bg': ['bg', 'Normal'],
+      \ 'hl': ['bg', 'IncSearch'],
+      \ 'hl+': ['bg', 'IncSearch'],
+      \ 'bg+': ['bg', 'Normal'],
+      \ }
 
 " Thank you HN, easy macro use
 noremap <Space> @q
