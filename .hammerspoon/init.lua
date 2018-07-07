@@ -3,152 +3,64 @@ I busted the right 3mm or so of my screen
 so everything is designed to handle that
 --]]
 
+-- The amount of pixels I've broken on the right of my screen..
+local screenBreak = 9
+
+hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', hs.reload):start()
+
 hs.window.animationDuration = 0
 
-hs.hotkey.bind({'alt', 'ctrl'}, 'Left', function()
+function move(pos)
   local win = hs.window.focusedWindow()
-  local f = win:frame()
   local screen = win:screen()
   local max = screen:frame()
+  local poss = {
+    full = {
+      x = max.x,
+      y = max.y,
+      w = max.w - screenBreak,
+      h = max.h
+    },
+    left = {
+      x = max.x,
+      y = max.y,
+      w = max.w / 2,
+      h = max.h
+    },
+    right = {
+      x = (max.x + (max.w / 2)) - screenBreak,
+      y = max.y,
+      w = max.w / 2,
+      h = max.h
+    },
+    up = {
+      x = max.x,
+      y = max.y,
+      w = max.w - screenBreak,
+      h = max.h / 2
+    },
+    down = {
+      x = max.x,
+      y = max.y + (max.h / 2),
+      w = max.w - screenBreak,
+      h = max.h / 2
+    }
+  }
 
-  f.x = max.x
-  f.y = max.y
-  f.w = max.w / 2
-  f.h = max.h
-  win:setFrame(f)
-end)
-
-hs.hotkey.bind({'alt', 'ctrl'}, 'Right', function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = (max.x + (max.w / 2)) - 9
-  f.y = max.y
-  f.w = max.w / 2
-  f.h = max.h
-  win:setFrame(f)
-end)
-
-hs.hotkey.bind({'alt', 'ctrl'}, 'Return', function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x
-  f.y = max.y
-  f.w = max.w - 9
-  f.h = max.h
-  win:setFrame(f)
-end)
-
-hs.hotkey.bind({'alt', 'ctrl'}, 'Up', function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x
-  f.y = max.y
-  f.w = max.w - 9
-  f.h = max.h / 2
-  win:setFrame(f)
-end)
-
-hs.hotkey.bind({'alt', 'ctrl'}, 'Down', function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x
-  f.y = max.y + (max.h / 2)
-  f.w = max.w - 9
-  f.h = max.h / 2
-  win:setFrame(f)
-end)
-
-hs.hotkey.bind({'alt', 'ctrl'}, 'U', function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x
-  f.y = max.y / 2
-  f.w = max.w /2
-  f.h = max.h / 2
-  win:setFrame(f)
-end)
-
-hs.hotkey.bind({'alt', 'ctrl'}, 'J', function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = max.x
-  f.y = max.y + (max.h / 2)
-  f.w = max.w /2
-  f.h = max.h / 2
-  win:setFrame(f)
-end)
-
-hs.hotkey.bind({'alt', 'ctrl'}, 'I', function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = (max.x + (max.w / 2)) - 9
-  f.y = max.y
-  f.w = max.w / 2
-  f.h = max.h / 2
-
-  win:setFrame(f)
-end)
-
-hs.hotkey.bind({'alt', 'ctrl'}, 'K', function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-
-  f.x = (max.x + (max.w / 2)) - 9
-  f.y = max.y + (max.h / 2)
-  f.w = max.w / 2
-  f.h = max.h / 2
-
-  win:setFrame(f)
-end)
-
-hs.hotkey.bind({'alt', 'ctrl'}, 'R', function()
-  hs.reload()
-end)
-
---[[
---
--- nifty caffeine replacement from docs
--- TODO: Find higher res coffee icon to replace caffinate.
---
-caffeine = hs.menubar.new()
-function setCaffeineDisplay(state)
-  if state then
-    caffeine:setTitle('AWAKE')
-  else
-    caffeine:setTitle('SLEEPY')
+  local f = poss[pos]
+  return function()
+    win:setFrame(f)
   end
 end
 
-function caffeineClicked()
-  setCaffeineDisplay(hs.caffeinate.toggle('displayIdle'))
-end
-
-if caffeine then
-  caffeine:setClickCallback(caffeineClicked)
-  setCaffeineDisplay(hs.caffeinate.get('displayIdle'))
-end
---]]
+local mod = { 'alt', 'ctrl' }
+hs.fnutils.each({
+  { key = 'return', pos = 'full' },
+  { key = 'left', pos = 'left' },
+  { key = 'right', pos = 'right' },
+  { key = 'up', pos = 'up' },
+  { key = 'down', pos = 'down' }
+}, function(obj)
+  hs.hotkey.new(mod, obj.key, move(obj.pos)):enable()
+end)
 
