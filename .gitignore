@@ -49,6 +49,8 @@
 .gnome
 .gnupg
 .gstreamer-0.10
+.hammerspoon/Spoons
+.hammerspoon/default.profraw
 .icons
 .lastpass
 .lesshst
