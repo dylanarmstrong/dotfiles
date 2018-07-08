@@ -12,7 +12,6 @@ local screenBreak = 0.00703125
 -- 1280 * x - 9 = 0, x = 0.00703125
 
 function push(x, y, w, h)
-
   local win = hs.window.frontmostWindow()
   local f = win:frame()
   local screen = win:screen()
@@ -30,15 +29,15 @@ end
 local mod = { 'alt', 'ctrl' }
 
 hs.fnutils.each({
-  { key = 'Return', pos = {   0,   0,   1,   1 }},  -- Full
-  { key = 'Up',     pos = {   0,   0,   1, 0.5 }},  -- Top Half
-  { key = 'Right',  pos = { 0.5,   0, 0.5,   1 }},  -- Right Half
-  { key = 'Down',   pos = {   0, 0.5,   1, 0.5 }},  -- Bottom Half
-  { key = 'Left',   pos = {   0,   0, 0.5,   1 }},  -- Left Half
-  { key = 'Y',      pos = {   0,   0, 0.5, 0.5 }},  -- Upper Left Half
-  { key = 'U',      pos = { 0.5,   0, 0.5, 0.5 }},  -- Upper Right Half
-  { key = 'B',      pos = {   0, 0.5, 0.5, 0.5 }},  -- Bottom Left Half
-  { key = 'N',      pos = { 0.5, 0.5, 0.5, 0.5 }}   -- Bottom Right Half
+  { key = 'Return', pos = {  0,  0,  1,  1 }},  -- Full
+  { key = 'Up',     pos = {  0,  0,  1, .5 }},  -- Top Half
+  { key = 'Right',  pos = { .5,  0, .5,  1 }},  -- Right Half
+  { key = 'Down',   pos = {  0, .5,  1, .5 }},  -- Bottom Half
+  { key = 'Left',   pos = {  0,  0, .5,  1 }},  -- Left Half
+  { key = 'Y',      pos = {  0,  0, .5, .5 }},  -- Upper Left Half
+  { key = 'U',      pos = { .5,  0, .5, .5 }},  -- Upper Right Half
+  { key = 'B',      pos = {  0, .5, .5, .5 }},  -- Bottom Left Half
+  { key = 'N',      pos = { .5, .5, .5, .5 }}   -- Bottom Right Half
 }, function(obj)
   hs.hotkey.bind(mod, obj.key, function()
     push(table.unpack(obj.pos))
@@ -46,10 +45,10 @@ hs.fnutils.each({
 end)
 
 hs.fnutils.each({
-  { key = '1', app = 'iTerm' },
-  { key = '2', app = 'Safari' },
+  { key = '1', app = 'iTerm'    },
+  { key = '2', app = 'Safari'   },
   { key = '3', app = 'Messages' },
-  { key = '4', app = 'Finder' }
+  { key = '4', app = 'Finder'   }
 }, function(obj)
   hs.hotkey.bind(mod, obj.key, function()
     hs.application.launchOrFocus(obj.app)
@@ -73,6 +72,4 @@ if caffeine then
   caffeine:setClickCallback(caffeineClicked)
   setCaffeineDisplay(hs.caffeinate.get('displayIdle'))
 end
-
-hs.alert.show('Hammerspoon loaded 👍')
 
