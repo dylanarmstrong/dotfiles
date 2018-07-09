@@ -34,6 +34,13 @@ hs.fnutils.each({
   { key = 'Right',  pos = { .5,  0, .5,  1 }},  -- Right Half
   { key = 'Down',   pos = {  0, .5,  1, .5 }},  -- Bottom Half
   { key = 'Left',   pos = {  0,  0, .5,  1 }},  -- Left Half
+
+  { key = 'X',      pos = {  0,  0,  1,  1 }},  -- Full
+  { key = 'K',      pos = {  0,  0,  1, .5 }},  -- Top Half
+  { key = 'L',      pos = { .5,  0, .5,  1 }},  -- Right Half
+  { key = 'J',      pos = {  0, .5,  1, .5 }},  -- Bottom Half
+  { key = 'H',      pos = {  0,  0, .5,  1 }},  -- Left Half
+
   { key = 'Y',      pos = {  0,  0, .5, .5 }},  -- Upper Left Half
   { key = 'U',      pos = { .5,  0, .5, .5 }},  -- Upper Right Half
   { key = 'B',      pos = {  0, .5, .5, .5 }},  -- Bottom Left Half
