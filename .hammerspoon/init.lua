@@ -8,7 +8,9 @@ hs.window.animationDuration = 0
 hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', hs.reload):start()
 
 -- Column of 9 pixels I've broken on the right of my screen..
-local screenBreak = 0.00703125
+-- local screenBreak = 0.00703125
+-- eh.. it might be 10px now
+local screenBreak = 0.0078125
 -- 1280 * x - 9 = 0, x = 0.00703125
 
 function push(x, y, w, h)
