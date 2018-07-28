@@ -109,7 +109,8 @@ let g:ackprg='ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
 
 " airline (bottom bar) theme
-let g:airline_theme='papercolor'
+let g:airline_theme='base16'
+let g:airline_powerline_fonts=1
 
 " be silent when grabbing scp files
 let g:netrw_silent=1

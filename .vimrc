@@ -55,8 +55,8 @@ set hlsearch
 
 " base16
 if filereadable(expand("~/.vimrc_background"))
-"  let base16colorspace=256
-"  source ~/.vimrc_background
+  let base16colorspace=256
+  source ~/.vimrc_background
 endif
 
 " file type detection and language-specific indentatition
@@ -132,7 +132,7 @@ au BufNewFile,BufRead *.xm,*.xmm,*.l.mm setf logos
 let g:netrw_silent=1
 
 " airline (bottom bar) theme
-let g:airline_theme='papercolor'
+let g:airline_theme='base16'
 
 " jsx
 let g:jsx_ext_required = 0
