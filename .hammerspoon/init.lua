@@ -11,7 +11,7 @@ hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', hs.reload):start()
 -- local screenBreak = 0.00703125
 -- eh.. it might be 10px now
 -- nvm.. it's 41 now
-local screenBreak = 0.0320313
+local screenBreak = 0.03125
 -- 1280 * x - 9 = 0, x = 0.00703125
 
 function push(x, y, w, h)
