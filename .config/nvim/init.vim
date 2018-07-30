@@ -119,9 +119,9 @@ let g:netrw_silent=1
 let g:jsx_ext_required = 0
 
 " colors
-if filereadable(expand("~/.vimrc_background"))
+let g:base16_shell_path=expand('~/src/base16/base16-shell/scripts')
+if filereadable(expand('~/.vimrc_background'))
   let base16colorspace=256
   source ~/.vimrc_background
 endif
-set termguicolors
 
