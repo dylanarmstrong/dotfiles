@@ -23,6 +23,8 @@ function push(x, y, w, h)
   -- External monitor isn't broken
   if (screen:name() == 'VS248') then
     screenBreak = 0
+  else
+    screenBreak = 0.03125
   end
 
   max.w = max.w - (max.w * screenBreak)
