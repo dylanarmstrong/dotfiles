@@ -19,6 +19,12 @@ function push(x, y, w, h)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:frame()
+
+  -- External monitor isn't broken
+  if (screen:name() == 'VS248') then
+    screenBreak = 0
+  end
+
   max.w = max.w - (max.w * screenBreak)
 
   f.x = max.x + (max.w * x)
