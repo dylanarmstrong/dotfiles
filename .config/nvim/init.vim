@@ -14,6 +14,13 @@ set nowritebackup
 set history=10000
 set hidden
 
+" copy and paste
+set clipboard=unnamed
+
+" infinite undo
+set undofile
+set undodir=~/.local/share/nvim/undo
+
 " better search
 set ignorecase
 set smartcase
@@ -88,6 +95,9 @@ Plug('https://github.com/machakann/vim-sandwich')
 Plug('https://github.com/mileszs/ack.vim')
 Plug('https://github.com/tpope/vim-fugitive')
 Plug('https://github.com/tpope/vim-markdown')
+" Plug('https://github.com/prettier/vim-prettier')
+Plug('https://github.com/scrooloose/nerdtree')
+Plug('https://github.com/w0rp/ale')
 Plug('/usr/local/opt/fzf')
 call plug#end()
 
@@ -103,6 +113,21 @@ let g:fzf_colors= {
 
 " Thank you HN, easy macro use
 noremap <Space> @q
+
+" nerdtree
+nnoremap <C-n> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree()) | q | endif
+autocmd vimenter * NERDTree
+autocmd vimenter * wincmd p
+
+" ALE Prettier
+let g:ale_fixers = {
+      \ 'javascript': [ 'prettier' ],
+      \ 'css': [ 'prettier' ],
+      \ }
+
+let g:ale_sign_column_always = 1
+let g:ale_set_highlights = 0
 
 " Use ack.vim instead of ag.vim
 let g:ackprg='ag --vimgrep --smart-case'
