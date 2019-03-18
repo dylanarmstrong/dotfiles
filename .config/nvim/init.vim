@@ -69,12 +69,13 @@ function! Clean()
   let l = line('.')
   let c = col('.')
   %s/\t/\ \ /ge
-  %s/\s\+$//e
+  %s/\s\+$//ge
+  %s/{\(.\{-}\)}/{ \1 }/ge|%s/{  \(.\{-}\)}/{ \1}/ge|%s/{\(.\{-}\)  }/{\1 }/ge|%s/{ }/{}/ge
   let @/=_s
   call cursor(l, c)
   set ff=unix
 endfunction
-nnoremap <F7> :call Clean()<CR>
+nnoremap <Leader>7 :call Clean()<CR>
 
 " map W to write current buffer with superuser privileges
 command W :execute ':silent w !sudo tee % >/dev/null' | :edit!
@@ -98,6 +99,7 @@ Plug('https://github.com/tpope/vim-markdown')
 " Plug('https://github.com/prettier/vim-prettier')
 Plug('https://github.com/scrooloose/nerdtree')
 Plug('https://github.com/w0rp/ale')
+Plug('https://github.com/mbbill/undotree')
 Plug('/usr/local/opt/fzf')
 call plug#end()
 
@@ -117,8 +119,11 @@ noremap <Space> @q
 " nerdtree
 nnoremap <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree()) | q | endif
-autocmd vimenter * NERDTree
+" autocmd vimenter * NERDTree
 autocmd vimenter * wincmd p
+
+" undotree
+nnoremap <C-m> :UndotreeToggle<CR>
 
 " ALE Prettier
 let g:ale_fixers = {
