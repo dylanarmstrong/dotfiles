@@ -41,7 +41,7 @@ setopt hist_verify
 
 # environment
 export EDITOR=vim
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:/usr/local/opt/node@8/bin:/usr/local/bin:$HOME/Library/Python/3.7/bin:/usr/local/opt/sqlite/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:/usr/local/games:$HOME/bin:$HOME/.local/bin:/Library/TeX/texbin:/opt/X11/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/.config/yarn/global/node_modules/.bin:/usr/local/bin:$HOME/Library/Python/3.7/bin:/usr/local/opt/sqlite/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:/usr/local/games:$HOME/bin:$HOME/.local/bin:/Library/TeX/texbin:/opt/X11/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS
 export XDG_CONFIG_HOME=$HOME/.config
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export THEOS=$HOME/src/theos
@@ -120,7 +120,7 @@ alias gc='git checkout'
 alias check-movies="rsstool -u 'rsstool/1.0.1rc2 (cmdline tool for rss)' --shtml --slf --template2=$HOME/documents/rss/ptp-template -i=$HOME/documents/rss/all-rss | sed -e 's/IMDb//g'"
 alias tmux='tmux -u -2'
 alias tam='tmux -u -2 attach'
-alias lsh='ls -Fth | head -n 25'
+alias lsh='ls -Fth . | head -n 25'
 alias vim='nvim'
 
 if [[ $platform == 'linux' ]]; then

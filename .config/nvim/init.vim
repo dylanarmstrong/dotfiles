@@ -59,9 +59,36 @@ noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
 
 " ctags
-autocmd Filetype java set tags=$HOME/Documents/framework/.tags
-autocmd Filetype jsp set tags=$HOME/Documents/framework/.tags
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+augroup ctags
+  autocmd Filetype java set tags=$HOME/Documents/framework/.tags
+  autocmd Filetype jsp set tags=$HOME/Documents/framework/.tags
+augroup END
+
+" markdown
+augroup filetypes
+  autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+augroup END
+
+" templates
+" go to line with %HERE% on it, thanks vim-template for idea
+function! Here()
+  0
+  if search('%HERE%', 'W')
+    let l = line('.')
+    let c = col('.')
+    s/%HERE%//ge
+    call cursor(l, c)
+  endif
+endfunction
+
+" group of template loads
+augroup templates
+  autocmd BufNewFile *.handlebars 0r ~/.vim/templates/skeleton.html | call Here()
+  autocmd BufNewFile *.htm 0r ~/.vim/templates/skeleton.html | call Here()
+  autocmd BufNewFile *.html 0r ~/.vim/templates/skeleton.html | call Here()
+  autocmd BufNewFile *.py 0r ~/.vim/templates/skeleton.py | call Here()
+  autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh | call Here()
+augroup END
 
 " strip end of lines and change tabs to spaces
 function! Clean()
@@ -70,7 +97,7 @@ function! Clean()
   let c = col('.')
   %s/\t/\ \ /ge
   %s/\s\+$//ge
-  %s/{\(.\{-}\)}/{ \1 }/ge|%s/{  \(.\{-}\)}/{ \1}/ge|%s/{\(.\{-}\)  }/{\1 }/ge|%s/{ }/{}/ge
+  %s/{ \(.\{- }\)}/{ \1 }/ge|%s/{  \(.\{- }\)}/{ \1 }/ge|%s/{ \(.\{- }\) }/{ \1 }/ge|%s/{}/{}/ge
   let @/=_s
   call cursor(l, c)
   set ff=unix
@@ -118,9 +145,10 @@ noremap <Space> @q
 
 " nerdtree
 nnoremap <C-n> :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree()) | q | endif
-" autocmd vimenter * NERDTree
-autocmd vimenter * wincmd p
+augroup nerd
+  autocmd bufenter * if (winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree()) | q | endif
+  autocmd vimenter * wincmd p
+augroup END
 
 " undotree
 nnoremap <C-m> :UndotreeToggle<CR>
