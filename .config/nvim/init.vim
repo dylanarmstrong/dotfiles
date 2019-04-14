@@ -154,6 +154,14 @@ augroup END
 " undotree
 nnoremap <C-m> :UndotreeToggle<CR>
 
+" fugitive
+nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gca :Gcommit --amend<CR>
+nnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gp :Gpush<CR>
+nnoremap <leader>gv :Gvdiff<CR>
+
 " ALE Prettier
 let g:ale_fixers = {
       \ 'javascript': [ 'prettier' ],
