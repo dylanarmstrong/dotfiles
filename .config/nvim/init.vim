@@ -110,23 +110,24 @@ command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
 
 " plugins
 call plug#begin()
+" Plug('https://github.com/liuchengxu/space-vim-theme')
+" Plug('https://github.com/prettier/vim-prettier')
 Plug('https://github.com/ElmCast/elm-vim')
+Plug('https://github.com/chriskempson/base16-vim')
 Plug('https://github.com/leafgarland/typescript-vim')
+Plug('https://github.com/machakann/vim-sandwich')
+Plug('https://github.com/mbbill/undotree')
+Plug('https://github.com/mileszs/ack.vim')
 Plug('https://github.com/mxw/vim-jsx.git')
 Plug('https://github.com/pangloss/vim-javascript')
 Plug('https://github.com/posva/vim-vue.git')
-Plug('https://github.com/vim-airline/vim-airline')
-Plug('https://github.com/vim-airline/vim-airline-themes')
-Plug('https://github.com/wavded/vim-stylus')
-Plug('https://github.com/chriskempson/base16-vim')
-Plug('https://github.com/machakann/vim-sandwich')
-Plug('https://github.com/mileszs/ack.vim')
+Plug('https://github.com/scrooloose/nerdtree')
 Plug('https://github.com/tpope/vim-fugitive')
 Plug('https://github.com/tpope/vim-markdown')
-" Plug('https://github.com/prettier/vim-prettier')
-Plug('https://github.com/scrooloose/nerdtree')
+Plug('https://github.com/vim-airline/vim-airline')
+Plug('https://github.com/vim-airline/vim-airline-themes')
 Plug('https://github.com/w0rp/ale')
-Plug('https://github.com/mbbill/undotree')
+Plug('https://github.com/wavded/vim-stylus')
 Plug('/usr/local/opt/fzf')
 call plug#end()
 
@@ -182,4 +183,3 @@ if filereadable(expand('~/.vimrc_background'))
   let base16colorspace=256
   source ~/.vimrc_background
 endif
-
