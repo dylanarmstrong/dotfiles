@@ -54,9 +54,8 @@ map <right> <nop>
 nnoremap j gj
 nnoremap k gk
 
-" syntax highlighting fix
-noremap <F12> <Esc>:syntax sync fromstart<CR>
-inoremap <F12> <C-o>:syntax sync fromstart<CR>
+" buffers
+nnoremap <leader>b :ls<CR>:buffer<Space>
 
 " ctags
 augroup ctags
@@ -97,12 +96,11 @@ function! Clean()
   let c = col('.')
   %s/\t/\ \ /ge
   %s/\s\+$//ge
-  %s/{ \(.\{- }\)}/{ \1 }/ge|%s/{  \(.\{- }\)}/{ \1 }/ge|%s/{ \(.\{- }\) }/{ \1 }/ge|%s/{}/{}/ge
   let @/=_s
   call cursor(l, c)
   set ff=unix
 endfunction
-nnoremap <Leader>7 :call Clean()<CR>
+nnoremap <leader>7 :call Clean()<CR>
 
 " map W to write current buffer with superuser privileges
 command W :execute ':silent w !sudo tee % >/dev/null' | :edit!
@@ -161,6 +159,7 @@ nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gp :Gpush<CR>
 nnoremap <leader>gv :Gvdiff<CR>
+nnoremap <leader>gs :Gstatus<CR>
 
 " ALE Prettier
 let g:ale_fixers = {
