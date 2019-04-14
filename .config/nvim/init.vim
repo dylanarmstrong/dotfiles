@@ -108,6 +108,7 @@ command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
 
 " plugins
 call plug#begin()
+" Plug('https://github.com/itchyny/lightline.vim')
 " Plug('https://github.com/liuchengxu/space-vim-theme')
 " Plug('https://github.com/prettier/vim-prettier')
 Plug('https://github.com/ElmCast/elm-vim')
