@@ -111,6 +111,7 @@ call plug#begin()
 " Plug('https://github.com/itchyny/lightline.vim')
 " Plug('https://github.com/liuchengxu/space-vim-theme')
 " Plug('https://github.com/prettier/vim-prettier')
+Plug('/usr/local/opt/fzf')
 Plug('https://github.com/ElmCast/elm-vim')
 Plug('https://github.com/chriskempson/base16-vim')
 Plug('https://github.com/leafgarland/typescript-vim')
@@ -121,13 +122,15 @@ Plug('https://github.com/mxw/vim-jsx.git')
 Plug('https://github.com/pangloss/vim-javascript')
 Plug('https://github.com/posva/vim-vue.git')
 Plug('https://github.com/scrooloose/nerdtree')
+Plug('https://github.com/shime/vim-livedown')
 Plug('https://github.com/tpope/vim-fugitive')
 Plug('https://github.com/tpope/vim-markdown')
 Plug('https://github.com/vim-airline/vim-airline')
 Plug('https://github.com/vim-airline/vim-airline-themes')
+Plug('https://github.com/vim-pandoc/vim-pandoc')
+Plug('https://github.com/vim-pandoc/vim-pandoc-syntax')
 Plug('https://github.com/w0rp/ale')
 Plug('https://github.com/wavded/vim-stylus')
-Plug('/usr/local/opt/fzf')
 call plug#end()
 
 " FZF instead of ctrlp
@@ -153,6 +156,20 @@ augroup END
 " undotree
 nnoremap <leader>m :UndotreeToggle<CR>
 
+" livedown
+" must run `yarn global add livedown`
+nnoremap <leader>lt :LivedownToggle<CR>
+nnoremap <leader>lk :LivedownKill<CR>
+nnoremap <leader>lp :LivedownPreview<CR>
+let g:livedown_autorun = 0
+let g:livedown_open = 1
+let g:livedown_port = 3000
+let g:livedown_browser = 'chrome'
+
+" pandoc
+let g:pandoc#spell#enabled = 0
+let g:pandoc#modules#disabled = ['folding']
+
 " fugitive
 nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gca :Gcommit --amend<CR>
@@ -167,28 +184,27 @@ let g:ale_fixers = {
       \ 'javascript': [ 'prettier' ],
       \ 'css': [ 'prettier' ],
       \ }
-
 let g:ale_sign_column_always = 1
 let g:ale_set_highlights = 0
 
 " Use ack.vim instead of ag.vim
-let g:ackprg='ag --vimgrep --smart-case'
+let g:ackprg = 'ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
 nnoremap <leader>a :Ack<Space>
 
 " airline (bottom bar) theme
-let g:airline_theme='base16'
-let g:airline_powerline_fonts=1
+let g:airline_theme = 'base16'
+let g:airline_powerline_fonts = 1
 
 " be silent when grabbing scp files
-let g:netrw_silent=1
+let g:netrw_silent = 1
 
 " jsx
 let g:jsx_ext_required = 0
 
 " colors
-let g:base16_shell_path=expand('~/src/base16/base16-shell/scripts')
+let g:base16_shell_path = expand('~/src/base16/base16-shell/scripts')
 if filereadable(expand('~/.vimrc_background'))
-  let base16colorspace=256
+  let base16colorspace = 256
   source ~/.vimrc_background
 endif
