@@ -151,7 +151,7 @@ augroup nerd
 augroup END
 
 " undotree
-nnoremap <Leader>m :UndotreeToggle<CR>
+nnoremap <leader>m :UndotreeToggle<CR>
 
 " fugitive
 nnoremap <leader>gc :Gcommit<CR>
@@ -174,7 +174,7 @@ let g:ale_set_highlights = 0
 " Use ack.vim instead of ag.vim
 let g:ackprg='ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
-nnoremap <Leader>a :Ack<Space>
+nnoremap <leader>a :Ack<Space>
 
 " airline (bottom bar) theme
 let g:airline_theme='base16'
