@@ -71,6 +71,7 @@ autoload -U colors
 colors
 
 # completion
+fpath=($HOME/.zsh/site-functions $fpath)
 autoload -U compinit
 compinit
 

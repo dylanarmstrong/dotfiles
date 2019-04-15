@@ -25,7 +25,7 @@ local broken = 0.03125
 function getBreak(name)
   -- Internal is broken
   if (name == 'Color LCD') then
-    return broken
+    return 0 --broken
   end
 
   -- External monitor isn't broken
@@ -122,7 +122,7 @@ hs.fnutils.each({
   -- Open / Focus an app
   { key = '1', app = 'iTerm'    },
   { key = '2', app = 'Safari'   },
-  { key = '3', app = 'Messages' },
+  -- { key = '3', app = 'Messages' },
   { key = '4', app = 'Finder'   },
 
   -- Custom function
