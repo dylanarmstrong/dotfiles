@@ -188,8 +188,9 @@ let g:ale_sign_column_always = 1
 let g:ale_set_highlights = 0
 
 " Use ack.vim instead of ag.vim
-let g:ackprg = 'ag --vimgrep --smart-case'
+let g:ackprg = 'rg --vimgrep --smart-case'
 cnoreabbrev ag Ack
+cnoreabbrev rg Ack
 nnoremap <leader>a :Ack<Space>
 
 " airline (bottom bar) theme
