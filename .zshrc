@@ -42,7 +42,7 @@ setopt hist_verify
 
 # environment
 export EDITOR=vim
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:/usr/local/bin:$HOME/Library/Python/3.7/bin:/usr/local/opt/sqlite/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:/usr/local/games:$HOME/.local/bin:/Library/TeX/texbin:/opt/X11/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS:/usr/local/opt/node@8/bin:/usr/local/lib/ruby/gems/2.6.0/bin:/usr/local/Cellar/node/11.14.0/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:/usr/local/bin:$HOME/Library/Python/3.7/bin:/usr/local/opt/sqlite/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:/usr/local/games:$HOME/.local/bin:/Library/TeX/texbin:/opt/X11/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS:/usr/local/lib/ruby/gems/2.6.0/bin:/usr/local/Cellar/node/11.14.0/bin
 export XDG_CONFIG_HOME=$HOME/.config
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export THEOS=$HOME/src/theos
@@ -245,3 +245,7 @@ export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # dark background
 export FZF_DEFAULT_OPTS='--color fg:242,bg:236,hl:65,fg+:15,bg+:239,hl+:108 --color info:108,prompt:109,spinner:108,pointer:168,marker:168'
+
+export NVM_DIR="$HOME/.config"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
