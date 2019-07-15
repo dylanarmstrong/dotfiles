@@ -108,33 +108,34 @@ command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
 
 " plugins
 call plug#begin()
-" Plug('https://github.com/ElmCast/elm-vim')
-" Plug('https://github.com/leafgarland/typescript-vim')
 " Plug('https://github.com/liuchengxu/space-vim-theme')
-" Plug('https://github.com/pangloss/vim-javascript')
-" Plug('https://github.com/posva/vim-vue.git')
 " Plug('https://github.com/prettier/vim-prettier')
-" Plug('https://github.com/tpope/vim-markdown')
 " Plug('https://github.com/vim-airline/vim-airline')
 " Plug('https://github.com/vim-airline/vim-airline-themes')
-" Plug('https://github.com/wavded/vim-stylus')
+" Plug('https://github.com/sheerun/vim-polyglot')
 Plug('/usr/local/opt/fzf')
+Plug('https://github.com/ElmCast/elm-vim')
 Plug('https://github.com/airblade/vim-gitgutter')
 Plug('https://github.com/chriskempson/base16-vim')
 Plug('https://github.com/itchyny/lightline.vim')
+Plug('https://github.com/leafgarland/typescript-vim')
 Plug('https://github.com/machakann/vim-sandwich')
 Plug('https://github.com/maximbaz/lightline-ale')
 Plug('https://github.com/mbbill/undotree')
 Plug('https://github.com/mike-hearn/base16-vim-lightline')
 Plug('https://github.com/mileszs/ack.vim')
 Plug('https://github.com/mxw/vim-jsx.git')
+Plug('https://github.com/pangloss/vim-javascript')
+Plug('https://github.com/posva/vim-vue.git')
+Plug('https://github.com/reasonml-editor/vim-reason-plus')
 Plug('https://github.com/scrooloose/nerdtree')
-Plug('https://github.com/sheerun/vim-polyglot')
 Plug('https://github.com/shime/vim-livedown')
 Plug('https://github.com/tpope/vim-fugitive')
+Plug('https://github.com/tpope/vim-markdown')
 Plug('https://github.com/vim-pandoc/vim-pandoc')
 Plug('https://github.com/vim-pandoc/vim-pandoc-syntax')
 Plug('https://github.com/w0rp/ale')
+Plug('https://github.com/wavded/vim-stylus')
 call plug#end()
 
 " FZF instead of ctrlp
@@ -268,3 +269,6 @@ if filereadable(expand('~/.vimrc_background'))
   let base16colorspace = 256
   source ~/.vimrc_background
 endif
+
+" custom highlighting
+highlight Comment cterm=italic
