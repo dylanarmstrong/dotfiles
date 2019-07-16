@@ -25,7 +25,7 @@ local broken = 0.03125
 function getBreak(name)
   -- Internal is broken
   if (name == 'Color LCD') then
-    return broken
+    return 0 --broken
   end
 
   -- External monitor isn't broken

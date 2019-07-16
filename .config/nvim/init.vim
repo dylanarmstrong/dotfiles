@@ -108,15 +108,21 @@ command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
 
 " plugins
 call plug#begin()
-" Plug('https://github.com/itchyny/lightline.vim')
 " Plug('https://github.com/liuchengxu/space-vim-theme')
 " Plug('https://github.com/prettier/vim-prettier')
+" Plug('https://github.com/vim-airline/vim-airline')
+" Plug('https://github.com/vim-airline/vim-airline-themes')
+" Plug('https://github.com/sheerun/vim-polyglot')
 Plug('/usr/local/opt/fzf')
 Plug('https://github.com/ElmCast/elm-vim')
+Plug('https://github.com/airblade/vim-gitgutter')
 Plug('https://github.com/chriskempson/base16-vim')
+Plug('https://github.com/itchyny/lightline.vim')
 Plug('https://github.com/leafgarland/typescript-vim')
 Plug('https://github.com/machakann/vim-sandwich')
+Plug('https://github.com/maximbaz/lightline-ale')
 Plug('https://github.com/mbbill/undotree')
+Plug('https://github.com/mike-hearn/base16-vim-lightline')
 Plug('https://github.com/mileszs/ack.vim')
 Plug('https://github.com/mxw/vim-jsx.git')
 Plug('https://github.com/pangloss/vim-javascript')
@@ -126,8 +132,6 @@ Plug('https://github.com/scrooloose/nerdtree')
 Plug('https://github.com/shime/vim-livedown')
 Plug('https://github.com/tpope/vim-fugitive')
 Plug('https://github.com/tpope/vim-markdown')
-Plug('https://github.com/vim-airline/vim-airline')
-Plug('https://github.com/vim-airline/vim-airline-themes')
 Plug('https://github.com/vim-pandoc/vim-pandoc')
 Plug('https://github.com/vim-pandoc/vim-pandoc-syntax')
 Plug('https://github.com/w0rp/ale')
@@ -165,7 +169,7 @@ nnoremap <leader>lp :LivedownPreview<CR>
 let g:livedown_autorun = 0
 let g:livedown_open = 1
 let g:livedown_port = 3000
-let g:livedown_browser = 'chrome'
+let g:livedown_browser = 'firefox'
 
 " pandoc
 let g:pandoc#spell#enabled = 0
@@ -182,20 +186,76 @@ nnoremap <leader>gs :Gstatus<CR>
 
 " ALE Prettier
 let g:ale_fixers = {
-      \ 'javascript': [ 'prettier' ],
-      \ 'css': [ 'prettier' ],
+        \ 'javascript': [ 'eslint' ],
+        \ 'typescript': [ 'eslint' ]
       \ }
+
+let g:ale_fix_on_save = 0
 let g:ale_sign_column_always = 1
 let g:ale_set_highlights = 0
+nnoremap <leader>f :ALEFix<CR>
+nnoremap <leader>k :ALEPreviousWrap<CR>
+nnoremap <leader>j :ALENextWrap<CR>
 
 " Use ack.vim instead of ag.vim
-let g:ackprg = 'ag --vimgrep --smart-case'
+let g:ackprg = 'rg --vimgrep --smart-case'
 cnoreabbrev ag Ack
+cnoreabbrev rg Ack
 nnoremap <leader>a :Ack<Space>
 
-" airline (bottom bar) theme
-let g:airline_theme = 'base16'
-let g:airline_powerline_fonts = 1
+" airline
+" let g:airline_theme = 'base16'
+" let g:airline_powerline_fonts = 0
+
+" lightline
+let g:lightline = {
+        \ 'colorscheme': 'base16_summerfruit_dark',
+        \ 'active': {
+          \ 'left': [
+            \ [ 'mode', 'paste' ],
+            \ [ 'readonly', 'filename', 'mod' ]
+          \ ],
+          \ 'right': [
+            \ [ 'linter_ok', 'linter_checking', 'linter_errors', 'linter_warnings', 'lineinfo' ],
+            \ [ 'fileinfo' ]
+          \ ]
+        \ },
+        \ 'component': {
+          \ 'lineinfo': '%l:%-v'
+        \ },
+        \ 'component_expand': {
+          \ 'linter_checking': 'lightline#ale#checking',
+          \ 'linter_errors': 'lightline#ale#errors',
+          \ 'linter_ok': 'lightline#ale#ok',
+          \ 'linter_warnings': 'lightline#ale#warnings'
+        \ },
+        \ 'component_type': {
+          \ 'linter_checking': 'left',
+          \ 'linter_errors': 'error',
+          \ 'linter_ok': 'left',
+          \ 'linter_warnings': 'warning'
+        \ },
+        \ 'component_function': {
+          \ 'gitbranch': 'fugitive#head',
+          \ 'pwd': 'LightlineWorkingDirectory',
+          \ 'fileinfo': 'LightlineFileinfo'
+        \ }
+      \ }
+
+function! LightlineFileinfo()
+  if winwidth(0) < 90
+    return ''
+  endif
+
+  let encoding = &fenc !=# '' ? &fenc : &enc
+  let format = &ff
+  let type = &ft !=# '' ? &ft : 'no ft'
+  return type . ' | ' . format . ' | ' . encoding
+endfunction
+
+function! LightlineWorkingDirectory()
+  return &ft =~ 'help\|qf' ? '' : fnamemodify(getcwd(), ':~:.')
+endfunction
 
 " be silent when grabbing scp files
 let g:netrw_silent = 1
@@ -209,3 +269,6 @@ if filereadable(expand('~/.vimrc_background'))
   let base16colorspace = 256
   source ~/.vimrc_background
 endif
+
+" custom highlighting
+highlight Comment cterm=italic
