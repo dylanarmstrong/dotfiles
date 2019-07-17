@@ -252,3 +252,6 @@ export NVM_DIR="$HOME/.nvm"
 
 # nvm modifies path, so this needs to come after
 export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.nvm/versions/node/v11.15.0/bin:/usr/local/bin:$HOME/Library/Python/3.7/bin:/usr/local/opt/sqlite/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:/usr/local/games:$HOME/.local/bin:/Library/TeX/texbin:/opt/X11/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS:/usr/local/opt/node@8/bin:/usr/local/lib/ruby/gems/2.6.0/bin
+
+# opam configuration
+test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
