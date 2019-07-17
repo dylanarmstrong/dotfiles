@@ -108,11 +108,11 @@ command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
 
 " plugins
 call plug#begin()
+" Plug('https://github.com/joshdick/onedark.vim')
 " Plug('https://github.com/liuchengxu/space-vim-theme')
 " Plug('https://github.com/prettier/vim-prettier')
 " Plug('https://github.com/vim-airline/vim-airline')
 " Plug('https://github.com/vim-airline/vim-airline-themes')
-" Plug('https://github.com/sheerun/vim-polyglot')
 Plug('/usr/local/opt/fzf')
 Plug('https://github.com/ElmCast/elm-vim')
 Plug('https://github.com/airblade/vim-gitgutter')
@@ -136,7 +136,19 @@ Plug('https://github.com/vim-pandoc/vim-pandoc')
 Plug('https://github.com/vim-pandoc/vim-pandoc-syntax')
 Plug('https://github.com/w0rp/ale')
 Plug('https://github.com/wavded/vim-stylus')
+Plug('https://github.com/nathanaelkane/vim-indent-guides')
+Plug('https://github.com/sheerun/vim-polyglot')
+Plug('https://github.com/elzr/vim-json')
 call plug#end()
+
+" vim-indent-guides
+let g:indent_guides_enable_on_vim_startup = 1
+
+" vim-json
+let g:vim_json_syntax_conceal = 0
+
+" polygot
+let g:polygot_disabled = [ 'elm', 'javascript', 'json', 'jsx', 'markdown', 'reason', 'stylus', 'typescript', 'vue' ]
 
 " FZF instead of ctrlp
 nnoremap <C-p> :FZF<CR>
