@@ -110,13 +110,19 @@ command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
 call plug#begin()
 " Plug('https://github.com/joshdick/onedark.vim')
 " Plug('https://github.com/liuchengxu/space-vim-theme')
+" Plug('https://github.com/neoclide/vim-jsx-improve')
 " Plug('https://github.com/prettier/vim-prettier')
+" Plug('https://github.com/shime/vim-livedown')
 " Plug('https://github.com/vim-airline/vim-airline')
 " Plug('https://github.com/vim-airline/vim-airline-themes')
+" Plug('https://github.com/vim-pandoc/vim-pandoc')
+" Plug('https://github.com/vim-pandoc/vim-pandoc-syntax')
 Plug('/usr/local/opt/fzf')
 Plug('https://github.com/ElmCast/elm-vim')
+Plug('https://github.com/MaxMEllon/vim-jsx-pretty')
 Plug('https://github.com/airblade/vim-gitgutter')
 Plug('https://github.com/chriskempson/base16-vim')
+Plug('https://github.com/elzr/vim-json')
 Plug('https://github.com/itchyny/lightline.vim')
 Plug('https://github.com/leafgarland/typescript-vim')
 Plug('https://github.com/machakann/vim-sandwich')
@@ -124,21 +130,16 @@ Plug('https://github.com/maximbaz/lightline-ale')
 Plug('https://github.com/mbbill/undotree')
 Plug('https://github.com/mike-hearn/base16-vim-lightline')
 Plug('https://github.com/mileszs/ack.vim')
-Plug('https://github.com/mxw/vim-jsx.git')
+Plug('https://github.com/nathanaelkane/vim-indent-guides')
 Plug('https://github.com/pangloss/vim-javascript')
 Plug('https://github.com/posva/vim-vue.git')
 Plug('https://github.com/reasonml-editor/vim-reason-plus')
 Plug('https://github.com/scrooloose/nerdtree')
-Plug('https://github.com/shime/vim-livedown')
+" Plug('https://github.com/sheerun/vim-polyglot')
 Plug('https://github.com/tpope/vim-fugitive')
 Plug('https://github.com/tpope/vim-markdown')
-Plug('https://github.com/vim-pandoc/vim-pandoc')
-Plug('https://github.com/vim-pandoc/vim-pandoc-syntax')
 Plug('https://github.com/w0rp/ale')
 Plug('https://github.com/wavded/vim-stylus')
-Plug('https://github.com/nathanaelkane/vim-indent-guides')
-Plug('https://github.com/sheerun/vim-polyglot')
-Plug('https://github.com/elzr/vim-json')
 call plug#end()
 
 " vim-indent-guides
@@ -148,7 +149,7 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:vim_json_syntax_conceal = 0
 
 " polygot
-let g:polygot_disabled = [ 'elm', 'javascript', 'json', 'jsx', 'markdown', 'reason', 'stylus', 'typescript', 'vue' ]
+" let g:polygot_disabled = [ 'elm', 'javascript', 'json', 'jsx', 'markdown', 'reason', 'stylus', 'typescript', 'vue' ]
 
 " FZF instead of ctrlp
 nnoremap <C-p> :FZF<CR>
@@ -175,17 +176,17 @@ nnoremap <leader>m :UndotreeToggle<CR>
 
 " livedown
 " must run `yarn global add livedown`
-nnoremap <leader>lt :LivedownToggle<CR>
-nnoremap <leader>lk :LivedownKill<CR>
-nnoremap <leader>lp :LivedownPreview<CR>
-let g:livedown_autorun = 0
-let g:livedown_open = 1
-let g:livedown_port = 3000
-let g:livedown_browser = 'firefox'
+" nnoremap <leader>lt :LivedownToggle<CR>
+" nnoremap <leader>lk :LivedownKill<CR>
+" nnoremap <leader>lp :LivedownPreview<CR>
+" let g:livedown_autorun = 0
+" let g:livedown_open = 1
+" let g:livedown_port = 3000
+" let g:livedown_browser = 'firefox'
 
 " pandoc
-let g:pandoc#spell#enabled = 0
-let g:pandoc#modules#disabled = ['folding']
+" let g:pandoc#spell#enabled = 0
+" let g:pandoc#modules#disabled = ['folding']
 
 " fugitive
 nnoremap <leader>gc :Gcommit<CR>
@@ -283,4 +284,4 @@ if filereadable(expand('~/.vimrc_background'))
 endif
 
 " custom highlighting
-highlight Comment cterm=italic
+" highlight Comment cterm=italic

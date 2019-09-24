@@ -73,7 +73,9 @@
 .vim-fuf-data
 .vim/colors
 .vim/tmp
+.vim/plugged
 .vim/.netrwhist
+.vim/undo
 .viminfo
 .vimperator/info
 .weechat

@@ -122,7 +122,7 @@ alias check-movies="rsstool -u 'rsstool/1.0.1rc2 (cmdline tool for rss)' --shtml
 alias tmux='tmux -u -2'
 alias tam='tmux -u -2 attach'
 alias lsh='ls -Fth . | head -n 25'
-alias vim='nvim'
+# alias vim='nvim'
 
 if [[ $platform == 'linux' ]]; then
   alias ls='ls -F --color=auto'
@@ -239,19 +239,19 @@ export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# light background
-#export FZF_DEFAULT_OPTS='--color fg:242,bg:15,hl:65,fg+:15,bg+:239,hl+:108 --color info:108,prompt:109,spinner:108,pointer:168,marker:168'
+BASE16_FZF=$HOME/src/base16/base16-fzf
+[ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-summerfruit-light.config
 
-# dark background
-export FZF_DEFAULT_OPTS='--color fg:242,bg:236,hl:65,fg+:15,bg+:239,hl+:108 --color info:108,prompt:109,spinner:108,pointer:168,marker:168'
+# nvm modifies path, so this needs to come after
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$HOME/.config/yarn/global/node_modules/.bin:/usr/local/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/lib/ruby/gems/2.6.0/bin:$HOME/src/depot_tools
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# nvm modifies path, so this needs to come after
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.nvm/versions/node/v11.15.0/bin:/usr/local/bin:$HOME/Library/Python/3.7/bin:/usr/local/opt/sqlite/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:/usr/local/games:$HOME/.local/bin:/Library/TeX/texbin:/opt/X11/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS:/usr/local/opt/node@8/bin:/usr/local/lib/ruby/gems/2.6.0/bin
-
 # opam configuration
 test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+export PATH=$HOME/.jenv/bin:$HOME/bin:$PATH
+eval "$(jenv init -)"
