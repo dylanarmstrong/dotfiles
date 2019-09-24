@@ -103,9 +103,6 @@ zstyle ':completion:*:ssh:*' hosts off
 zstyle ':completion:*:scp:*' hosts off
 zstyle ':completion:*:rsync:*' hosts off
 
-# zsh-autosuggestions (like fish)
-# source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
 # aliases
 alias mv='nocorrect mv -v'
 alias cp='nocorrect cp -v'
@@ -118,11 +115,10 @@ alias c='clear'
 alias grep='grep --color=auto'
 alias gd='git diff'
 alias gc='git checkout'
-alias check-movies="rsstool -u 'rsstool/1.0.1rc2 (cmdline tool for rss)' --shtml --slf --template2=$HOME/documents/rss/ptp-template -i=$HOME/documents/rss/all-rss | sed -e 's/IMDb//g'"
 alias tmux='tmux -u -2'
 alias tam='tmux -u -2 attach'
 alias lsh='ls -Fth . | head -n 25'
-# alias vim='nvim'
+alias mitmproxy='mitmproxy -p 8080 --mode socks5 --set console_mouse=false --set console_palette=light --anticomp --anticache'
 
 if [[ $platform == 'linux' ]]; then
   alias ls='ls -F --color=auto'
@@ -141,8 +137,6 @@ else
   alias ls='ls -GF'
   alias l='ls -GF'
 fi
-
-#alias mitmproxy="mitmproxy -p 8080 --socks --palette light --no-mouse -z --anticache"
 
 # useful color function
 function spectrum_ls() {
@@ -169,66 +163,9 @@ function set_prompt { PROMPT="%F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f " }
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
-# ntfs colors
-#eval $(dircolors -b $HOME/.dir_colors)
-
 # base16
 BASE16_SHELL=$HOME/src/base16/base16-shell/
 [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-
-###-begin-npm-completion-###
-#
-# npm command completion script
-#
-# Installation: npm completion >> ~/.bashrc  (or ~/.zshrc)
-# Or, maybe: npm completion > /usr/local/etc/bash_completion.d/npm
-#
-
-COMP_WORDBREAKS=${COMP_WORDBREAKS/=/}
-COMP_WORDBREAKS=${COMP_WORDBREAKS/@/}
-export COMP_WORDBREAKS
-
-if type complete &>/dev/null; then
-  _npm_completion () {
-    local si="$IFS"
-    IFS=$'\n' COMPREPLY=($(COMP_CWORD="$COMP_CWORD" \
-                           COMP_LINE="$COMP_LINE" \
-                           COMP_POINT="$COMP_POINT" \
-                           npm completion -- "${COMP_WORDS[@]}" \
-                           2>/dev/null)) || return $?
-    IFS="$si"
-  }
-  complete -F _npm_completion npm
-elif type compdef &>/dev/null; then
-  _npm_completion() {
-    si=$IFS
-    compadd -- $(COMP_CWORD=$((CURRENT-1)) \
-                 COMP_LINE=$BUFFER \
-                 COMP_POINT=0 \
-                 npm completion -- "${words[@]}" \
-                 2>/dev/null)
-    IFS=$si
-  }
-  compdef _npm_completion npm
-elif type compctl &>/dev/null; then
-  _npm_completion () {
-    local cword line point words si
-    read -Ac words
-    read -cn cword
-    let cword-=1
-    read -l line
-    read -ln point
-    si="$IFS"
-    IFS=$'\n' reply=($(COMP_CWORD="$cword" \
-                       COMP_LINE="$line" \
-                       COMP_POINT="$point" \
-                       npm completion -- "${words[@]}" \
-                       2>/dev/null)) || return $?
-    IFS="$si"
-  }
-  compctl -K _npm_completion npm
-fi
-###-end-npm-completion-###
 
 if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
   source /usr/local/opt/fzf/shell/key-bindings.zsh
@@ -240,10 +177,7 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 
 BASE16_FZF=$HOME/src/base16/base16-fzf
-[ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-summerfruit-light.config
-
-# nvm modifies path, so this needs to come after
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$HOME/.config/yarn/global/node_modules/.bin:/usr/local/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/lib/ruby/gems/2.6.0/bin:$HOME/src/depot_tools
+[ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-summerfruit-dark.config
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
@@ -255,3 +189,14 @@ test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /de
 
 export PATH=$HOME/.jenv/bin:$HOME/bin:$PATH
 eval "$(jenv init -)"
+
+# yarn completion (must come after nvm)
+source $HOME/src/yarn-completion/yarn-completion.plugin.zsh
+# npm completion
+source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
+
+# opam configuration
+test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+# nvm modifies path, so this needs to come after
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$HOME/.config/yarn/global/node_modules/.bin:/usr/local/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/lib/ruby/gems/2.6.0/bin:$HOME/src/depot_tools
