@@ -110,36 +110,54 @@ command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
 call plug#begin()
 " Plug('https://github.com/joshdick/onedark.vim')
 " Plug('https://github.com/liuchengxu/space-vim-theme')
+" Plug('https://github.com/nathanaelkane/vim-indent-guides')
 " Plug('https://github.com/neoclide/vim-jsx-improve')
 " Plug('https://github.com/prettier/vim-prettier')
+" Plug('https://github.com/sheerun/vim-polyglot')
 " Plug('https://github.com/shime/vim-livedown')
 " Plug('https://github.com/vim-airline/vim-airline')
 " Plug('https://github.com/vim-airline/vim-airline-themes')
 " Plug('https://github.com/vim-pandoc/vim-pandoc')
 " Plug('https://github.com/vim-pandoc/vim-pandoc-syntax')
 Plug('/usr/local/opt/fzf')
-Plug('https://github.com/ElmCast/elm-vim')
-Plug('https://github.com/MaxMEllon/vim-jsx-pretty')
+
 Plug('https://github.com/airblade/vim-gitgutter')
 Plug('https://github.com/chriskempson/base16-vim')
-Plug('https://github.com/elzr/vim-json')
-Plug('https://github.com/itchyny/lightline.vim')
-Plug('https://github.com/leafgarland/typescript-vim')
 Plug('https://github.com/machakann/vim-sandwich')
-Plug('https://github.com/maximbaz/lightline-ale')
 Plug('https://github.com/mbbill/undotree')
-Plug('https://github.com/mike-hearn/base16-vim-lightline')
 Plug('https://github.com/mileszs/ack.vim')
-Plug('https://github.com/nathanaelkane/vim-indent-guides')
-Plug('https://github.com/pangloss/vim-javascript')
-Plug('https://github.com/posva/vim-vue.git')
-Plug('https://github.com/reasonml-editor/vim-reason-plus')
 Plug('https://github.com/scrooloose/nerdtree')
-" Plug('https://github.com/sheerun/vim-polyglot')
 Plug('https://github.com/tpope/vim-fugitive')
-Plug('https://github.com/tpope/vim-markdown')
 Plug('https://github.com/w0rp/ale')
+
+" Elm
+Plug('https://github.com/ElmCast/elm-vim')
+
+" Javascript
+Plug('https://github.com/MaxMEllon/vim-jsx-pretty')
+Plug('https://github.com/leafgarland/typescript-vim')
+Plug('https://github.com/pangloss/vim-javascript')
+" Plug('https://github.com/peitalin/vim-jsx-typescript')
+
+" JSON
+Plug('https://github.com/elzr/vim-json')
+
+" Lightline
+Plug('https://github.com/itchyny/lightline.vim')
+Plug('https://github.com/maximbaz/lightline-ale')
+Plug('https://github.com/mike-hearn/base16-vim-lightline')
+
+" Markdown
+Plug('https://github.com/tpope/vim-markdown')
+
+" ReasonML
+Plug('https://github.com/reasonml-editor/vim-reason-plus')
+
+" Stylus
 Plug('https://github.com/wavded/vim-stylus')
+
+" Vue
+Plug('https://github.com/posva/vim-vue.git')
 call plug#end()
 
 " vim-indent-guides

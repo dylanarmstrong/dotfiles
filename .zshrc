@@ -14,7 +14,8 @@ export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
 export LC_CTYPE=C
-export JAVA_HOME=$HOME/Documents/jdk-11.0.2.jdk/Contents/Home
+#export JAVA_HOME=$HOME/Documents/jdk-11.0.2.jdk/Contents/Home
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 
 # options
 setopt autocd
@@ -41,7 +42,7 @@ setopt extended_history
 setopt hist_verify
 
 # environment
-export EDITOR=vim
+export EDITOR=nvim
 export XDG_CONFIG_HOME=$HOME/.config
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export THEOS=$HOME/src/theos
@@ -119,6 +120,7 @@ alias tmux='tmux -u -2'
 alias tam='tmux -u -2 attach'
 alias lsh='ls -Fth . | head -n 25'
 alias mitmproxy='mitmproxy -p 8080 --mode socks5 --set console_mouse=false --set console_palette=light --anticomp --anticache'
+alias vim='nvim'
 
 if [[ $platform == 'linux' ]]; then
   alias ls='ls -F --color=auto'
@@ -179,11 +181,6 @@ export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 BASE16_FZF=$HOME/src/base16/base16-fzf
 [ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-summerfruit-dark.config
 
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 # opam configuration
 test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
@@ -198,5 +195,10 @@ source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
 # opam configuration
 test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
-# nvm modifies path, so this needs to come after
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$HOME/.config/yarn/global/node_modules/.bin:/usr/local/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/lib/ruby/gems/2.6.0/bin:$HOME/src/depot_tools
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+NODE_PATH=`echo $PATH | sed -e 's/:/ /g' -e 's/\/\//\//g' | awk '{print $1}'`
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$HOME/.config/yarn/global/node_modules/.bin:$NODE_PATH:/usr/local/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/lib/ruby/gems/2.6.0/bin:$HOME/src/depot_tools
