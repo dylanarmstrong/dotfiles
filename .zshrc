@@ -184,13 +184,14 @@ BASE16_FZF=$HOME/src/base16/base16-fzf
 # opam configuration
 test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
-export PATH=$HOME/.jenv/bin:$HOME/bin:$PATH
-eval "$(jenv init -)"
+if [ -x "$(command -v jenv)" ]; then
+  eval "$(jenv init -)"
+fi
 
-# yarn completion (must come after nvm)
-source $HOME/src/yarn-completion/yarn-completion.plugin.zsh
-# npm completion
-source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
+if [ -s "$HOME/src" ]; then
+  [ -s "$HOME/src/yarn-completition" ] && source $HOME/src/yarn-completion/yarn-completion.plugin.zsh
+  [ -s "$HOME/src/zsh-better-npm-completion" ] && source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
+fi
 
 # opam configuration
 test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
@@ -201,4 +202,5 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 NODE_PATH=`echo $PATH | sed -e 's/:/ /g' -e 's/\/\//\//g' | awk '{print $1}'`
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$HOME/.config/yarn/global/node_modules/.bin:$NODE_PATH:/usr/local/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/lib/ruby/gems/2.6.0/bin:$HOME/src/depot_tools
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$HOME/.config/yarn/global/node_modules/.bin:$NODE_PATH:/usr/local/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/lib/ruby/gems/2.6.0/bin:$HOME/src/depot_tools:$HOME/.jenv/bin
+
