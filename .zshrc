@@ -14,7 +14,6 @@ export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
 export LC_CTYPE=C
-#export JAVA_HOME=$HOME/Documents/jdk-11.0.2.jdk/Contents/Home
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 
 # options
@@ -32,8 +31,8 @@ setopt mark_dirs
 
 # history
 HISTFILE=$HOME/.zsh_history
-HISTSIZE=250000
-SAVEHIST=200000
+HISTSIZE=1000000
+SAVEHIST=1000000
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
@@ -46,7 +45,8 @@ export EDITOR=nvim
 export XDG_CONFIG_HOME=$HOME/.config
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export THEOS=$HOME/src/theos
-export THEOS_DEVICE_IP=192.168.1.46
+export THEOS_DEVICE_IP=localhost
+export THEOS_DEVICE_PORT=2222
 
 # Private environment variables
 if [[ $platform == 'osx' ]]; then

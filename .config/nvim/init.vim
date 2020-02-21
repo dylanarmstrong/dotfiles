@@ -66,6 +66,7 @@ augroup END
 " markdown
 augroup filetypes
   autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+  au BufNewFile,BufRead *.x,*.xm,*.xmm,*.l.mm setf logos
 augroup END
 
 " templates
@@ -147,6 +148,9 @@ Plug('https://github.com/itchyny/lightline.vim')
 Plug('https://github.com/maximbaz/lightline-ale')
 Plug('https://github.com/mike-hearn/base16-vim-lightline')
 
+" Logos
+Plug('/Users/dylan/src/logos/extras/vim')
+
 " Markdown
 Plug('https://github.com/tpope/vim-markdown')
 
@@ -155,6 +159,9 @@ Plug('https://github.com/reasonml-editor/vim-reason-plus')
 
 " Stylus
 Plug('https://github.com/wavded/vim-stylus')
+
+" Swift
+Plug('https://github.com/keith/swift.vim')
 
 " Vue
 Plug('https://github.com/posva/vim-vue.git')
