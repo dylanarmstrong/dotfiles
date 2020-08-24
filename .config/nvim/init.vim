@@ -327,4 +327,4 @@ if filereadable(expand('~/.vimrc_background'))
 endif
 
 " custom highlighting
-highlight Comment cterm=italic
+" highlight Comment cterm=italic
