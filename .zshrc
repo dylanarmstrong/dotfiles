@@ -1,6 +1,4 @@
-# the zshrc file
-
-# need system for osx vs gentoo
+# Need system for osx vs gentoo
 platform='unknown'
 uname=`uname`
 if [[ "$uname" == 'Linux' ]]; then
@@ -9,38 +7,12 @@ else
   platform='osx'
 fi
 
-# important shiznit
+# Exports
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
 export LC_CTYPE=C
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
-
-# options
-setopt autocd
-setopt sh_word_split
-setopt extended_glob
-setopt complete_in_word
-setopt always_to_end
-setopt interactive_comments
-setopt correct
-setopt hash_cmds
-setopt hash_dirs
-setopt numeric_glob_sort
-setopt mark_dirs
-
-# history
-HISTFILE=$HOME/.zsh_history
-HISTSIZE=1000000
-SAVEHIST=1000000
-setopt hist_ignore_all_dups
-setopt hist_ignore_space
-setopt hist_reduce_blanks
-setopt share_history
-setopt extended_history
-setopt hist_verify
-
-# environment
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-14.jdk/Contents/Home
 export EDITOR=nvim
 export XDG_CONFIG_HOME=$HOME/.config
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
@@ -54,11 +26,35 @@ if [[ $platform == 'osx' ]]; then
   export HOMEBREW_GITHUB_API_TOKEN=$HOMEBREW_GITHUB_API_TOKEN
   export HOMEBREW_NO_ANALYTICS=1
 
-  # macos sierra tmux fix
+  # MacOS Sierra Tmux Fix
   export EVENT_NOKQUEUE=1
 fi
 
-# keys
+# Options
+setopt autocd
+setopt sh_word_split
+setopt extended_glob
+setopt complete_in_word
+setopt always_to_end
+setopt interactive_comments
+setopt correct
+setopt hash_cmds
+setopt hash_dirs
+setopt numeric_glob_sort
+setopt mark_dirs
+
+# History
+HISTFILE=$HOME/.zsh_history
+HISTSIZE=1000000
+SAVEHIST=1000000
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt share_history
+setopt extended_history
+setopt hist_verify
+
+# Keys
 bindkey -e
 bindkey "\e[B" history-beginning-search-forward
 bindkey "\e[A" history-beginning-search-backward
@@ -66,11 +62,11 @@ bindkey "^L" forward-word
 bindkey "^H" backward-word
 bindkey " " magic-space
 
-#style
+# Style
 autoload -U colors
 colors
 
-# completion
+# Completion
 fpath=($HOME/.zsh/site-functions $fpath)
 autoload -U compinit
 compinit
@@ -104,7 +100,7 @@ zstyle ':completion:*:ssh:*' hosts off
 zstyle ':completion:*:scp:*' hosts off
 zstyle ':completion:*:rsync:*' hosts off
 
-# aliases
+# Aliases
 alias mv='nocorrect mv -v'
 alias cp='nocorrect cp -v'
 alias rm='nocorrect rm -v'
@@ -116,8 +112,7 @@ alias c='clear'
 alias grep='grep --color=auto'
 alias gd='git diff'
 alias gc='git checkout'
-alias tmux='tmux -u -2'
-alias tam='tmux -u -2 attach'
+alias tam='tmux attach'
 alias lsh='ls -Fth . | head -n 25'
 alias mitmproxy='mitmproxy -p 8080 --mode socks5 --set console_mouse=false --set console_palette=light --anticomp --anticache'
 alias vim='nvim'
@@ -140,18 +135,19 @@ else
   alias l='ls -GF'
 fi
 
-# useful color function
+# Useful color function
 function spectrum_ls() {
   for code in {000..255}; do
     print -P -- "$code: %F{$code}Test%f"
   done
 }
 
+# Read markdown files
 function rmd() {
   pandoc $1 | lynx -stdin
 }
 
-# prompt
+# Prompt
 setopt prompt_subst
 autoload -Uz add-zsh-hook vcs_info
 
@@ -165,10 +161,11 @@ function set_prompt { PROMPT="%F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f " }
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
-# base16
+# Base16
 BASE16_SHELL=$HOME/src/base16/base16-shell/
 [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
+# FZF
 if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
   source /usr/local/opt/fzf/shell/key-bindings.zsh
   source /usr/local/opt/fzf/shell/completion.zsh
@@ -179,28 +176,20 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 
 BASE16_FZF=$HOME/src/base16/base16-fzf
-[ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-summerfruit-dark.config
+[ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-dracula.config
 
-# opam configuration
+# Opam configuration
 test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-
-if [ -x "$(command -v jenv)" ]; then
-  eval "$(jenv init -)"
-fi
 
 if [ -s "$HOME/src" ]; then
   [ -s "$HOME/src/yarn-completition" ] && source $HOME/src/yarn-completion/yarn-completion.plugin.zsh
   [ -s "$HOME/src/zsh-better-npm-completion" ] && source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
 fi
 
-# opam configuration
-test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-
-# nvm
+# Nvm
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
-NODE_PATH=`echo $PATH | sed -e 's/:/ /g' -e 's/\/\//\//g' | awk '{print $1}'`
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$HOME/.config/yarn/global/node_modules/.bin:$NODE_PATH:/usr/local/bin:/bin:/usr/bin:$HOME/.cabal/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/lib/ruby/gems/2.6.0/bin:$HOME/src/depot_tools:$HOME/.jenv/bin
-
+# Reset PATH
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$NVM_BIN:$HOME/.config/yarn/global/node_modules/.bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin

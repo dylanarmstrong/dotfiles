@@ -13,33 +13,12 @@ hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', hs.reload):start()
 local mod   = { 'alt', 'ctrl' }
 local shift = { 'alt', 'ctrl', 'shift' }
 
---[[
-Column of 9 pixels I've broken on the right of my screen..
-local screenBreak = 0.00703125
-eh.. it might be 10px now
-nvm.. it's 41 now
---]]
-local broken = 0.03125
-
--- Get amount of screen breakage
-function getBreak(name)
-  -- Internal is broken
-  if (name == 'Color LCD') then
-    return broken
-  end
-
-  -- External monitor isn't broken
-  return 0
-end
-
 -- General operations on window size
 function push(x, y, w, h)
   local win = hs.window.frontmostWindow()
   local f = win:frame()
   local screen = win:screen()
   local max = screen:frame()
-
-  max.w = max.w - (max.w * getBreak(screen:name()))
 
   f.x = max.x + (max.w * x)
   f.y = max.y + (max.h * y)
