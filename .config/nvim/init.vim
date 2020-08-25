@@ -217,7 +217,7 @@ nnoremap <leader>m :UndotreeToggle<CR>
 let g:javascript_plugin_flow = 1
 
 " vim-jsx-pretty
-let g:vim_jsx_pretty_colorful_config = 1
+" let g:vim_jsx_pretty_colorful_config = 1
 
 " fugitive
 nnoremap <leader>gc :Gcommit<CR>
