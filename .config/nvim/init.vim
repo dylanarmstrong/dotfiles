@@ -44,12 +44,6 @@ inoremap jj <Esc>
 nnoremap ; :
 nnoremap : ;
 
-" real men don't use arrow keys
-map <up> <nop>
-map <down> <nop>
-map <left> <nop>
-map <right> <nop>
-
 " sane behaviour for moving over lines
 nnoremap j gj
 nnoremap k gk
@@ -109,6 +103,9 @@ Plug('/usr/local/opt/fzf')
 " Browsing
 Plug('https://github.com/scrooloose/nerdtree')
 
+" Comments
+Plug('https://github.com/tyru/caw.vim')
+
 " Elm
 Plug('https://github.com/ElmCast/elm-vim')
 
@@ -149,7 +146,6 @@ Plug('https://github.com/mileszs/ack.vim')
 
 " Styling
 Plug('https://github.com/chriskempson/base16-vim')
-Plug('https://github.com/rakr/vim-one')
 
 " Stylus
 Plug('https://github.com/wavded/vim-stylus')
@@ -316,15 +312,14 @@ let g:netrw_silent = 1
 let g:jsx_ext_required = 0
 
 " colors
-let g:base16_shell_path = expand('~/src/base16/base16-shell/scripts')
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let g:base16_shell_path = expand('~/src/base16/base16-shell/scripts')
 if filereadable(expand('~/.vimrc_background'))
   let base16colorspace = 256
   source ~/.vimrc_background
-  set background=dark
-  " causes things to be annoyingly bold
-  " set termguicolors
 endif
+set background=dark
+set termguicolors
 
 " custom highlighting
 " highlight Comment cterm=italic
