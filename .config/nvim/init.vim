@@ -186,6 +186,8 @@ let g:fzf_colors= {
       \ 'bg+': ['bg', 'Normal'],
       \ }
 
+let g:fzf_layout = { 'down': '40%' }
+
 " Thank you HN, easy macro use
 noremap <Space> @q
 
