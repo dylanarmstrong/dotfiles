@@ -193,4 +193,4 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$NVM_BIN:$HOME/.config/yarn/global/node_modules/.bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$NVM_BIN:$HOME/.config/yarn/global/node_modules/.bin:/usr/local/opt/python@3.9/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin
