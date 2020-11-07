@@ -21,14 +21,11 @@ export THEOS_DEVICE_IP=localhost
 export THEOS_DEVICE_PORT=2222
 
 # Private environment variables
-if [[ $platform == 'osx' ]]; then
-  [ -r $HOME/.env ] && . $HOME/.env
-  export HOMEBREW_GITHUB_API_TOKEN=$HOMEBREW_GITHUB_API_TOKEN
-  export HOMEBREW_NO_ANALYTICS=1
+[ -r $HOME/.env ] && . $HOME/.env
+export HOMEBREW_NO_ANALYTICS=1
 
-  # MacOS Sierra Tmux Fix
-  export EVENT_NOKQUEUE=1
-fi
+# MacOS Sierra Tmux Fix
+export EVENT_NOKQUEUE=1
 
 # Options
 setopt autocd
@@ -117,6 +114,8 @@ alias tam='tmux -u -2 attach'
 alias lsh='ls -Fth . | head -n 25'
 alias mitmproxy='mitmproxy -p 8080 --mode socks5 --set console_mouse=false --set console_palette=light --anticomp --anticache'
 alias vim='nvim'
+alias jqp="jq '.' package.json"
+alias scripts="jq '.scripts' package.json"
 
 if [[ $platform == 'linux' ]]; then
   alias ls='ls -F --color=auto'
@@ -182,15 +181,14 @@ BASE16_FZF=$HOME/src/base16/base16-fzf
 # Opam configuration
 test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
-if [ -s "$HOME/src" ]; then
-  [ -s "$HOME/src/yarn-completition" ] && source $HOME/src/yarn-completion/yarn-completion.plugin.zsh
-  [ -s "$HOME/src/zsh-better-npm-completion" ] && source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
-fi
+[ -s "$HOME/src/zsh-better-npm-completion" ] && source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
 
 # Nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
+export MAGICK_HOME=/usr/local/opt/imagemagick@6
+
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$NVM_BIN:$HOME/.config/yarn/global/node_modules/.bin:/usr/local/opt/python@3.9/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$NVM_BIN:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin
