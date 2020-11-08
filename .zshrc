@@ -23,6 +23,7 @@ export THEOS_DEVICE_PORT=2222
 # Private environment variables
 [ -r $HOME/.env ] && . $HOME/.env
 export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_AUTO_UPDATE=1
 
 # MacOS Sierra Tmux Fix
 export EVENT_NOKQUEUE=1
