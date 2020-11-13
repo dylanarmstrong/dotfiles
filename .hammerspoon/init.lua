@@ -1,8 +1,3 @@
---[[
-I busted the right 3mm or so of my screen
-so everything is designed to handle that
---]]
-
 -- Just be instant please
 hs.window.animationDuration = 0
 
@@ -50,8 +45,6 @@ function resize(x, y)
   local screen = win:screen()
   local max = screen:frame()
 
-  max.w = max.w - (max.w * getBreak(screen:name()))
-
   f.w = f.w + (shifty * x)
   f.h = f.h + (shifty * y)
 
@@ -71,8 +64,6 @@ function move(x, y)
   local f = win:frame()
   local screen = win:screen()
   local max = screen:frame()
-
-  max.w = max.w - (max.w * getBreak(screen:name()))
 
   f.x = f.x + (shifty * x)
   f.y = f.y + (shifty * y)

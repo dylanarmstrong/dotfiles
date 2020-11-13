@@ -117,6 +117,7 @@ alias mitmproxy='mitmproxy -p 8080 --mode socks5 --set console_mouse=false --set
 alias vim='nvim'
 alias jqp="jq '.' package.json"
 alias scripts="jq '.scripts' package.json"
+alias view='nvim -R'
 
 if [[ $platform == 'linux' ]]; then
   alias ls='ls -F --color=auto'
