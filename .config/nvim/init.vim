@@ -259,7 +259,7 @@ nnoremap <leader>a :Ack<Space>
 
 " lightline
 let g:lightline = {
-        \ 'colorscheme': 'base16_dracula',
+        \ 'colorscheme': 'base16_summerfruit_dark',
         \ 'active': {
           \ 'left': [
             \ [ 'mode', 'paste' ],
