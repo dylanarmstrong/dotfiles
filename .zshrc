@@ -118,6 +118,7 @@ alias vim='nvim'
 alias jqp="jq '.' package.json"
 alias scripts="jq '.scripts' package.json"
 alias view='nvim -R'
+alias execs="echo \"$PATH\" | gsed 's/:/\n/g' | xargs -I {} gfind '{}' -type f -executable | fzf --multi --preview 'cat {}'"
 
 if [[ $platform == 'linux' ]]; then
   alias ls='ls -F --color=auto'
@@ -178,7 +179,7 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 
 BASE16_FZF=$HOME/src/base16/base16-fzf
-[ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-dracula.config
+[ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-summerfruit-dark.config
 
 # Opam configuration
 test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
