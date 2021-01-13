@@ -138,6 +138,9 @@ Plug('/Users/dylan/src/logos/extras/vim')
 " Markdown
 Plug('https://github.com/tpope/vim-markdown')
 
+" Pug (Jade)
+Plug('https://github.com/digitaltoad/vim-pug')
+
 " ReasonML
 Plug('https://github.com/reasonml-editor/vim-reason-plus')
 
@@ -259,7 +262,7 @@ nnoremap <leader>a :Ack<Space>
 
 " lightline
 let g:lightline = {
-        \ 'colorscheme': 'base16_summerfruit_dark',
+        \ 'colorscheme': 'base16_dracula',
         \ 'active': {
           \ 'left': [
             \ [ 'mode', 'paste' ],

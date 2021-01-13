@@ -113,7 +113,7 @@ alias gc='git checkout'
 alias tmux='tmux -u -2'
 alias tam='tmux -u -2 attach'
 alias lsh='ls -Fth . | head -n 25'
-alias mitmproxy='mitmproxy -p 8080 --mode socks5 --set console_mouse=false --set console_palette=light --anticomp --anticache'
+#alias mitmproxy='mitmproxy -p 8080 --mode socks5 --set console_mouse=false --set console_palette=light --anticomp --anticache'
 alias vim='nvim'
 alias jqp="jq '.' package.json"
 alias scripts="jq '.scripts' package.json"
@@ -160,7 +160,13 @@ zstyle ':vcs_info:*' formats '%F{2}%b%u%f '
 zstyle ':vcs_info:*' unstagedstr '%F{1}*'
 
 function prompt_precmd() { vcs_info }
-function set_prompt { PROMPT="%F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f " }
+function set_prompt {
+  if [[ $platform == 'osx' ]]; then
+    PROMPT="%F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f "
+  else
+    PROMPT="%F{5}[%F{1}%n%F{5}@%F{1}%m%F{5}] %F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f "
+  fi
+}
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
@@ -194,4 +200,7 @@ export NVM_DIR="$HOME/.nvm"
 export MAGICK_HOME=/usr/local/opt/imagemagick@6
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$NVM_BIN:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$NVM_BIN:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:
+
+# Used for work specific stuff that runs after everything else
+[ -r $HOME/.post_env ] && . $HOME/.post_env
