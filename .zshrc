@@ -54,8 +54,13 @@ setopt hist_verify
 
 # Keys
 bindkey -e
-bindkey "\e[B" history-beginning-search-forward
-bindkey "\e[A" history-beginning-search-backward
+if [[ $platform == 'osx' ]]; then
+  bindkey "\e[B" history-beginning-search-forward
+  bindkey "\e[A" history-beginning-search-backward
+else
+  bindkey "${terminfo[kcud1]}" history-beginning-search-forward
+  bindkey "${terminfo[kcuu1]}" history-beginning-search-backward
+fi
 bindkey "^L" forward-word
 bindkey "^H" backward-word
 bindkey " " magic-space
