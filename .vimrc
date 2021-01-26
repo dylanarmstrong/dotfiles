@@ -4,53 +4,57 @@ set nocompatible
 " backspace is always being flaky
 set backspace=indent,eol,start
 
-" options
-set autoindent
-set clipboard=unnamed
+" misc
 set encoding=utf-8
-set expandtab
-set hidden
-set history=10000
-set hlsearch
-set ignorecase
-set incsearch
-set laststatus=2
-set nobackup
-set noerrorbells
-set nowritebackup
+
+" line numbers
 set number
-set numberwidth=4
-set shiftwidth=2
-set showmatch
-set smartcase
-set softtabstop=2
+
+" gimme spaces please
 set tabstop=2
-set undodir=~/.vim/undo
+set shiftwidth=2
+set softtabstop=2
+set numberwidth=4
+set expandtab
+
+" just stop please
+set nobackup
+set nowritebackup
+set history=10000
+set hidden
+
+" copy and paste
+set clipboard=unnamed
+
+" infinite undo
 set undofile
+set undodir=~/.vim/undo
+
+" better search
+set ignorecase
+set smartcase
+set showmatch
+set incsearch
+
+" ignore these
 set wildignore=*/node_modules/*,*/elm-stuff/*
-set wildmenu
-set wildmode=longest:full,full
 
 " bind pastemode to F2
 set pastetoggle=<F2>
 
+" status bar
+set laststatus=2
+
 " i just dont care for \
 let mapleader=','
 
-" syntax
-syntax on
-filetype plugin indent on
+" i like cursor lines
+set cursorline
 
 " couple saner remaps
 inoremap jj <Esc>
 nnoremap ; :
 nnoremap : ;
-
-" real men don't use arrow keys
-map <up> <nop>
-map <down> <nop>
-map <left> <nop>
-map <right> <nop>
 
 " sane behaviour for moving over lines
 nnoremap j gj
@@ -63,15 +67,6 @@ nnoremap <leader>b :ls<CR>:buffer<Space>
 augroup ctags
   autocmd Filetype java set tags=$HOME/Documents/framework/.tags
   autocmd Filetype jsp set tags=$HOME/Documents/framework/.tags
-augroup END
-
-" markdown
-augroup filetypes
-  autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-  autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
-  autocmd BufNewFile,BufRead *.js set filetype=javascript.jsx
-  autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
-  autocmd BufNewFile,BufRead *.ts set filetype=typescript.jsx
 augroup END
 
 " templates
@@ -114,36 +109,29 @@ command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
 
 " plugins
 call plug#begin()
-" Plug('https://github.com/joshdick/onedark.vim')
-" Plug('https://github.com/liuchengxu/space-vim-theme')
-" Plug('https://github.com/nathanaelkane/vim-indent-guides')
-" Plug('https://github.com/neoclide/vim-jsx-improve')
-" Plug('https://github.com/prettier/vim-prettier')
-" Plug('https://github.com/sheerun/vim-polyglot')
-" Plug('https://github.com/shime/vim-livedown')
-" Plug('https://github.com/vim-airline/vim-airline')
-" Plug('https://github.com/vim-airline/vim-airline-themes')
-" Plug('https://github.com/vim-pandoc/vim-pandoc')
-" Plug('https://github.com/vim-pandoc/vim-pandoc-syntax')
+" Local FZF
 Plug('/usr/local/opt/fzf')
 
-Plug('https://github.com/airblade/vim-gitgutter')
-Plug('https://github.com/chriskempson/base16-vim')
-Plug('https://github.com/machakann/vim-sandwich')
-Plug('https://github.com/mbbill/undotree')
-Plug('https://github.com/mileszs/ack.vim')
+" Browsing
 Plug('https://github.com/scrooloose/nerdtree')
-Plug('https://github.com/tpope/vim-fugitive')
-Plug('https://github.com/w0rp/ale')
+
+" Comments
+Plug('https://github.com/tyru/caw.vim')
 
 " Elm
 Plug('https://github.com/ElmCast/elm-vim')
 
+" Formatting
+Plug('https://github.com/machakann/vim-sandwich')
+
+" Git
+Plug('https://github.com/airblade/vim-gitgutter')
+Plug('https://github.com/tpope/vim-fugitive')
+
 " Javascript
 Plug('https://github.com/MaxMEllon/vim-jsx-pretty')
-Plug('https://github.com/leafgarland/typescript-vim')
+Plug('https://github.com/herringtondarkholme/yats.vim')
 Plug('https://github.com/pangloss/vim-javascript')
-" Plug('https://github.com/peitalin/vim-jsx-typescript')
 
 " JSON
 Plug('https://github.com/elzr/vim-json')
@@ -153,21 +141,49 @@ Plug('https://github.com/itchyny/lightline.vim')
 Plug('https://github.com/maximbaz/lightline-ale')
 Plug('https://github.com/mike-hearn/base16-vim-lightline')
 
+" Linting
+Plug('https://github.com/w0rp/ale')
+
+" Logos
+Plug('/Users/dylan/src/logos/extras/vim')
+
 " Markdown
 Plug('https://github.com/tpope/vim-markdown')
+
+" Pug (Jade)
+Plug('https://github.com/digitaltoad/vim-pug')
 
 " ReasonML
 Plug('https://github.com/reasonml-editor/vim-reason-plus')
 
+" Searching
+Plug('https://github.com/mileszs/ack.vim')
+
+" Styling
+Plug('https://github.com/fnune/base16-vim')
+
 " Stylus
 Plug('https://github.com/wavded/vim-stylus')
+
+" Swift
+Plug('https://github.com/keith/swift.vim')
+
+" Undo
+Plug('https://github.com/mbbill/undotree')
 
 " Vue
 Plug('https://github.com/posva/vim-vue.git')
 call plug#end()
 
+" filetypes
+augroup filetypes
+  au BufNewFile,BufRead *.md set filetype=markdown
+  au BufNewFile,BufRead *.tsx,*.jsx set filetype=javascriptreact
+  au BufNewFile,BufRead *.x,*.xm,*.xmm,*.l.mm setf logos
+augroup END
+
 " vim-indent-guides
-let g:indent_guides_enable_on_vim_startup = 1
+" let g:indent_guides_enable_on_vim_startup = 1
 
 " vim-json
 let g:vim_json_syntax_conceal = 0
@@ -184,6 +200,8 @@ let g:fzf_colors= {
       \ 'hl+': ['bg', 'IncSearch'],
       \ 'bg+': ['bg', 'Normal'],
       \ }
+
+let g:fzf_layout = { 'down': '40%' }
 
 " Thank you HN, easy macro use
 noremap <Space> @q
@@ -212,6 +230,12 @@ nnoremap <leader>m :UndotreeToggle<CR>
 " let g:pandoc#spell#enabled = 0
 " let g:pandoc#modules#disabled = ['folding']
 
+" vim-javascript
+let g:javascript_plugin_flow = 1
+
+" vim-jsx-pretty
+" let g:vim_jsx_pretty_colorful_config = 1
+
 " fugitive
 nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gca :Gcommit --amend<CR>
@@ -224,7 +248,11 @@ nnoremap <leader>gs :Gstatus<CR>
 " ALE Prettier
 let g:ale_fixers = {
         \ 'javascript': [ 'eslint' ],
-        \ 'typescript': [ 'eslint' ]
+        \ 'typescript': [ 'eslint' ],
+        \ 'javascriptreact': [ 'eslint' ],
+        \ 'typescriptreact': [ 'eslint' ],
+        \ 'javascript.jsx': [ 'eslint' ],
+        \ 'typescript.jsx': [ 'eslint' ]
       \ }
 
 let g:ale_fix_on_save = 0
@@ -235,7 +263,7 @@ nnoremap <leader>k :ALEPreviousWrap<CR>
 nnoremap <leader>j :ALENextWrap<CR>
 
 " Use ack.vim instead of ag.vim
-let g:ackprg = 'rg --vimgrep --smart-case'
+let g:ackprg = 'ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
 cnoreabbrev rg Ack
 nnoremap <leader>a :Ack<Space>
@@ -246,7 +274,7 @@ nnoremap <leader>a :Ack<Space>
 
 " lightline
 let g:lightline = {
-        \ 'colorscheme': 'base16_summerfruit_dark',
+        \ 'colorscheme': 'base16_dracula',
         \ 'active': {
           \ 'left': [
             \ [ 'mode', 'paste' ],
@@ -301,11 +329,14 @@ let g:netrw_silent = 1
 let g:jsx_ext_required = 0
 
 " colors
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let g:base16_shell_path = expand('~/src/base16/base16-shell/scripts')
 if filereadable(expand('~/.vimrc_background'))
   let base16colorspace = 256
   source ~/.vimrc_background
 endif
+set background=dark
+set termguicolors
 
 " custom highlighting
 " highlight Comment cterm=italic

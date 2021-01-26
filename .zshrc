@@ -13,7 +13,7 @@ export LC_ALL=$LANG
 export LC_COLLATE=C
 export LC_CTYPE=C
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-14.jdk/Contents/Home
-export EDITOR=nvim
+export EDITOR=vim
 export XDG_CONFIG_HOME=$HOME/.config
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export THEOS=$HOME/src/theos
@@ -119,10 +119,10 @@ alias tmux='tmux -u -2'
 alias tam='tmux -u -2 attach'
 alias lsh='ls -Fth . | head -n 25'
 #alias mitmproxy='mitmproxy -p 8080 --mode socks5 --set console_mouse=false --set console_palette=light --anticomp --anticache'
-alias vim='nvim'
+alias vim='vim'
 alias jqp="jq '.' package.json"
 alias scripts="jq '.scripts' package.json"
-alias view='nvim -R'
+alias view='vim -R'
 alias execs="echo \"$PATH\" | gsed 's/:/\n/g' | xargs -I {} gfind '{}' -type f -executable | fzf --multi --preview 'cat {}'"
 
 if [[ $platform == 'linux' ]]; then
