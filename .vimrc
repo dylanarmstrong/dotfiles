@@ -30,7 +30,11 @@ set clipboard=unnamed
 set undofile
 set undodir=~/.vim/undo
 
+" swap
+set directory=~/.vim/swap
+
 " better search
+set hlsearch
 set ignorecase
 set smartcase
 set showmatch
