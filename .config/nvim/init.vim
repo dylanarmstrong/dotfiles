@@ -148,7 +148,7 @@ Plug('https://github.com/reasonml-editor/vim-reason-plus')
 Plug('https://github.com/mileszs/ack.vim')
 
 " Styling
-Plug('https://github.com/chriskempson/base16-vim')
+Plug('https://github.com/fnune/base16-vim')
 
 " Stylus
 Plug('https://github.com/wavded/vim-stylus')
@@ -325,6 +325,9 @@ if filereadable(expand('~/.vimrc_background'))
 endif
 set background=dark
 set termguicolors
+
+" annoying sql
+let g:omni_sql_no_default_maps = 1
 
 " custom highlighting
 " highlight Comment cterm=italic

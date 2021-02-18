@@ -342,5 +342,8 @@ endif
 set background=dark
 set termguicolors
 
+" annoying sql
+let g:omni_sql_no_default_maps = 1
+
 " custom highlighting
 " highlight Comment cterm=italic

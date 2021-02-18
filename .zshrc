@@ -12,8 +12,8 @@ export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
 export LC_CTYPE=C
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-14.jdk/Contents/Home
-export EDITOR=vim
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+export EDITOR=nvim
 export XDG_CONFIG_HOME=$HOME/.config
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export THEOS=$HOME/src/theos
@@ -119,10 +119,10 @@ alias tmux='tmux -u -2'
 alias tam='tmux -u -2 attach'
 alias lsh='ls -Fth . | head -n 25'
 #alias mitmproxy='mitmproxy -p 8080 --mode socks5 --set console_mouse=false --set console_palette=light --anticomp --anticache'
-alias vim='vim'
+alias vim='nvim'
 alias jqp="jq '.' package.json"
 alias scripts="jq '.scripts' package.json"
-alias view='vim -R'
+alias view='nvim -R'
 alias execs="echo \"$PATH\" | gsed 's/:/\n/g' | xargs -I {} gfind '{}' -type f -executable | fzf --multi --preview 'cat {}'"
 
 if [[ $platform == 'linux' ]]; then
@@ -205,7 +205,7 @@ export NVM_DIR="$HOME/.nvm"
 export MAGICK_HOME=/usr/local/opt/imagemagick@6
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$HOME/bin:$NVM_BIN:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$NVM_BIN:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin
 
 # Used for work specific stuff that runs after everything else
 [ -r $HOME/.post_env ] && . $HOME/.post_env
