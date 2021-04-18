@@ -27,6 +27,9 @@ set smartcase
 set showmatch
 set incsearch
 
+" regex
+set re=0
+
 " ignore these
 set wildignore=*/node_modules/*,*/elm-stuff/*
 
@@ -100,6 +103,8 @@ call plug#begin()
 " Local FZF
 Plug('/usr/local/opt/fzf')
 
+Plug('https://github.com/elixir-editors/vim-elixir')
+
 " Browsing
 Plug('https://github.com/scrooloose/nerdtree')
 
@@ -113,7 +118,7 @@ Plug('https://github.com/ElmCast/elm-vim')
 Plug('https://github.com/machakann/vim-sandwich')
 
 " Git
-Plug('https://github.com/airblade/vim-gitgutter')
+" Plug('https://github.com/airblade/vim-gitgutter')
 Plug('https://github.com/tpope/vim-fugitive')
 
 " Javascript
@@ -143,6 +148,9 @@ Plug('https://github.com/digitaltoad/vim-pug')
 
 " ReasonML
 Plug('https://github.com/reasonml-editor/vim-reason-plus')
+
+" Rescript
+Plug('https://github.com/rescript-lang/vim-rescript')
 
 " Searching
 Plug('https://github.com/mileszs/ack.vim')

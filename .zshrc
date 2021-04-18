@@ -12,7 +12,9 @@ export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
 export LC_CTYPE=C
+#export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-15.jdk/Contents/Home
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+#export JAVA_HOME=/Users/dylan/Documents/src/jdk/build/macosx-x86_64-server-release/jdk
 export EDITOR=nvim
 export XDG_CONFIG_HOME=$HOME/.config
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
@@ -204,8 +206,11 @@ export NVM_DIR="$HOME/.nvm"
 
 export MAGICK_HOME=/usr/local/opt/imagemagick@6
 
+# https://github.com/keybase/keybase-issues/issues/2798
+export GPG_TTY=$(tty)
+
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$NVM_BIN:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$NVM_BIN:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:/Applications/Wireshark.app/Contents/MacOS/:$HOME/.gem/ruby/2.6.0/bin
 
 # Used for work specific stuff that runs after everything else
 [ -r $HOME/.post_env ] && . $HOME/.post_env
