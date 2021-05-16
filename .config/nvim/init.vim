@@ -51,15 +51,6 @@ nnoremap : ;
 nnoremap j gj
 nnoremap k gk
 
-" buffers
-nnoremap <leader>b :ls<CR>:buffer<Space>
-
-" ctags
-augroup ctags
-  autocmd Filetype java set tags=$HOME/Documents/framework/.tags
-  autocmd Filetype jsp set tags=$HOME/Documents/framework/.tags
-augroup END
-
 " templates
 " go to line with %HERE% on it, thanks vim-template for idea
 function! Here()
@@ -81,28 +72,13 @@ augroup templates
   autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh | call Here()
 augroup END
 
-" strip end of lines and change tabs to spaces
-function! Clean()
-  let _s=@/
-  let l = line('.')
-  let c = col('.')
-  %s/\t/\ \ /ge
-  %s/\s\+$//ge
-  let @/=_s
-  call cursor(l, c)
-  set ff=unix
-endfunction
-nnoremap <leader>7 :call Clean()<CR>
-
 " map W to write current buffer with superuser privileges
 command W :execute ':silent w !sudo tee % >/dev/null' | :edit!
 command Wq :execute ':silent w !sudo tee % >/dev/null' | :quit!
 
 " plugins
 call plug#begin()
-" Local FZF
-Plug('/usr/local/opt/fzf')
-
+" Elixir
 Plug('https://github.com/elixir-editors/vim-elixir')
 
 " Browsing
@@ -152,9 +128,6 @@ Plug('https://github.com/reasonml-editor/vim-reason-plus')
 " Rescript
 Plug('https://github.com/rescript-lang/vim-rescript')
 
-" Searching
-Plug('https://github.com/mileszs/ack.vim')
-
 " Styling
 Plug('https://github.com/fnune/base16-vim')
 
@@ -164,12 +137,22 @@ Plug('https://github.com/wavded/vim-stylus')
 " Swift
 Plug('https://github.com/keith/swift.vim')
 
+" Telescope
+Plug('https://github.com/nvim-lua/popup.nvim')
+Plug('https://github.com/nvim-lua/plenary.nvim')
+Plug('https://github.com/nvim-telescope/telescope.nvim')
+
 " Undo
 Plug('https://github.com/mbbill/undotree')
 
 " Vue
 Plug('https://github.com/posva/vim-vue.git')
 call plug#end()
+
+" Telescope
+nnoremap <leader>a :Telescope live_grep<cr>
+nnoremap <leader>b :Telescope buffers<cr>
+nnoremap <C-p> :Telescope find_files<cr>
 
 " filetypes
 augroup filetypes
@@ -178,26 +161,8 @@ augroup filetypes
   au BufNewFile,BufRead *.x,*.xm,*.xmm,*.l.mm setf logos
 augroup END
 
-" vim-indent-guides
-" let g:indent_guides_enable_on_vim_startup = 1
-
 " vim-json
 let g:vim_json_syntax_conceal = 0
-
-" polygot
-" let g:polygot_disabled = [ 'elm', 'javascript', 'json', 'jsx', 'markdown', 'reason', 'stylus', 'typescript', 'vue' ]
-
-" FZF instead of ctrlp
-nnoremap <C-p> :FZF<CR>
-let g:fzf_colors= {
-      \ 'fg': ['fg', 'Normal'],
-      \ 'bg': ['bg', 'Normal'],
-      \ 'hl': ['bg', 'IncSearch'],
-      \ 'hl+': ['bg', 'IncSearch'],
-      \ 'bg+': ['bg', 'Normal'],
-      \ }
-
-let g:fzf_layout = { 'down': '40%' }
 
 " Thank you HN, easy macro use
 noremap <Space> @q
@@ -212,25 +177,8 @@ augroup END
 " undotree
 nnoremap <leader>m :UndotreeToggle<CR>
 
-" livedown
-" must run `yarn global add livedown`
-" nnoremap <leader>lt :LivedownToggle<CR>
-" nnoremap <leader>lk :LivedownKill<CR>
-" nnoremap <leader>lp :LivedownPreview<CR>
-" let g:livedown_autorun = 0
-" let g:livedown_open = 1
-" let g:livedown_port = 3000
-" let g:livedown_browser = 'firefox'
-
-" pandoc
-" let g:pandoc#spell#enabled = 0
-" let g:pandoc#modules#disabled = ['folding']
-
 " vim-javascript
 let g:javascript_plugin_flow = 1
-
-" vim-jsx-pretty
-" let g:vim_jsx_pretty_colorful_config = 1
 
 " fugitive
 nnoremap <leader>gc :Gcommit<CR>
@@ -257,16 +205,6 @@ let g:ale_set_highlights = 0
 nnoremap <leader>f :ALEFix<CR>
 nnoremap <leader>k :ALEPreviousWrap<CR>
 nnoremap <leader>j :ALENextWrap<CR>
-
-" Use ack.vim instead of ag.vim
-let g:ackprg = 'rg --vimgrep --smart-case'
-cnoreabbrev ag Ack
-cnoreabbrev rg Ack
-nnoremap <leader>a :Ack<Space>
-
-" airline
-" let g:airline_theme = 'base16'
-" let g:airline_powerline_fonts = 0
 
 " lightline
 let g:lightline = {
@@ -339,3 +277,14 @@ let g:omni_sql_no_default_maps = 1
 
 " custom highlighting
 " highlight Comment cterm=italic
+
+lua << EOF
+require('telescope').setup{
+  defaults = {
+    file_ignore_patterns = {
+      '.git',
+      'node_modules',
+    },
+  },
+}
+EOF
