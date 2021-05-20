@@ -1,0 +1,3 @@
+player=mpv --cache 2048
+twitch-disable-ads
+default-stream=best
