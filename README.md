@@ -1,5 +1,9 @@
 ### Dotfiles
 
+```
+git submodule update --init --recursive
+```
+
 #### Requires the following:
 
 Neovim > 0.5
