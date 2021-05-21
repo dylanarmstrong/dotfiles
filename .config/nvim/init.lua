@@ -24,38 +24,37 @@ require('packer').startup(function()
   -- Finder
   use {
     'nvim-telescope/telescope.nvim',
+    run = 'vim.cmd[[TSUpdate]]',
     requires = {
       { 'nvim-lua/popup.nvim' },
       { 'nvim-lua/plenary.nvim' },
     }
   }
 
-  -- Collection of configurations for built-in LSP client
+  -- LSP
   use 'neovim/nvim-lspconfig'
 
   -- Treesitter for fancy syntax
   use 'nvim-treesitter/nvim-treesitter'
 
-  -- Lightline for statusbar
-  use {
-    'itchyny/lightline.vim',
-    requires = {
-      { 'spywhere/lightline-lsp' },
-      { 'mike-hearn/base16-vim-lightline' },
-    }
-  }
+  -- Status line
+  use 'hoob3rt/lualine.nvim'
 
   -- File tree
   use 'kyazdani42/nvim-tree.lua'
 end)
 
 -- Spaces
+-- Cannot wait for PR https://github.com/neovim/neovim/pull/13479
 vim.bo.expandtab = true
+vim.bo.shiftwidth = 2
+vim.bo.shiftwidth = 2
+vim.bo.softtabstop = 2
+vim.bo.tabstop = 2
 vim.o.expandtab = true
-vim.o.tabstop = 2
 vim.o.shiftwidth = 2
 vim.o.softtabstop = 2
-vim.bo.shiftwidth = 2
+vim.o.tabstop = 2
 
 -- Just have a sign column ready
 vim.wo.signcolumn = 'yes'
@@ -118,6 +117,8 @@ local maps = {
     ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
     ['<leader>a'] = '<cmd>Telescope live_grep<cr>',
     ['<leader>b'] = '<cmd>Telescope buffers<cr>',
+    ['<leader>e'] = '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>',
+    ['<leader>f'] = '<cmd>lua vim.lsp.buf.formatting()<cr>',
     ['<leader>gd'] = '<cmd>Gdiff<cr>',
     ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
     ['K'] = '<cmd>lua vim.lsp.buf.hover()<cr>',
@@ -128,9 +129,13 @@ local maps = {
     ['j'] = 'gj',
     ['k'] = 'gk',
   },
+  v = {
+    -- Sort lines under visual select
+    ['<leader>s'] = ":'<,'>sort<cr>",
+  },
   [''] = {
     ['<space>'] = '@q',
-  }
+  },
 }
 
 for mode, mappings in pairs(maps) do
@@ -184,31 +189,55 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Status line
-vim.g.lightline = {
-  active = {
-    left = {
-      { 'mode', 'paste' },
-      { 'readonly', 'filename', 'mod' },
-    },
-    right = {
-      { 'linter_ok', 'linter_checking', 'linter_errors', 'linter_warnings', 'lineinfo' },
-      { 'fileinfo' },
-    },
+-- Get character under cursor
+local get_hex = function()
+  local hex = vim.api.nvim_exec([[
+    ascii
+  ]], true)
+  if hex == nil then
+    return 'nil'
+  end
+
+  hex = hex:match(',  Hex ([^,]+)')
+  if hex == nil then
+    return 'nil'
+  end
+
+  return '0x' .. hex
+end
+
+local get_diagnostic = function(bufnr)
+  local levels = {
+    E = 'Error',
+    W = 'Warning',
+    I = 'Info',
+    H = 'Hint',
+  }
+  local res = ''
+  for k, level in pairs(levels) do
+    local n = vim.lsp.diagnostic.get_count(bufnr, level)
+    if n > 0 then
+      if res ~= '' then
+        res = res .. ' | '
+      end
+      res = res .. k .. ': ' .. n
+    end
+  end
+  return res
+end
+
+require('lualine').setup {
+  options = {
+    icons_enabled = false,
+    component_separators = '|',
+    section_separators = '',
+    theme = 'dracula',
   },
-  colorscheme = 'base16_' .. vim.env.BASE16_THEME,
-  component_expand = {
-    linter_errors = 'lightline#lsp#errors',
-    linter_hints = 'lightline#lsp#hints',
-    linter_infos = 'lightline#lsp#infos',
-    linter_ok = 'lightline#lsp#ok',
-    linter_warnings = 'lightline#lsp#warnings',
-  },
-  component_type = {
-    linter_errors = 'error',
-    linter_hints = 'right',
-    linter_infos = 'right',
-    linter_ok = 'right',
-    linter_warnings = 'warning',
+  sections = {
+    lualine_y = {
+      get_diagnostic,
+      get_hex,
+    }
   },
 }
 
