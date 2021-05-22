@@ -141,37 +141,6 @@ require('packer').startup(function()
     end
   }
 
-  -- Autocompletion
-  use {
-    'hrsh7th/nvim-compe',
-    config = function()
-      require('compe').setup {
-        enabled = true,
-        autocomplete = true,
-        debug = false,
-        min_length = 1,
-        preselect = 'enable',
-        throttle_time = 80,
-        source_timeout = 200,
-        incomplete_delay = 400,
-        max_abbr_width = 100,
-        max_kind_width = 100,
-        max_menu_width = 100,
-        documentation = true,
-
-        source = {
-          path = true,
-          buffer = true,
-          calc = true,
-          nvim_lsp = true,
-          nvim_lua = true,
-          vsnip = false,
-          ultisnips = false,
-        },
-      }
-    end
-  }
-
   -- Icons
   use {
     'kyazdani42/nvim-web-devicons',
@@ -260,7 +229,7 @@ vim.o.wildignore = '*/node_modules/*,*/elm-stuff/*'
 vim.g.mapleader = ','
 
 -- Cursor lines are nice
-vim.o.cursorline = true
+vim.wo.cursorline = true
 
 -- Paste
 vim.o.pastetoggle = '<F2>'
@@ -284,6 +253,7 @@ local maps = {
     ['<leader>e'] = '<cmd>TroubleToggle lsp_workspace_diagnostics<cr>',
     ['<leader>f'] = '<cmd>lua vim.lsp.buf.formatting()<cr>',
     ['<leader>gd'] = '<cmd>Gdiff<cr>',
+    ['<leader>gs'] = '<cmd>Gstatus<cr>',
     ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
     ['K'] = '<cmd>lua vim.lsp.buf.hover()<cr>',
     ['[d'] = '<cmd>lua vim.lsp.buf.goto_prev()<cr>',
