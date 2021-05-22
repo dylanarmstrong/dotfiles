@@ -165,8 +165,8 @@ require('packer').startup(function()
           calc = true,
           nvim_lsp = true,
           nvim_lua = true,
-          vsnip = true,
-          ultisnips = true,
+          vsnip = false,
+          ultisnips = false,
         },
       }
     end
