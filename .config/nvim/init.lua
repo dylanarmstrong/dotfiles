@@ -172,11 +172,46 @@ require('packer').startup(function()
     end
   }
 
+  -- Icons
+  use {
+    'kyazdani42/nvim-web-devicons',
+    config = function()
+      require('nvim-web-devicons').setup {
+        default = true,
+        override = {
+          ['.conkyrc'] = {
+            icon = '',
+            color = '#6d8086',
+            name = 'Conkyrc'
+          },
+          ['.xinitrc'] = {
+            icon = '',
+            color = '#6d8086',
+            name = 'Xinitrc'
+          },
+          ['.Xresources'] = {
+            icon = '',
+            color = '#6d8086',
+            name = 'XResources',
+          },
+        }
+      }
+    end
+  }
+
   -- File browser
   use {
     'kyazdani42/nvim-tree.lua',
     config = function()
       require('nvim-tree.config')
+    end
+  }
+
+  -- Diagnostics
+  use {
+    'folke/trouble.nvim',
+    config = function()
+      require('trouble').setup {}
     end
   }
 end)
@@ -246,7 +281,7 @@ local maps = {
     ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
     ['<leader>a'] = '<cmd>Telescope live_grep<cr>',
     ['<leader>b'] = '<cmd>Telescope buffers<cr>',
-    ['<leader>e'] = '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>',
+    ['<leader>e'] = '<cmd>TroubleToggle lsp_workspace_diagnostics<cr>',
     ['<leader>f'] = '<cmd>lua vim.lsp.buf.formatting()<cr>',
     ['<leader>gd'] = '<cmd>Gdiff<cr>',
     ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
@@ -303,9 +338,15 @@ vim.o.background = 'dark'
 -- Configuration for file browser
 vim.g.nvim_tree_auto_close = true
 vim.g.nvim_tree_show_icons = {
-  git = false,
-  folders = false,
-  files = false,
+  git = 0,
+  folders = 1,
+  files = 1,
+}
+vim.g.nvim_tree_special_files = {
+  Makefile = false,
+  ['Cargo.toml'] = false,
+  ['README.md'] = false,
+  ['readme.md'] = false,
 }
 
 -- SQL has a massive slowdown for me
