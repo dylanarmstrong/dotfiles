@@ -11,15 +11,17 @@ require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
   -- Styling
-  use "siduck76/nvim-base16.lua"
+  use {
+    'siduck76/nvim-base16.lua',
+    config = function()
+      local base16 = require('base16')
+      base16(base16.themes[vim.env.BASE16_THEME], true)
+    end
+  }
 
   -- Git
-  use {
-    'lewis6991/gitsigns.nvim',
-    requires = {
-      'nvim-lua/plenary.nvim'
-    }
-  }
+  use 'tpope/vim-fugitive'
+  use 'airblade/vim-gitgutter'
 
   -- Finder
   use {
@@ -28,20 +30,155 @@ require('packer').startup(function()
     requires = {
       { 'nvim-lua/popup.nvim' },
       { 'nvim-lua/plenary.nvim' },
-    }
+    },
+    config = function()
+      require('telescope').setup {
+        defaults = {
+          file_ignore_patterns = {
+            '.git',
+            'node_modules',
+          },
+        }
+      }
+    end
   }
 
   -- LSP
-  use 'neovim/nvim-lspconfig'
+  use {
+    'neovim/nvim-lspconfig',
+    config = function()
+      local nvim_lsp = require('lspconfig')
+      local servers = {
+        'bashls',
+        'cssls',
+        'dockerls',
+        'html',
+        'ocamlls',
+        'pyright',
+        'tsserver',
+        'vimls',
+      }
+
+      for _, lsp in ipairs(servers) do
+        nvim_lsp[lsp].setup {}
+      end
+    end
+  }
 
   -- Treesitter for fancy syntax
-  use 'nvim-treesitter/nvim-treesitter'
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        ensure_installed = 'maintained',
+        ignore_install = {},
+        highlight = {
+          enable = true,
+          use_languagetree = true,
+        },
+        indent = {
+          enable = true,
+        },
+      }
+    end
+  }
 
   -- Status line
-  use 'hoob3rt/lualine.nvim'
+  use {
+    'hoob3rt/lualine.nvim',
+    config = function()
+      -- Get character under cursor
+      local get_hex = function()
+        local hex = vim.api.nvim_exec([[
+          ascii
+        ]], true)
+        if hex == nil then
+          return 'nil'
+        end
 
-  -- File tree
-  use 'kyazdani42/nvim-tree.lua'
+        hex = hex:match(',  Hex ([^,]+)')
+        if hex == nil then
+          return 'nil'
+        end
+
+        return '0x' .. hex
+      end
+
+      local get_diagnostics = function(bufnr)
+        local levels = {
+          E = 'Error',
+          W = 'Warning',
+          I = 'Info',
+          H = 'Hint',
+        }
+        local res = ''
+        for k, level in pairs(levels) do
+          local n = vim.lsp.diagnostic.get_count(bufnr, level)
+          if n > 0 then
+            if res ~= '' then
+              res = res .. ' | '
+            end
+            res = res .. k .. ': ' .. n
+          end
+        end
+        return res
+      end
+
+      require('lualine').setup {
+        options = {
+          icons_enabled = false,
+          component_separators = '|',
+          section_separators = '',
+          theme = 'dracula',
+        },
+        sections = {
+          lualine_y = {
+            get_diagnostics,
+            get_hex,
+          }
+        },
+      }
+    end
+  }
+
+  -- Autocompletion
+  use {
+    'hrsh7th/nvim-compe',
+    config = function()
+      require('compe').setup {
+        enabled = true,
+        autocomplete = true,
+        debug = false,
+        min_length = 1,
+        preselect = 'enable',
+        throttle_time = 80,
+        source_timeout = 200,
+        incomplete_delay = 400,
+        max_abbr_width = 100,
+        max_kind_width = 100,
+        max_menu_width = 100,
+        documentation = true,
+
+        source = {
+          path = true,
+          buffer = true,
+          calc = true,
+          nvim_lsp = true,
+          nvim_lua = true,
+          vsnip = true,
+          ultisnips = true,
+        },
+      }
+    end
+  }
+
+  -- File browser
+  use {
+    'kyazdani42/nvim-tree.lua',
+    config = function()
+      require('nvim-tree.config')
+    end
+  }
 end)
 
 -- Spaces
@@ -55,6 +192,9 @@ vim.o.expandtab = true
 vim.o.shiftwidth = 2
 vim.o.softtabstop = 2
 vim.o.tabstop = 2
+
+-- Completion
+vim.o.completeopt = 'menuone,noselect'
 
 -- Just have a sign column ready
 vim.wo.signcolumn = 'yes'
@@ -74,11 +214,9 @@ vim.o.hidden = true
 -- Line numbers
 vim.wo.number = true
 
--- Undo, can't get this to work correctly with lua yet
-vim.cmd[[
-set undofile
-set undodir=~/.local/share/nvim/undo
-]]
+-- Undo
+vim.bo.undofile = true
+vim.o.undodir = vim.env.HOME .. '/.local/share/nvim/undo'
 
 -- Ignore
 vim.o.wildignore = '*/node_modules/*,*/elm-stuff/*'
@@ -95,15 +233,6 @@ vim.o.clipboard = 'unnamed'
 
 -- Regex
 vim.o.re = 0
-
-require('telescope').setup {
-  defaults = {
-    file_ignore_patterns = {
-      '.git',
-      'node_modules',
-    },
-  }
-}
 
 local maps = {
   i = {
@@ -146,6 +275,7 @@ end
 
 -- Templates
 -- Go to line with %HERE% on it, thanks vim-template for idea
+-- Waiting on https://github.com/neovim/neovim/pull/12378
 vim.cmd[[
 function! Here()
   0
@@ -169,104 +299,14 @@ augroup END
 -- Colors
 vim.o.termguicolors = true
 vim.o.background = 'dark'
-local base16 = require('base16')
-base16(base16.themes[vim.env.BASE16_THEME], true)
 
--- SQL has a massive slowdown for me
-vim.g.omni_sql_no_default_maps = 1
-
--- Better formatting and styling
-require('nvim-treesitter.configs').setup {
-  ensure_installed = 'maintained',
-  ignore_install = {},
-  highlight = {
-    enable = true,
-    use_languagetree = true,
-  },
-  indent = {
-    enable = true,
-  },
-}
-
--- Status line
--- Get character under cursor
-local get_hex = function()
-  local hex = vim.api.nvim_exec([[
-    ascii
-  ]], true)
-  if hex == nil then
-    return 'nil'
-  end
-
-  hex = hex:match(',  Hex ([^,]+)')
-  if hex == nil then
-    return 'nil'
-  end
-
-  return '0x' .. hex
-end
-
-local get_diagnostic = function(bufnr)
-  local levels = {
-    E = 'Error',
-    W = 'Warning',
-    I = 'Info',
-    H = 'Hint',
-  }
-  local res = ''
-  for k, level in pairs(levels) do
-    local n = vim.lsp.diagnostic.get_count(bufnr, level)
-    if n > 0 then
-      if res ~= '' then
-        res = res .. ' | '
-      end
-      res = res .. k .. ': ' .. n
-    end
-  end
-  return res
-end
-
-require('lualine').setup {
-  options = {
-    icons_enabled = false,
-    component_separators = '|',
-    section_separators = '',
-    theme = 'dracula',
-  },
-  sections = {
-    lualine_y = {
-      get_diagnostic,
-      get_hex,
-    }
-  },
-}
-
--- File browser
+-- Configuration for file browser
 vim.g.nvim_tree_auto_close = true
 vim.g.nvim_tree_show_icons = {
   git = false,
   folders = false,
   files = false,
 }
-require('nvim-tree.config')
 
--- Git
-require('gitsigns').setup {}
-
--- LSP
-local nvim_lsp = require('lspconfig')
-
-local servers = {
-  'bashls',
-  'cssls',
-  'dockerls',
-  'html',
-  'ocamlls',
-  'pyright',
-  'tsserver',
-  'vimls',
-}
-
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {}
-end
+-- SQL has a massive slowdown for me
+vim.g.omni_sql_no_default_maps = 1
