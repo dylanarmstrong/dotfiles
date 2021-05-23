@@ -12,10 +12,18 @@ require('packer').startup(function()
 
   -- Styling
   use {
-    'siduck76/nvim-base16.lua',
+    -- Use my fork until PR merged:
+    -- https://github.com/siduck76/nvim-base16.lua/pull/1
+    'dylanarmstrong/nvim-base16.lua',
     config = function()
       local base16 = require('base16')
       base16(base16.themes[vim.env.BASE16_THEME], true)
+    end
+  }
+  use {
+    'norcalli/nvim-colorizer.lua',
+    config = function()
+      require('colorizer').setup()
     end
   }
 
@@ -104,26 +112,6 @@ require('packer').startup(function()
         return '0x' .. hex
       end
 
-      local get_diagnostics = function(bufnr)
-        local levels = {
-          E = 'Error',
-          W = 'Warning',
-          I = 'Info',
-          H = 'Hint',
-        }
-        local res = ''
-        for k, level in pairs(levels) do
-          local n = vim.lsp.diagnostic.get_count(bufnr, level)
-          if n > 0 then
-            if res ~= '' then
-              res = res .. ' | '
-            end
-            res = res .. k .. ': ' .. n
-          end
-        end
-        return res
-      end
-
       require('lualine').setup {
         options = {
           icons_enabled = false,
@@ -133,9 +121,22 @@ require('packer').startup(function()
         },
         sections = {
           lualine_y = {
-            get_diagnostics,
+            {
+              'diagnostics',
+              sources = {
+                'nvim_lsp'
+              },
+              symbols = {
+                error = ' ',
+                warn = ' ',
+                info = ' '
+              },
+              color_error = '#ea51b2',
+              color_warn = '#00f769',
+              color_info = '#a1efe4',
+            },
             get_hex,
-          }
+          },
         },
       }
     end
