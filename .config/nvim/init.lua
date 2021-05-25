@@ -36,8 +36,8 @@ require('packer').startup(function()
     'nvim-telescope/telescope.nvim',
     run = 'vim.cmd[[TSUpdate]]',
     requires = {
-      { 'nvim-lua/popup.nvim' },
-      { 'nvim-lua/plenary.nvim' },
+      'nvim-lua/popup.nvim',
+      'nvim-lua/plenary.nvim',
     },
     config = function()
       require('telescope').setup {
@@ -48,6 +48,13 @@ require('packer').startup(function()
           },
         }
       }
+    end
+  }
+  use {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    run = 'make',
+    config = function()
+      require('telescope').load_extension('fzf')
     end
   }
 
@@ -307,7 +314,8 @@ vim.o.termguicolors = true
 vim.o.background = 'dark'
 
 -- Configuration for file browser
-vim.g.nvim_tree_auto_close = true
+vim.g.nvim_tree_auto_open = 1
+vim.g.nvim_tree_auto_close = 1
 vim.g.nvim_tree_show_icons = {
   git = 0,
   folders = 1,
@@ -321,4 +329,4 @@ vim.g.nvim_tree_special_files = {
 }
 
 -- SQL has a massive slowdown for me
-vim.g.omni_sql_no_default_maps = 1
+vim.g.omni_sql_no_default_maps = true
