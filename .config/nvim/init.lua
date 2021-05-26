@@ -98,6 +98,10 @@ require('packer').startup(function()
     end
   }
 
+  -- Comments
+  -- visual mode = gc = comment
+  use 'tpope/vim-commentary'
+
   -- Status line
   use {
     'hoob3rt/lualine.nvim',
@@ -241,7 +245,7 @@ vim.wo.cursorline = true
 
 -- Paste
 vim.o.pastetoggle = '<F2>'
-vim.o.clipboard = 'unnamed'
+vim.o.clipboard = 'unnamedplus'
 
 -- Regex
 vim.o.re = 0
