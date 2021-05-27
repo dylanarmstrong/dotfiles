@@ -1,4 +1,5 @@
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+local HOME = os.getenv('HOME')
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.fn.system({ 'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path })
@@ -11,15 +12,7 @@ require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
   -- Styling
-  use {
-    -- Use my fork until PR merged:
-    -- https://github.com/siduck76/nvim-base16.lua/pull/1
-    'dylanarmstrong/nvim-base16.lua',
-    config = function()
-      local base16 = require('base16')
-      base16(base16.themes[vim.env.BASE16_THEME], true)
-    end
-  }
+  use 'fnune/base16-vim'
   use {
     'norcalli/nvim-colorizer.lua',
     config = function()
@@ -131,6 +124,9 @@ require('packer').startup(function()
           theme = 'dracula',
         },
         sections = {
+          lualine_b = {
+            'fugitive#head'
+          },
           lualine_y = {
             {
               'diagnostics',
@@ -195,7 +191,12 @@ require('packer').startup(function()
       require('trouble').setup {}
     end
   }
-end)
+end, {
+  display = {
+    -- This isn't working as expected, need to look into
+    open_fn = require('packer.util').float,
+  }
+})
 
 -- Spaces
 -- Cannot wait for PR https://github.com/neovim/neovim/pull/13479
@@ -232,7 +233,7 @@ vim.wo.number = true
 
 -- Undo
 vim.bo.undofile = true
-vim.o.undodir = vim.env.HOME .. '/.local/share/nvim/undo'
+vim.o.undodir = HOME .. '/.local/share/nvim/undo'
 
 -- Ignore
 vim.o.wildignore = '*/node_modules/*,*/elm-stuff/*'
@@ -316,6 +317,13 @@ augroup END
 -- Colors
 vim.o.termguicolors = true
 vim.o.background = 'dark'
+vim.g.base16_shell_path = HOME .. '/src/base16/base16-shell/scripts'
+vim.g.base16colorspace = 256
+if io.open(HOME .. '/.vimrc_background', 'r') ~= nil then
+  vim.cmd[[
+    source ~/.vimrc_background
+  ]]
+end
 
 -- Configuration for file browser
 vim.g.nvim_tree_auto_open = 1
