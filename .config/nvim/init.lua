@@ -1,5 +1,4 @@
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-local HOME = os.getenv('HOME')
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.fn.system({ 'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path })
@@ -12,7 +11,20 @@ require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
   -- Styling
-  use 'fnune/base16-vim'
+  use {
+    'fnune/base16-vim',
+    config = function()
+      local home = os.getenv('HOME')
+      vim.g.base16_shell_path = home .. '/src/base16/base16-shell/scripts'
+      vim.g.base16colorspace = 256
+      if io.open(home .. '/.vimrc_background', 'r') ~= nil then
+        vim.cmd[[
+          source ~/.vimrc_background
+        ]]
+      end
+    end
+  }
+
   use {
     'norcalli/nvim-colorizer.lua',
     config = function()
@@ -94,6 +106,18 @@ require('packer').startup(function()
   -- Comments
   -- visual mode = gc = comment
   use 'tpope/vim-commentary'
+
+  -- Workspace todo comments
+  use {
+    'folke/todo-comments.nvim',
+    requires = 'nvim-lua/plenary.nvim',
+    config = function()
+      require('todo-comments').setup {}
+    end
+  }
+
+  -- Neovim plugin dev
+  use 'folke/lua-dev.nvim'
 
   -- Status line
   use {
@@ -181,6 +205,20 @@ require('packer').startup(function()
     'kyazdani42/nvim-tree.lua',
     config = function()
       require('nvim-tree.config')
+
+      vim.g.nvim_tree_auto_open = 1
+      vim.g.nvim_tree_auto_close = 1
+      vim.g.nvim_tree_show_icons = {
+        git = 0,
+        folders = 1,
+        files = 1,
+      }
+      vim.g.nvim_tree_special_files = {
+        Makefile = false,
+        ['Cargo.toml'] = false,
+        ['README.md'] = false,
+        ['readme.md'] = false,
+      }
     end
   }
 
@@ -233,7 +271,7 @@ vim.wo.number = true
 
 -- Undo
 vim.bo.undofile = true
-vim.o.undodir = HOME .. '/.local/share/nvim/undo'
+vim.o.undodir = os.getenv('HOME') .. '/.local/share/nvim/undo'
 
 -- Ignore
 vim.o.wildignore = '*/node_modules/*,*/elm-stuff/*'
@@ -294,6 +332,7 @@ end
 -- Templates
 -- Go to line with %HERE% on it, thanks vim-template for idea
 -- Waiting on https://github.com/neovim/neovim/pull/12378
+--[[
 vim.cmd[[
 function! Here()
   0
@@ -313,32 +352,11 @@ augroup templates
   autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh | call Here()
 augroup END
 ]]
+--]]
 
 -- Colors
 vim.o.termguicolors = true
 vim.o.background = 'dark'
-vim.g.base16_shell_path = HOME .. '/src/base16/base16-shell/scripts'
-vim.g.base16colorspace = 256
-if io.open(HOME .. '/.vimrc_background', 'r') ~= nil then
-  vim.cmd[[
-    source ~/.vimrc_background
-  ]]
-end
-
--- Configuration for file browser
-vim.g.nvim_tree_auto_open = 1
-vim.g.nvim_tree_auto_close = 1
-vim.g.nvim_tree_show_icons = {
-  git = 0,
-  folders = 1,
-  files = 1,
-}
-vim.g.nvim_tree_special_files = {
-  Makefile = false,
-  ['Cargo.toml'] = false,
-  ['README.md'] = false,
-  ['readme.md'] = false,
-}
 
 -- SQL has a massive slowdown for me
 vim.g.omni_sql_no_default_maps = true
