@@ -332,7 +332,6 @@ end
 -- Templates
 -- Go to line with %HERE% on it, thanks vim-template for idea
 -- Waiting on https://github.com/neovim/neovim/pull/12378
---[[
 vim.cmd[[
 function! Here()
   0
@@ -352,7 +351,6 @@ augroup templates
   autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh | call Here()
 augroup END
 ]]
---]]
 
 -- Colors
 vim.o.termguicolors = true
