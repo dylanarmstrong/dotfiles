@@ -117,7 +117,7 @@ require('packer').startup(function()
   }
 
   -- Neovim plugin dev
-  use 'folke/lua-dev.nvim'
+  -- use 'folke/lua-dev.nvim'
 
   -- Status line
   use {
@@ -237,57 +237,59 @@ end, {
 })
 
 -- Spaces
--- Cannot wait for PR https://github.com/neovim/neovim/pull/13479
-vim.bo.expandtab = true
-vim.bo.shiftwidth = 2
-vim.bo.shiftwidth = 2
-vim.bo.softtabstop = 2
-vim.bo.tabstop = 2
-vim.o.expandtab = true
-vim.o.shiftwidth = 2
-vim.o.softtabstop = 2
-vim.o.tabstop = 2
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+vim.opt.tabstop = 2
+vim.opt.numberwidth = 4
 
 -- Completion
-vim.o.completeopt = 'menuone,noselect'
+vim.opt.completeopt = 'menuone,noselect'
 
 -- Just have a sign column ready
-vim.wo.signcolumn = 'yes'
+vim.opt.signcolumn = 'yes'
 
 -- Searching
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.o.showmatch = true
-vim.o.incsearch = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.showmatch = true
+vim.opt.incsearch = true
 
 -- Annoying backup stuff
-vim.o.backup = false
-vim.o.writebackup = false
-vim.o.history = 10000
-vim.o.hidden = true
+vim.opt.backup = false
+vim.opt.writebackup = false
+vim.opt.history = 10000
+vim.opt.hidden = true
 
 -- Line numbers
-vim.wo.number = true
+vim.opt.number = true
 
 -- Undo
-vim.bo.undofile = true
-vim.o.undodir = os.getenv('HOME') .. '/.local/share/nvim/undo'
+vim.opt.undofile = true
+vim.opt.undodir = os.getenv('HOME') .. '/.local/share/nvim/undo'
 
 -- Ignore
-vim.o.wildignore = '*/node_modules/*,*/elm-stuff/*'
+vim.opt.wildignore = '*/node_modules/*,*/elm-stuff/*'
 
 -- Leader
 vim.g.mapleader = ','
 
 -- Cursor lines are nice
-vim.wo.cursorline = true
+vim.opt.cursorline = true
 
 -- Paste
-vim.o.pastetoggle = '<F2>'
-vim.o.clipboard = 'unnamedplus'
+vim.opt.pastetoggle = '<F2>'
+vim.opt.clipboard = 'unnamed'
 
 -- Regex
-vim.o.re = 0
+vim.opt.re = 0
+
+-- Colors
+vim.opt.termguicolors = true
+vim.opt.background = 'dark'
+
+-- SQL has a massive slowdown for me
+vim.g.omni_sql_no_default_maps = true
 
 local maps = {
   i = {
@@ -351,10 +353,3 @@ augroup templates
   autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh | call Here()
 augroup END
 ]]
-
--- Colors
-vim.o.termguicolors = true
-vim.o.background = 'dark'
-
--- SQL has a massive slowdown for me
-vim.g.omni_sql_no_default_maps = true
