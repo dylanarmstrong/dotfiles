@@ -46,6 +46,7 @@ setopt mark_dirs
 # History
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=1000000
+HISTORY_IGNORE='(note [^-]*)'
 SAVEHIST=1000000
 setopt hist_ignore_all_dups
 setopt hist_ignore_space

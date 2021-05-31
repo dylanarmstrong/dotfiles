@@ -32,6 +32,9 @@ require('packer').startup(function()
     end
   }
 
+  -- Pug
+  use 'digitaltoad/vim-pug'
+
   -- Git
   use 'tpope/vim-fugitive'
   use 'airblade/vim-gitgutter'
