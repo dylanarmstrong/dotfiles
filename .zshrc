@@ -9,18 +9,16 @@ fi
 
 # Exports
 export LANG=en_US.UTF-8
+
+export EDITOR=nvim
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 export LC_ALL=$LANG
 export LC_COLLATE=C
 export LC_CTYPE=C
-#export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-15.jdk/Contents/Home
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
-#export JAVA_HOME=/Users/dylan/Documents/src/jdk/build/macosx-x86_64-server-release/jdk
-export EDITOR=nvim
-export XDG_CONFIG_HOME=$HOME/.config
-export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export THEOS=$HOME/src/theos
 export THEOS_DEVICE_IP=localhost
 export THEOS_DEVICE_PORT=2222
+export XDG_CONFIG_HOME=$HOME/.config
 
 # Private environment variables
 [ -r $HOME/.env ] && . $HOME/.env
@@ -31,29 +29,29 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export EVENT_NOKQUEUE=1
 
 # Options
-setopt autocd
-setopt sh_word_split
-setopt extended_glob
-setopt complete_in_word
 setopt always_to_end
-setopt interactive_comments
+setopt autocd
+setopt complete_in_word
 setopt correct
+setopt extended_glob
 setopt hash_cmds
 setopt hash_dirs
-setopt numeric_glob_sort
+setopt interactive_comments
 setopt mark_dirs
+setopt numeric_glob_sort
+setopt sh_word_split
 
 # History
 HISTFILE=$HOME/.zsh_history
-HISTSIZE=1000000
 HISTORY_IGNORE='(note [^-]*)'
+HISTSIZE=1000000
 SAVEHIST=1000000
+setopt extended_history
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
-setopt share_history
-setopt extended_history
 setopt hist_verify
+setopt share_history
 
 # Keys
 bindkey -e
@@ -77,93 +75,34 @@ fpath=($HOME/.zsh/site-functions $fpath)
 autoload -U compinit
 compinit
 
-zstyle ':completion:*' completer _expand _complete _correct _approximate
-zstyle ':completion:*' expand prefix suffix
-zstyle ':completion:*' file-sort name
-zstyle ':completion:*' list-suffixes true
-zstyle ':completion:*' matcher-list '' '+m:{a-z}={A-Z}' 'r:|[._-]=** r:|=**' 'l:|=* r:|=*'
-zstyle ':completion:*' preserve-prefix '//[^/]##/'
-zstyle ':completion:*' use-cache 1
-zstyle ':completion:*' cache-path $HOME/.zsh/cache
-zstyle ':completion:::::' completer _complete _approximate
-zstyle ':completion:*:approximate:*' max-errors 2
-zstyle ':completion:*' completer _complete _prefix
-zstyle ':completion::prefix-1:*' completer _complete
-zstyle ':completion:incremental:*' completer _complete _correct
-zstyle ':completion:predict:*' completer _complete
-zstyle ':completion::complete:*' use-cache 1
-zstyle ':completion::complete:*' cache-path $HOME/.zsh/cache/$HOST
-zstyle ':completion:*' expand 'yes'
-zstyle ':completion:*' squeeze-slashes 'yes'
-zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
-zstyle ':completion:*:options' description 'yes'
-zstyle ':completion:*:options' auto-description '%d'
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-zstyle ':completion:*:*:*:*:processes' command "ps -u `whoami` -o pid,user,comm -w -w"
-zstyle ':completion:*' menu select
-zstyle ":completion:*" list-colors ""
-zstyle ':completion:*:ssh:*' hosts off
-zstyle ':completion:*:scp:*' hosts off
-zstyle ':completion:*:rsync:*' hosts off
-
 # Aliases
-alias mv='nocorrect mv -v'
-alias cp='nocorrect cp -v'
-alias rm='nocorrect rm -v'
-alias mkdir='nocorrect mkdir -v'
-alias bc='bc -l'
 alias 7zx='7z x'
-alias e='exit'
+alias bc='bc -l'
 alias c='clear'
-alias grep='grep --color=auto'
-alias gd='git diff'
+alias cp='nocorrect cp -v'
+alias e='exit'
 alias gc='git checkout'
-alias tmux='tmux -u -2'
-alias tam='tmux -u -2 attach'
-alias lsh='ls -Fth . | head -n 25'
-#alias mitmproxy='mitmproxy -p 8080 --mode socks5 --set console_mouse=false --set console_palette=light --anticomp --anticache'
-alias vim='nvim'
+alias gd='git diff'
+alias grep='grep --color=auto'
 alias jqp="jq '.' package.json"
+alias l='exa -lF'
+alias ls='exa -lF'
+alias lsh='exa -lF --sort newest | head -n 25'
+alias mkdir='nocorrect mkdir -v'
+alias mv='nocorrect mv -v'
+alias rm='nocorrect rm -v'
 alias scripts="jq '.scripts' package.json"
+alias tam='tmux -u -2 attach'
+alias tmux='tmux -u -2'
 alias view='nvim -R'
-alias execs="echo \"$PATH\" | gsed 's/:/\n/g' | xargs -I {} gfind '{}' -type f -executable | fzf --multi --preview 'cat {}'"
-
-if [[ $platform == 'linux' ]]; then
-  alias ls='ls -F --color=auto'
-  alias l='ls -F --color=auto'
-  alias emerge='nocorrect emerge'
-  alias eix-sync='eix-sync -H'
-  alias es='emerge --search'
-  alias eav='sudo emerge --ask --verbose'
-  alias ev='sudo emerge --verbose'
-  alias epv='emerge --pretend --verbose'
-  alias alsamixer="alsamixer -c 1"
-  alias spotify='spotify --force-device-scale-factor=1.7'
-  alias virtualbox='for m in vbox{drv,netadp,netflt}; do sudo modprobe $m; done && VirtualBox'
-  alias dwarftherapist="QT_AUTO_SCREEN_SCALE_FACTOR=1 dwarftherapist"
-else
-  alias ls='ls -GF'
-  alias l='ls -GF'
-fi
-
-# Useful color function
-function spectrum_ls() {
-  for code in {000..255}; do
-    print -P -- "$code: %F{$code}Test%f"
-  done
-}
-
-# Read markdown files
-function rmd() {
-  pandoc $1 | lynx -stdin
-}
+alias vim='nvim'
 
 # Prompt
 setopt prompt_subst
 autoload -Uz add-zsh-hook vcs_info
 
-zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' formats '%F{2}%b%u%f '
 zstyle ':vcs_info:*' unstagedstr '%F{1}*'
 
@@ -188,15 +127,15 @@ if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
   source /usr/local/opt/fzf/shell/completion.zsh
 fi
 
-export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 
+# Z (https://github.com/rupa/z)
+. /usr/local/etc/profile.d/z.sh
+
 BASE16_FZF=$HOME/src/base16/base16-fzf
 [ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-summerfruit-dark.config
-
-# Opam configuration
-test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 [ -s "$HOME/src/zsh-better-npm-completion" ] && source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
 
@@ -211,7 +150,7 @@ export MAGICK_HOME=/usr/local/opt/imagemagick@6
 export GPG_TTY=$(tty)
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$NVM_BIN:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:/Applications/Wireshark.app/Contents/MacOS/:$HOME/.gem/ruby/2.6.0/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$NVM_BIN:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:/Applications/Wireshark.app/Contents/MacOS/:$HOME/.gem/ruby/2.6.0/bin:$HOME/.cargo/bin
 
 # Used for work specific stuff that runs after everything else
 [ -r $HOME/.post_env ] && . $HOME/.post_env
