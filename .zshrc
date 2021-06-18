@@ -75,6 +75,35 @@ fpath=($HOME/.zsh/site-functions $fpath)
 autoload -U compinit
 compinit
 
+zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' expand prefix suffix
+zstyle ':completion:*' file-sort name
+zstyle ':completion:*' list-suffixes true
+zstyle ':completion:*' matcher-list '' '+m:{a-z}={A-Z}' 'r:|[._-]=** r:|=**' 'l:|=* r:|=*'
+zstyle ':completion:*' preserve-prefix '//[^/]##/'
+zstyle ':completion:*' use-cache 1
+zstyle ':completion:*' cache-path $HOME/.zsh/cache
+zstyle ':completion:::::' completer _complete _approximate
+zstyle ':completion:*:approximate:*' max-errors 2
+zstyle ':completion:*' completer _complete _prefix
+zstyle ':completion::prefix-1:*' completer _complete
+zstyle ':completion:incremental:*' completer _complete _correct
+zstyle ':completion:predict:*' completer _complete
+zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion::complete:*' cache-path $HOME/.zsh/cache/$HOST
+zstyle ':completion:*' expand 'yes'
+zstyle ':completion:*' squeeze-slashes 'yes'
+zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+zstyle ':completion:*:*:*:*:processes' command "ps -u `whoami` -o pid,user,comm -w -w"
+zstyle ':completion:*' menu select
+zstyle ":completion:*" list-colors ""
+zstyle ':completion:*:ssh:*' hosts off
+zstyle ':completion:*:scp:*' hosts off
+zstyle ':completion:*:rsync:*' hosts off
+
 # Aliases
 alias 7zx='7z x'
 alias bc='bc -l'
