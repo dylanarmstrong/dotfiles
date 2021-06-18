@@ -161,7 +161,8 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # Z (https://github.com/rupa/z)
-. /usr/local/etc/profile.d/z.sh
+[ -e /usr/local/etc/profile.d/z.sh ] && . /usr/local/etc/profile.d/z.sh
+[ -e $HOME/bin/z.sh ] && . $HOME/bin/z.sh
 
 BASE16_FZF=$HOME/src/base16/base16-fzf
 [ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-summerfruit-dark.config
