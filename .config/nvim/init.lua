@@ -296,7 +296,7 @@ vim.g.omni_sql_no_default_maps = true
 
 local maps = {
   i = {
-    ['jj'] = '<Esc>',
+    ['C-c'] = '<Esc>',
   },
   n = {
     [':'] = ';',
