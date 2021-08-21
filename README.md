@@ -19,5 +19,6 @@ npm i -g \
 	bash-language-server \
 	dockerfile-language-server-nodejs \
 	vim-language-server \
-	ocaml-language-server
+	ocaml-language-server \
+  svelte-language-server
 ```
