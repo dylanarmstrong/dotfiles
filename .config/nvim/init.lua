@@ -78,6 +78,7 @@ require('packer').startup(function()
         'html',
         'ocamlls',
         'pyright',
+        'svelte',
         'tsserver',
         'vimls',
       }
@@ -296,7 +297,7 @@ vim.g.omni_sql_no_default_maps = true
 
 local maps = {
   i = {
-    ['C-c'] = '<Esc>',
+    ['<C-c>'] = '<Esc>',
   },
   n = {
     [':'] = ';',
