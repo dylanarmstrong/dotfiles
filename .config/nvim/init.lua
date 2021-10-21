@@ -208,10 +208,10 @@ require('packer').startup(function()
   use {
     'kyazdani42/nvim-tree.lua',
     config = function()
-      require('nvim-tree.config')
+      require('nvim-tree').setup {
+        auto_close = true,
+      }
 
-      -- vim.g.nvim_tree_auto_open = 1
-      vim.g.nvim_tree_auto_close = 1
       vim.g.nvim_tree_show_icons = {
         git = 0,
         folders = 1,
