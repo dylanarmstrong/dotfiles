@@ -92,6 +92,7 @@ require('packer').startup(function()
   -- Treesitter for fancy syntax
   use {
     'nvim-treesitter/nvim-treesitter',
+    branch = '0.5-compat',
     config = function()
       require('nvim-treesitter.configs').setup {
         ensure_installed = 'maintained',
