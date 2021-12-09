@@ -12,13 +12,12 @@ For LSP support run the following:
 
 ```bash
 npm i -g \
-	typescript typescript-language-server \
-	pyright \
-	vscode-html-languageserver-bin \
-	vscode-css-languageserver-bin \
-	bash-language-server \
-	dockerfile-language-server-nodejs \
-	vim-language-server \
-	ocaml-language-server \
+  typescript typescript-language-server \
+  pyright \
+  vscode-langservers-extracted \
+  bash-language-server \
+  dockerfile-language-server-nodejs \
+  vim-language-server \
+  ocaml-language-server \
   svelte-language-server
 ```

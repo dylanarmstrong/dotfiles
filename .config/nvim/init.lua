@@ -11,6 +11,15 @@ require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
   -- Styling
+  -- use {
+  --   'folke/tokyonight.nvim',
+  --   config = function()
+  --     vim.g.tokyonight_style = 'night'
+  --     vim.cmd[[
+  --       colorscheme tokyonight
+  --     ]]
+  --   end
+  -- }
   use {
     'fnune/base16-vim',
     config = function()
@@ -92,7 +101,6 @@ require('packer').startup(function()
   -- Treesitter for fancy syntax
   use {
     'nvim-treesitter/nvim-treesitter',
-    branch = '0.5-compat',
     config = function()
       require('nvim-treesitter.configs').setup {
         ensure_installed = 'maintained',
