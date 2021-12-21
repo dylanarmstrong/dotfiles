@@ -147,8 +147,8 @@ add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
 # Base16
-BASE16_SHELL=$HOME/src/base16/base16-shell/
-[ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+# BASE16_SHELL=$HOME/src/base16/base16-shell/
+# [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 # FZF
 if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
@@ -164,8 +164,8 @@ export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 [ -e /usr/local/etc/profile.d/z.sh ] && . /usr/local/etc/profile.d/z.sh
 [ -e $HOME/bin/z.sh ] && . $HOME/bin/z.sh
 
-BASE16_FZF=$HOME/src/base16/base16-fzf
-[ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-summerfruit-dark.config
+# BASE16_FZF=$HOME/src/base16/base16-fzf
+# [ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-summerfruit-dark.config
 
 [ -s "$HOME/src/zsh-better-npm-completion" ] && source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
 

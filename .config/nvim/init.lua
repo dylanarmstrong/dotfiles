@@ -11,28 +11,28 @@ require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
   -- Styling
-  -- use {
-  --   'folke/tokyonight.nvim',
-  --   config = function()
-  --     vim.g.tokyonight_style = 'night'
-  --     vim.cmd[[
-  --       colorscheme tokyonight
-  --     ]]
-  --   end
-  -- }
   use {
-    'fnune/base16-vim',
+    'folke/tokyonight.nvim',
     config = function()
-      local home = os.getenv('HOME')
-      vim.g.base16_shell_path = home .. '/src/base16/base16-shell/scripts'
-      vim.g.base16colorspace = 256
-      if io.open(home .. '/.vimrc_background', 'r') ~= nil then
-        vim.cmd[[
-          source ~/.vimrc_background
-        ]]
-      end
+      vim.g.tokyonight_style = 'night'
+      vim.cmd[[
+        colorscheme tokyonight
+      ]]
     end
   }
+  -- use {
+  --   'fnune/base16-vim',
+  --   config = function()
+  --     local home = os.getenv('HOME')
+  --     vim.g.base16_shell_path = home .. '/src/base16/base16-shell/scripts'
+  --     vim.g.base16colorspace = 256
+  --     if io.open(home .. '/.vimrc_background', 'r') ~= nil then
+  --       vim.cmd[[
+  --         source ~/.vimrc_background
+  --       ]]
+  --     end
+  --   end
+  -- }
 
   use {
     'norcalli/nvim-colorizer.lua',
@@ -168,7 +168,7 @@ require('packer').startup(function()
             {
               'diagnostics',
               sources = {
-                'nvim_lsp'
+                'nvim_diagnostic'
               },
               symbols = {
                 error = ' ',
@@ -244,7 +244,6 @@ require('packer').startup(function()
   }
 end, {
   display = {
-    -- This isn't working as expected, need to look into
     open_fn = require('packer.util').float,
   }
 })
@@ -322,10 +321,13 @@ local maps = {
     ['<leader>gs'] = '<cmd>Gstatus<cr>',
     ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
     ['K'] = '<cmd>lua vim.lsp.buf.hover()<cr>',
+    -- Uppercase Y will grab entire line
+    ['Y'] = 'yy',
     ['[d'] = '<cmd>lua vim.lsp.buf.goto_prev()<cr>',
     [']d'] = '<cmd>lua vim.lsp.buf.goto_next()<cr>',
     ['gd'] = '<cmd>lua vim.lsp.buf.definition()<cr>',
     ['gr'] = '<cmd>lua vim.lsp.buf.references()<cr>',
+    -- Natural movement over visual lines
     ['j'] = 'gj',
     ['k'] = 'gk',
   },
