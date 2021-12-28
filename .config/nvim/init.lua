@@ -12,27 +12,13 @@ require('packer').startup(function()
 
   -- Styling
   use {
-    'folke/tokyonight.nvim',
+    'dracula/vim',
     config = function()
-      vim.g.tokyonight_style = 'night'
       vim.cmd[[
-        colorscheme tokyonight
+        colorscheme dracula
       ]]
     end
   }
-  -- use {
-  --   'fnune/base16-vim',
-  --   config = function()
-  --     local home = os.getenv('HOME')
-  --     vim.g.base16_shell_path = home .. '/src/base16/base16-shell/scripts'
-  --     vim.g.base16colorspace = 256
-  --     if io.open(home .. '/.vimrc_background', 'r') ~= nil then
-  --       vim.cmd[[
-  --         source ~/.vimrc_background
-  --       ]]
-  --     end
-  --   end
-  -- }
 
   use {
     'norcalli/nvim-colorizer.lua',
@@ -88,13 +74,69 @@ require('packer').startup(function()
         'ocamlls',
         'pyright',
         'svelte',
-        'tsserver',
         'vimls',
       }
 
       for _, lsp in ipairs(servers) do
         nvim_lsp[lsp].setup {}
       end
+
+      -- https://phelipetls.github.io/posts/configuring-eslint-to-work-with-neovim-lsp/
+      local function set_lsp_config(client)
+        if client.resolved_capabilities.document_formatting then
+          vim.cmd[[
+            autocmd! BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 300)
+          ]]
+        end
+      end
+
+      nvim_lsp.tsserver.setup {
+        on_attach = function(client)
+          if client.config.flags then
+            client.config.flags.allow_incremental_sync = true
+          end
+          client.resolved_capabilities.document_formatting = false
+          set_lsp_config(client)
+        end
+      }
+
+      local eslint = {
+        lintCommand = 'eslint_d -f unix --stdin --stdin-filename ${INPUT}',
+        lintStdin = true,
+        lintFormats = {
+          '%f:%l:%c: %m',
+        },
+        lintIgnoreExitCode = true,
+        formatCommand = 'eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}',
+        formatStdin = true,
+      }
+
+      nvim_lsp.efm.setup {
+        on_attach = function(client)
+          client.resolved_capabilities.document_formatting = true
+          client.resolved_capabilities.goto_definition = false
+          set_lsp_config(client)
+        end,
+        rootMarkers = { '.git/' },
+        settings = {
+          languages = {
+            javascript = { eslint },
+            javascriptreact = { eslint },
+            ['javascript.jsx'] = { eslint },
+            typescript = { eslint },
+            typescriptreact = { eslint },
+            ['typescript.jsx'] = { eslint },
+          },
+        },
+        filetypes = {
+          'javascript',
+          'javascriptreact',
+          'javascript.jsx',
+          'typescript',
+          'typescript.tsx',
+          'typescriptreact',
+        },
+      }
     end
   }
 
@@ -119,18 +161,6 @@ require('packer').startup(function()
   -- Comments
   -- visual mode = gc = comment
   use 'tpope/vim-commentary'
-
-  -- Workspace todo comments
-  -- use {
-  --   'folke/todo-comments.nvim',
-  --   requires = 'nvim-lua/plenary.nvim',
-  --   config = function()
-  --     require('todo-comments').setup {}
-  --   end
-  -- }
-
-  -- Neovim plugin dev
-  -- use 'folke/lua-dev.nvim'
 
   -- Status line
   use {
@@ -315,7 +345,7 @@ local maps = {
     ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
     ['<leader>a'] = '<cmd>Telescope live_grep<cr>',
     ['<leader>b'] = '<cmd>Telescope buffers<cr>',
-    ['<leader>e'] = '<cmd>TroubleToggle lsp_workspace_diagnostics<cr>',
+    ['<leader>e'] = '<cmd>TroubleToggle workspace_diagnostics<cr>',
     ['<leader>f'] = '<cmd>lua vim.lsp.buf.formatting()<cr>',
     ['<leader>gd'] = '<cmd>Gdiff<cr>',
     ['<leader>gs'] = '<cmd>Gstatus<cr>',
