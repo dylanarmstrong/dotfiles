@@ -74,6 +74,7 @@ require('packer').startup(function()
         'ocamlls',
         'pyright',
         'svelte',
+        'tsserver',
         'vimls',
       }
 
@@ -82,14 +83,15 @@ require('packer').startup(function()
       end
 
       -- https://phelipetls.github.io/posts/configuring-eslint-to-work-with-neovim-lsp/
-      local function set_lsp_config(client)
-        if client.resolved_capabilities.document_formatting then
-          vim.cmd[[
-            autocmd! BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 300)
-          ]]
-        end
-      end
+      -- local function set_lsp_config(client)
+      --   if client.resolved_capabilities.document_formatting then
+      --     vim.cmd[[
+      --       autocmd! BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 300)
+      --     ]]
+      --   end
+      -- end
 
+      --[[
       nvim_lsp.tsserver.setup {
         on_attach = function(client)
           if client.config.flags then
@@ -137,6 +139,7 @@ require('packer').startup(function()
           'typescriptreact',
         },
       }
+      --]]
     end
   }
 
