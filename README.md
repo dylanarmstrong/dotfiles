@@ -6,18 +6,19 @@ git submodule update --init --recursive
 
 #### Neovim requires the following:
 
-Neovim > 0.5
+Neovim > 0.6
 
 For LSP support run the following:
 
 ```bash
 npm i -g \
-  typescript typescript-language-server \
-  pyright \
-  vscode-langservers-extracted \
   bash-language-server \
   dockerfile-language-server-nodejs \
-  vim-language-server \
   ocaml-language-server \
-  svelte-language-server
+  pyright \
+  svelte-language-server \
+  typescript \
+  typescript-language-server \
+  vim-language-server \
+  vscode-langservers-extracted
 ```

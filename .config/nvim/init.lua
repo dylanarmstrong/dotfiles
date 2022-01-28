@@ -22,6 +22,7 @@ require('packer').startup(function()
 
   use {
     'norcalli/nvim-colorizer.lua',
+    event = 'BufRead',
     config = function()
       require('colorizer').setup()
     end
@@ -70,6 +71,7 @@ require('packer').startup(function()
         'bashls',
         'cssls',
         'dockerls',
+        'eslint',
         'html',
         'ocamlls',
         'pyright',
@@ -81,71 +83,13 @@ require('packer').startup(function()
       for _, lsp in ipairs(servers) do
         nvim_lsp[lsp].setup {}
       end
-
-      -- https://phelipetls.github.io/posts/configuring-eslint-to-work-with-neovim-lsp/
-      -- local function set_lsp_config(client)
-      --   if client.resolved_capabilities.document_formatting then
-      --     vim.cmd[[
-      --       autocmd! BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 300)
-      --     ]]
-      --   end
-      -- end
-
-      --[[
-      nvim_lsp.tsserver.setup {
-        on_attach = function(client)
-          if client.config.flags then
-            client.config.flags.allow_incremental_sync = true
-          end
-          client.resolved_capabilities.document_formatting = false
-          set_lsp_config(client)
-        end
-      }
-
-      local eslint = {
-        lintCommand = 'eslint_d -f unix --stdin --stdin-filename ${INPUT}',
-        lintStdin = true,
-        lintFormats = {
-          '%f:%l:%c: %m',
-        },
-        lintIgnoreExitCode = true,
-        formatCommand = 'eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}',
-        formatStdin = true,
-      }
-
-      nvim_lsp.efm.setup {
-        on_attach = function(client)
-          client.resolved_capabilities.document_formatting = true
-          client.resolved_capabilities.goto_definition = false
-          set_lsp_config(client)
-        end,
-        rootMarkers = { '.git/' },
-        settings = {
-          languages = {
-            javascript = { eslint },
-            javascriptreact = { eslint },
-            ['javascript.jsx'] = { eslint },
-            typescript = { eslint },
-            typescriptreact = { eslint },
-            ['typescript.jsx'] = { eslint },
-          },
-        },
-        filetypes = {
-          'javascript',
-          'javascriptreact',
-          'javascript.jsx',
-          'typescript',
-          'typescript.tsx',
-          'typescriptreact',
-        },
-      }
-      --]]
     end
   }
 
   -- Treesitter for fancy syntax
   use {
     'nvim-treesitter/nvim-treesitter',
+    event = 'BufRead',
     config = function()
       require('nvim-treesitter.configs').setup {
         ensure_installed = 'maintained',
@@ -153,9 +97,6 @@ require('packer').startup(function()
         highlight = {
           enable = true,
           use_languagetree = true,
-        },
-        indent = {
-          enable = true,
         },
       }
     end
