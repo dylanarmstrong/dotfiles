@@ -71,7 +71,6 @@ require('packer').startup(function()
         'bashls',
         'cssls',
         'dockerls',
-        'eslint',
         'html',
         'ocamlls',
         'pyright',
@@ -83,6 +82,12 @@ require('packer').startup(function()
       for _, lsp in ipairs(servers) do
         nvim_lsp[lsp].setup {}
       end
+
+      nvim_lsp.eslint.setup {
+        handlers = {
+          ['window/showMessageRequest'] = function(_, result, params) return result end
+        }
+      }
     end
   }
 
