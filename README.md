@@ -22,3 +22,14 @@ npm i -g \
   vim-language-server \
   vscode-langservers-extracted
 ```
+
+#### Terminfo (for italics)
+
+1. Install Terminfo files with commands below
+2. Set iTerm to use xterm-256color-italic.
+3. Alias ssh to pass in a valid term that the remote machine will understand
+
+```bash
+tic -x xterm-256color-italic.terminfo
+tic -x tmux-256color.terminfo
+```

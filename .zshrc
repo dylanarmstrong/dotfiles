@@ -122,6 +122,7 @@ alias mkdir='nocorrect mkdir -v'
 alias mv='nocorrect mv -v'
 alias rm='nocorrect rm -v'
 alias scripts="jq '.scripts' package.json"
+alias ssh='TERM=xterm-256color ssh'
 alias tam='tmux -u -2 attach'
 alias tmux='tmux -u -2'
 alias view='nvim -R'

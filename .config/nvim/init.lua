@@ -14,8 +14,12 @@ require('packer').startup(function()
   use {
     'dracula/vim',
     config = function()
+      -- I don't want italics on non-comments, manually enable on comments
+      vim.g.dracula_italic = 0
       vim.cmd[[
         colorscheme dracula
+        hi DraculaComment guifg=#6272A4 ctermfg=61 guibg=NONE ctermbg=NONE gui=italic cterm=italic guisp=NONE
+        hi! link Comment DraculaComment
       ]]
     end
   }
