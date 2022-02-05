@@ -225,6 +225,17 @@ require('packer').startup(function()
       require('trouble').setup {}
     end
   }
+
+  -- Templates
+  use {
+    'vigoux/templar.nvim',
+    config = function()
+      local templar = require('templar')
+      templar.register('*.html')
+      templar.register('*.py')
+      templar.register('*.sh')
+    end
+  }
 end, {
   display = {
     open_fn = require('packer.util').float,
@@ -328,26 +339,3 @@ for mode, mappings in pairs(maps) do
     vim.api.nvim_set_keymap(mode, keys, mapping, { noremap = true })
   end
 end
-
--- Templates
--- Go to line with %HERE% on it, thanks vim-template for idea
--- Waiting on https://github.com/neovim/neovim/pull/12378
-vim.cmd[[
-function! Here()
-  0
-  if search('%HERE%', 'W')
-    let l = line('.')
-    let c = col('.')
-    s/%HERE%//ge
-    call cursor(l, c)
-  endif
-endfunction
-
-augroup templates
-  autocmd BufNewFile *.handlebars 0r ~/.vim/templates/skeleton.html | call Here()
-  autocmd BufNewFile *.htm 0r ~/.vim/templates/skeleton.html | call Here()
-  autocmd BufNewFile *.html 0r ~/.vim/templates/skeleton.html | call Here()
-  autocmd BufNewFile *.py 0r ~/.vim/templates/skeleton.py | call Here()
-  autocmd BufNewFile *.sh 0r ~/.vim/templates/skeleton.sh | call Here()
-augroup END
-]]
