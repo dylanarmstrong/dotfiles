@@ -101,7 +101,7 @@ require('packer').startup(function()
     event = 'BufRead',
     config = function()
       require('nvim-treesitter.configs').setup {
-        ensure_installed = 'maintained',
+        ensure_installed = 'all',
         ignore_install = {},
         highlight = {
           enable = true,
@@ -200,9 +200,7 @@ require('packer').startup(function()
   use {
     'kyazdani42/nvim-tree.lua',
     config = function()
-      require('nvim-tree').setup {
-        auto_close = true,
-      }
+      require('nvim-tree').setup { }
 
       vim.g.nvim_tree_show_icons = {
         git = 0,
