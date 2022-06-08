@@ -200,18 +200,23 @@ require('packer').startup(function()
   use {
     'kyazdani42/nvim-tree.lua',
     config = function()
-      require('nvim-tree').setup { }
-
-      vim.g.nvim_tree_show_icons = {
-        git = 0,
-        folders = 1,
-        files = 1,
-      }
-      vim.g.nvim_tree_special_files = {
-        Makefile = false,
-        ['Cargo.toml'] = false,
-        ['README.md'] = false,
-        ['readme.md'] = false,
+      require('nvim-tree').setup {
+        renderer = {
+          icons = {
+            show = {
+              file = true,
+              folder_arrow = true,
+              folder = true,
+              git = false,
+            },
+          },
+          special_files = {
+            'Makefile',
+            'Cargo.toml',
+            'README.md',
+            'readme.md',
+          },
+        },
       }
     end
   }
