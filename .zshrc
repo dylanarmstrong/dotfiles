@@ -167,8 +167,8 @@ export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 [ -s "$HOME/src/zsh-better-npm-completion" ] && source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
 
 # Lazy loaded Nvm
+export NVM_DIR="$HOME/.nvm"
 nvm() {
-  export NVM_DIR="$HOME/.nvm"
   unset -f nvm
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
   nvm $@
