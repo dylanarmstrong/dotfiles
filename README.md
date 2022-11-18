@@ -6,7 +6,7 @@ git submodule update --init --recursive
 
 #### Neovim requires the following:
 
-Neovim > 0.6
+Neovim > 0.7
 
 For LSP support run the following:
 
