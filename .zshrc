@@ -1,3 +1,5 @@
+# zmodload zsh/zprof
+
 # Need system for osx vs gentoo
 platform='unknown'
 uname=`uname`
@@ -73,7 +75,6 @@ autoload -U colors
 colors
 
 # Completion
-fpath=($HOME/.zsh/site-functions $fpath)
 autoload -U compinit
 compinit
 
@@ -149,10 +150,6 @@ function set_prompt {
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
-# Base16
-# BASE16_SHELL=$HOME/src/base16/base16-shell/
-# [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-
 # FZF
 if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
   source /usr/local/opt/fzf/shell/key-bindings.zsh
@@ -167,15 +164,15 @@ export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 [ -e /usr/local/etc/profile.d/z.sh ] && . /usr/local/etc/profile.d/z.sh
 [ -e $HOME/bin/z.sh ] && . $HOME/bin/z.sh
 
-# BASE16_FZF=$HOME/src/base16/base16-fzf
-# [ -e BASE16_FZF ] && source $BASE16_FZF/bash/base16-summerfruit-dark.config
-
 [ -s "$HOME/src/zsh-better-npm-completion" ] && source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
 
-# Nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+# Lazy loaded Nvm
+nvm() {
+  export NVM_DIR="$HOME/.nvm"
+  unset -f nvm
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+  nvm $@
+}
 
 export MAGICK_HOME=/usr/local/opt/imagemagick@6
 
@@ -187,3 +184,5 @@ export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$NVM_BIN:/u
 
 # Used for work specific stuff that runs after everything else
 [ -r $HOME/.post_env ] && . $HOME/.post_env
+
+# zprof

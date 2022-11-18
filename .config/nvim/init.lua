@@ -111,6 +111,9 @@ require('packer').startup(function()
     end
   }
 
+  -- Jenkinsfiles (groovyls doesn't work for me)
+  use 'martinda/Jenkinsfile-vim-syntax'
+
   -- Comments
   -- visual mode = gc = comment
   use 'tpope/vim-commentary'
