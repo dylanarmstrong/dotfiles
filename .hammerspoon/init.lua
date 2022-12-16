@@ -166,10 +166,9 @@ cleaners = {
   { key = '^https?://', func = clean_generic }
 }
 
--- Clipboard cleaning
+-- Clipboard cleaning for URLs
 function clean(s)
   contents = s
-  -- Clean Amazon URLs
   hs.fnutils.some(cleaners, function(obj)
     i, j = string.find(contents, obj.key)
     if i == nil then
