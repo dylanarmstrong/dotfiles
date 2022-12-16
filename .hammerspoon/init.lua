@@ -168,18 +168,20 @@ cleaners = {
 
 -- Clipboard cleaning for URLs
 function clean(s)
-  contents = s
-  hs.fnutils.some(cleaners, function(obj)
-    i, j = string.find(contents, obj.key)
-    if i == nil then
-      return false
-    end
-    contents = obj.func(contents, i, j)
-    return true
-  end)
+  if s ~= nil then
+    contents = s
+    hs.fnutils.some(cleaners, function(obj)
+      i, j = string.find(contents, obj.key)
+      if i == nil then
+        return false
+      end
+      contents = obj.func(contents, i, j)
+      return true
+    end)
 
-  if contents ~= s then
-    hs.pasteboard.writeObjects(contents)
+    if contents ~= s then
+      hs.pasteboard.writeObjects(contents)
+    end
   end
 end
 
