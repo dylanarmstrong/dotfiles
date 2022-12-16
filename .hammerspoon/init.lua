@@ -143,6 +143,49 @@ hs.fnutils.each({
   hs.hotkey.bind(mod, obj.key, func, nil, func)
 end)
 
+function decode(str)
+  return string.gsub(str, '%%(%x%x)', function (hex) return string.char(tonumber(hex, 16)) end)
+end
+
+function clean_amazon(contents, i, j)
+  return string.sub(contents, i, j - string.len('/ref='))
+end
+
+function clean_google(contents, i, j)
+  i, j = string.find(contents, '[&%?]url=.+&')
+  return decode(string.sub(contents, i + string.len('&url='), j - 1))
+end
+
+function clean_generic(contents, i, j)
+  return contents
+end
+
+cleaners = {
+  { key = '^https?://www%.amazon%.%a+/.+ref=', func = clean_amazon },
+  { key = '^https?://www%.google%.%a+/url', func = clean_google },
+  { key = '^https?://', func = clean_generic }
+}
+
+-- Clipboard cleaning
+function clean(s)
+  contents = s
+  -- Clean Amazon URLs
+  hs.fnutils.some(cleaners, function(obj)
+    i, j = string.find(contents, obj.key)
+    if i == nil then
+      return false
+    end
+    contents = obj.func(contents, i, j)
+    return true
+  end)
+
+  if contents ~= s then
+    hs.pasteboard.writeObjects(contents)
+  end
+end
+
+hs.pasteboard.watcher.new(clean)
+
 -- Caffeine alternative
 local caffeine = hs.menubar.new()
 function setCaffeineDisplay(state)
