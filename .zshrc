@@ -175,8 +175,12 @@ export MAGICK_HOME=/usr/local/opt/imagemagick@6
 # https://github.com/keybase/keybase-issues/issues/2798
 export GPG_TTY=$(tty)
 
+# pnpm
+export PNPM_HOME="/Users/dylan/Library/pnpm"
+# pnpm end
+
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:/Applications/Wireshark.app/Contents/MacOS/:$HOME/.gem/ruby/2.6.0/bin:$HOME/.cargo/bin:$HOME/.nvm/versions/node/v16.18.1/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:$PNPM_HOME:$HOME/.nvm/versions/node/v16.19.0/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:/Applications/Wireshark.app/Contents/MacOS/:$HOME/.gem/ruby/2.6.0/bin
 
 # Used for work specific stuff that runs after everything else
 [ -r $HOME/.post_env ] && . $HOME/.post_env

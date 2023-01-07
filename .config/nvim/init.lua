@@ -81,6 +81,7 @@ require('packer').startup(function()
         'svelte',
         'tsserver',
         'vimls',
+        'rust_analyzer',
       }
 
       for _, lsp in ipairs(servers) do
