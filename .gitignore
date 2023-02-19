@@ -1,3 +1,2 @@
 .config/nvim/plugin
-.tmux/plugins
-.vim/plugged
+.config/zsh/history

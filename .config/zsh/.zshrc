@@ -20,7 +20,43 @@ export LC_CTYPE=C
 export THEOS=$HOME/src/theos
 export THEOS_DEVICE_IP=localhost
 export THEOS_DEVICE_PORT=2222
+
+# XDG
+export XDG_CACHE_HOME=$HOME/.cache
 export XDG_CONFIG_HOME=$HOME/.config
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_STATE_HOME=$HOME/.local/state
+export XDG_RUNTIME_DIR=$HOME/.local/run
+
+# xdg-ninja
+HISTFILE="$XDG_CONFIG_HOME/zsh/history"
+
+alias mitmproxy="mitmproxy --set confdir=$XDG_CONFIG_HOME/mitmproxy"
+alias mitmweb="mitmweb --set confdir=$XDG_CONFIG_HOME/mitmproxy"
+alias wget="wget --hsts-file=""$XDG_DATA_HOME/wget-hsts"""
+
+defaults write org.hammerspoon.Hammerspoon MJConfigFile "$XDG_CONFIG_HOME"/hammerspoon/init.lua
+
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export GEM_HOME="${XDG_DATA_HOME}"/gem
+export GEM_SPEC_CACHE="${XDG_CACHE_HOME}"/gem
+export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+export LESSHISTFILE="$XDG_STATE_HOME"/less/history
+export MACHINE_STORAGE_PATH="$XDG_DATA_HOME"/docker-machine
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
+export NVM_DIR="$XDG_DATA_HOME"/nvm
+export OPAMROOT="$XDG_DATA_HOME/opam"
+export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
+export PYTHONSTARTUP="/etc/python/pythonrc"
+export RANDFILE="$XDG_DATA_HOME/rnd"
+export SQLITE_HISTORY="$XDG_CACHE_HOME"/sqlite_history
+export TERMINFO="$XDG_DATA_HOME"/terminfo
+export TERMINFO_DIRS="$XDG_DATA_HOME"/terminfo:/usr/share/terminfo
+export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
+export _Z_DATA="$XDG_DATA_HOME/z"
+
+# Have to check how this works on MacOS
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 
 # Private environment variables
 [ -r $HOME/.env ] && . $HOME/.env
@@ -46,7 +82,6 @@ setopt numeric_glob_sort
 setopt sh_word_split
 
 # History
-HISTFILE=$HOME/.zsh_history
 HISTORY_IGNORE='(note [^-]*)'
 HISTSIZE=1000000
 SAVEHIST=1000000
@@ -76,7 +111,7 @@ colors
 
 # Completion
 autoload -U compinit
-compinit
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 
 zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' expand prefix suffix
@@ -167,7 +202,6 @@ export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 [ -s "$HOME/src/zsh-better-npm-completion" ] && source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
 
 # Lazy loaded Nvm
-export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
 
 export MAGICK_HOME=/usr/local/opt/imagemagick@6
@@ -180,7 +214,7 @@ export PNPM_HOME="/Users/dylan/Library/pnpm"
 # pnpm end
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:$PNPM_HOME:$HOME/.nvm/versions/node/v16.19.0/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:/Applications/Wireshark.app/Contents/MacOS/:$HOME/.gem/ruby/2.6.0/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:$PNPM_HOME:$NVM_DIR/versions/node/v16.19.0/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:/Applications/Wireshark.app/Contents/MacOS/:$HOME/.gem/ruby/2.6.0/bin
 
 # Used for work specific stuff that runs after everything else
 [ -r $HOME/.post_env ] && . $HOME/.post_env
