@@ -37,9 +37,13 @@ alias wget="wget --hsts-file=""$XDG_DATA_HOME/wget-hsts"""
 
 defaults write org.hammerspoon.Hammerspoon MJConfigFile "$XDG_CONFIG_HOME"/hammerspoon/init.lua
 
+export ANSIBLE_HOME="$XDG_CONFIG_HOME/ansible"
+export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
+export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export GEM_HOME="${XDG_DATA_HOME}"/gem
 export GEM_SPEC_CACHE="${XDG_CACHE_HOME}"/gem
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export MACHINE_STORAGE_PATH="$XDG_DATA_HOME"/docker-machine
@@ -54,9 +58,6 @@ export TERMINFO="$XDG_DATA_HOME"/terminfo
 export TERMINFO_DIRS="$XDG_DATA_HOME"/terminfo:/usr/share/terminfo
 export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 export _Z_DATA="$XDG_DATA_HOME/z"
-
-# Have to check how this works on MacOS
-export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 
 # Private environment variables
 [ -r $HOME/.env ] && . $HOME/.env
