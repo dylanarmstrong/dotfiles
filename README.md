@@ -1,9 +1,5 @@
 ### Dotfiles
 
-```
-git submodule update --init --recursive
-```
-
 #### Neovim requires the following:
 
 Neovim > 0.7

@@ -1,0 +1,18 @@
+[pull]
+	rebase = false
+[user]
+	name = Dylan Armstrong
+	email = dylan@dylan.is
+	signingkey = 1063EE65E5B24293036B309EB2D34C1A9269C6AE
+[alias]
+	d = diff
+	p = push
+	s = status
+	c = checkout
+	fuck = reset --hard
+[push]
+	default = current
+[init]
+	defaultBranch = main
+[commit]
+	gpgsign = true
