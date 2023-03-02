@@ -9,6 +9,9 @@ else
   platform='osx'
 fi
 
+# For the PATH
+NODE_VERSION=v16.19.1
+
 # Exports
 export LANG=en_US.UTF-8
 
@@ -47,6 +50,7 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export MACHINE_STORAGE_PATH="$XDG_DATA_HOME"/docker-machine
+export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export NVM_DIR="$XDG_DATA_HOME"/nvm
 export OPAMROOT="$XDG_DATA_HOME/opam"
@@ -111,8 +115,13 @@ autoload -U colors
 colors
 
 # Completion
-autoload -U compinit
-compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+autoload -Uz compinit
+# Performance hack from https://gist.github.com/ctechols/ca1035271ad134841284#gistcomment-2308206
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+  compinit;
+else
+  compinit -C;
+fi;
 
 zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' expand prefix suffix
@@ -215,7 +224,7 @@ export PNPM_HOME="/Users/dylan/Library/pnpm"
 # pnpm end
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:$PNPM_HOME:$XDG_DATA_HOME/npm/bin:$NVM_DIR/versions/node/v16.19.1/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:/Applications/Wireshark.app/Contents/MacOS/:$HOME/.gem/ruby/2.6.0/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3/bin:/usr/local/opt/java/bin:$PNPM_HOME:$XDG_DATA_HOME/npm/bin:$NVM_DIR/versions/node/$NODE_VERSION/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:$HOME/.gem/ruby/2.6.0/bin
 
 # Used for work specific stuff that runs after everything else
 [ -r $HOME/.post_env ] && . $HOME/.post_env

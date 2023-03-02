@@ -2,3 +2,4 @@
 .config/zsh/history
 .config/aws/credentials
 .config/zsh/.zsh_sessions
+.config/zsh/.zcompdump
