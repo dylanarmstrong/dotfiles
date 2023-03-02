@@ -224,7 +224,7 @@ export PNPM_HOME="/Users/dylan/Library/pnpm"
 # pnpm end
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3/bin:/usr/local/opt/java/bin:$PNPM_HOME:$XDG_DATA_HOME/npm/bin:$NVM_DIR/versions/node/$NODE_VERSION/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:$HOME/.gem/ruby/2.6.0/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3/bin:/usr/local/opt/java/bin:$PNPM_HOME:$XDG_DATA_HOME/npm/bin:$NVM_DIR/versions/node/$NODE_VERSION/bin:/Applications/kitty.app/Contents/MacOS/:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:$HOME/.gem/ruby/2.6.0/bin
 
 # Used for work specific stuff that runs after everything else
 [ -r $HOME/.post_env ] && . $HOME/.post_env

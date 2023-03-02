@@ -11,31 +11,41 @@ require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
   -- Styling
-  -- use {
-  --   'dracula/vim',
-  --   config = function()
-  --     -- I don't want italics on non-comments, manually enable on comments
-  --     vim.g.dracula_italic = 0
-  --     vim.cmd[[
-  --       colorscheme dracula
-  --       hi DraculaComment guifg=#6272A4 ctermfg=61 guibg=NONE ctermbg=NONE gui=italic cterm=italic guisp=NONE
-  --       hi! link Comment DraculaComment
-  --     ]]
-  --   end
-  -- }
-
   use {
-    'folke/tokyonight.nvim',
+    'catppuccin/nvim',
     config = function()
-      require('tokyonight').setup {
-        style = 'moon',
-        styles = {
-          keywords = { italic = false }
-        }
+      require('catppuccin').setup {
+        integrations = {
+          gitgutter = true,
+          indent_blankline = {
+            enabled = true,
+            colored_indent_levels = false,
+          },
+          lsp_trouble = true,
+          native_lsp = {
+            enabled = true,
+            underlines = {
+              errors = { 'underline' },
+              hints = { 'underline' },
+              information = { 'underline' },
+              warnings = { 'underline' },
+            },
+            virtual_text = {
+              errors = { 'italic' },
+              hints = { 'italic' },
+              information = { 'italic' },
+              warnings = { 'italic' },
+            },
+          },
+          nvimtree = true,
+          telescope = true,
+        },
       }
-      vim.cmd[[ colorscheme tokyonight ]]
+      vim.cmd[[ colorscheme catppuccin-mocha ]]
     end
   }
+
+  use 'lukas-reineke/indent-blankline.nvim'
 
   use {
     'norcalli/nvim-colorizer.lua',
@@ -158,7 +168,7 @@ require('packer').startup(function()
           icons_enabled = false,
           component_separators = '|',
           section_separators = '',
-          theme = 'tokyonight',
+          theme = 'catppuccin',
         },
         sections = {
           lualine_b = {
