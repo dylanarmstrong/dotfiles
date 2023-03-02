@@ -11,16 +11,29 @@ require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
   -- Styling
+  -- use {
+  --   'dracula/vim',
+  --   config = function()
+  --     -- I don't want italics on non-comments, manually enable on comments
+  --     vim.g.dracula_italic = 0
+  --     vim.cmd[[
+  --       colorscheme dracula
+  --       hi DraculaComment guifg=#6272A4 ctermfg=61 guibg=NONE ctermbg=NONE gui=italic cterm=italic guisp=NONE
+  --       hi! link Comment DraculaComment
+  --     ]]
+  --   end
+  -- }
+
   use {
-    'dracula/vim',
+    'folke/tokyonight.nvim',
     config = function()
-      -- I don't want italics on non-comments, manually enable on comments
-      vim.g.dracula_italic = 0
-      vim.cmd[[
-        colorscheme dracula
-        hi DraculaComment guifg=#6272A4 ctermfg=61 guibg=NONE ctermbg=NONE gui=italic cterm=italic guisp=NONE
-        hi! link Comment DraculaComment
-      ]]
+      require('tokyonight').setup {
+        style = 'moon',
+        styles = {
+          keywords = { italic = false }
+        }
+      }
+      vim.cmd[[ colorscheme tokyonight ]]
     end
   }
 
@@ -145,7 +158,7 @@ require('packer').startup(function()
           icons_enabled = false,
           component_separators = '|',
           section_separators = '',
-          theme = 'dracula',
+          theme = 'tokyonight',
         },
         sections = {
           lualine_b = {

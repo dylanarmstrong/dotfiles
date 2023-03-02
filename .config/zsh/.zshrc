@@ -215,9 +215,11 @@ export PNPM_HOME="/Users/dylan/Library/pnpm"
 # pnpm end
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:$PNPM_HOME:$NVM_DIR/versions/node/v16.19.0/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:/Applications/Wireshark.app/Contents/MacOS/:$HOME/.gem/ruby/2.6.0/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3.8/bin:/usr/local/opt/java/bin:$PNPM_HOME:$XDG_DATA_HOME/npm/bin:$NVM_DIR/versions/node/v16.19.1/bin:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:/Applications/Wireshark.app/Contents/MacOS/:$HOME/.gem/ruby/2.6.0/bin
 
 # Used for work specific stuff that runs after everything else
 [ -r $HOME/.post_env ] && . $HOME/.post_env
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # zprof
