@@ -15,6 +15,7 @@ require('packer').startup(function()
     'catppuccin/nvim',
     config = function()
       require('catppuccin').setup {
+        flavour = 'mocha',
         integrations = {
           gitgutter = true,
           indent_blankline = {
@@ -41,7 +42,7 @@ require('packer').startup(function()
           telescope = true,
         },
       }
-      vim.cmd[[ colorscheme catppuccin-mocha ]]
+      vim.cmd[[ colorscheme catppuccin ]]
     end
   }
 
