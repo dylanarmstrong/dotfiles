@@ -199,27 +199,11 @@ require('packer').startup(function()
 
   -- Icons
   use {
-    'kyazdani42/nvim-web-devicons',
+    'nvim-tree/nvim-web-devicons',
     config = function()
       require('nvim-web-devicons').setup {
         default = true,
-        override = {
-          ['.conkyrc'] = {
-            icon = '',
-            color = '#6d8086',
-            name = 'Conkyrc'
-          },
-          ['.xinitrc'] = {
-            icon = '',
-            color = '#6d8086',
-            name = 'Xinitrc'
-          },
-          ['.Xresources'] = {
-            icon = '',
-            color = '#6d8086',
-            name = 'XResources',
-          },
-        }
+        color_icons = true,
       }
     end
   }

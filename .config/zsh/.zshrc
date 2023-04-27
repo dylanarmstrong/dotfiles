@@ -10,7 +10,7 @@ else
 fi
 
 # For the PATH
-NODE_VERSION=v16.19.1
+NODE_VERSION=v16.20.0
 
 # Exports
 export LANG=en_US.UTF-8
@@ -224,11 +224,11 @@ export PNPM_HOME="/Users/dylan/Library/pnpm"
 # pnpm end
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3/bin:/usr/local/opt/java/bin:$PNPM_HOME:$XDG_DATA_HOME/npm/bin:$NVM_DIR/versions/node/$NODE_VERSION/bin:/Applications/kitty.app/Contents/MacOS/:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:$HOME/.gem/ruby/2.6.0/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3/bin:/usr/local/opt/java/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:/Applications/kitty.app/Contents/MacOS/:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:$HOME/.gem/ruby/2.6.0/bin
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Used for work specific stuff that runs after everything else
 [ -r $HOME/.post_env ] && . $HOME/.post_env
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # zprof
