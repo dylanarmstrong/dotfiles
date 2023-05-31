@@ -268,6 +268,9 @@ end, {
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Folding
+vim.opt.foldmethod = 'marker'
+
 -- Spaces
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2

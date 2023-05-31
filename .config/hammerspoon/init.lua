@@ -2,7 +2,7 @@
 hs.window.animationDuration = 0
 
 -- Auto reload when config file changes
-hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', hs.reload):start()
+hs.pathwatcher.new(os.getenv('HOME') .. '/.config/hammerspoon/', hs.reload):start()
 
 -- Modifier to use
 local mod   = { 'alt', 'ctrl' }
