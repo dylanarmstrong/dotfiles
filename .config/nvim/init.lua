@@ -136,6 +136,13 @@ require('packer').startup(function()
     end
   }
 
+  use {
+    'simrat39/symbols-outline.nvim',
+    config = function()
+      require('symbols-outline').setup()
+    end
+  }
+
   -- Jenkinsfiles (groovyls doesn't work for me)
   use 'martinda/Jenkinsfile-vim-syntax'
 
@@ -257,6 +264,10 @@ end, {
   }
 })
 
+-- Per recommendation on nvim-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- Spaces
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
@@ -321,6 +332,7 @@ local maps = {
     [';'] = ':',
     ['<C-n>'] = '<cmd>NvimTreeToggle<cr>',
     ['<C-p>'] = '<cmd>Telescope find_files<cr>',
+    ['<C-s>'] = '<cmd>SymbolsOutline<cr>',
     ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
     ['<leader>a'] = '<cmd>Telescope live_grep<cr>',
     ['<leader>b'] = '<cmd>Telescope buffers<cr>',

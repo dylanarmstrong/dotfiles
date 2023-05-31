@@ -65,10 +65,13 @@ export _Z_DATA="$XDG_DATA_HOME/z"
 
 # Private environment variables
 [ -r $HOME/.env ] && . $HOME/.env
+
+export APOLLO_TELEMETRY_DISABLED=1
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_ENV_HINTS=1
-export APOLLO_TELEMETRY_DISABLED=1
+export SHOPIFY_CLI_NO_ANALYTICS=1
 
 # MacOS Sierra Tmux Fix
 export EVENT_NOKQUEUE=1
