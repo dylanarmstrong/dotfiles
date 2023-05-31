@@ -340,7 +340,7 @@ local maps = {
     ['<leader>a'] = '<cmd>Telescope live_grep<cr>',
     ['<leader>b'] = '<cmd>Telescope buffers<cr>',
     ['<leader>e'] = '<cmd>TroubleToggle workspace_diagnostics<cr>',
-    ['<leader>f'] = '<cmd>lua vim.lsp.buf.formatting()<cr>',
+    ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
     ['<leader>gd'] = '<cmd>Gdiff<cr>',
     ['<leader>gs'] = '<cmd>Gstatus<cr>',
     ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
@@ -349,7 +349,9 @@ local maps = {
     ['Y'] = 'yy',
     ['[d'] = '<cmd>lua vim.lsp.buf.goto_prev()<cr>',
     [']d'] = '<cmd>lua vim.lsp.buf.goto_next()<cr>',
+    ['gD'] = '<cmd>lua vim.lsp.buf.declaration()<cr>',
     ['gd'] = '<cmd>lua vim.lsp.buf.definition()<cr>',
+    ['gi'] = '<cmd>lua vim.lsp.buf.implementation()<cr>',
     ['gr'] = '<cmd>lua vim.lsp.buf.references()<cr>',
     -- Natural movement over visual lines
     ['j'] = 'gj',
