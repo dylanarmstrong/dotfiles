@@ -8,15 +8,14 @@ For LSP support run the following:
 
 ```bash
 npm i -g \
-  bash-language-server \
-  dockerfile-language-server-nodejs \
-  ocaml-language-server \
-  pyright \
-  svelte-language-server \
-  typescript \
-  typescript-language-server \
-  vim-language-server \
-  vscode-langservers-extracted
+  bash-language-server@latest \
+  dockerfile-language-server-nodejs@latest \
+  pyright@latest \
+  svelte-language-server@latest \
+  typescript@latest \
+  typescript-language-server@latest \
+  vim-language-server@latest \
+  vscode-langservers-extracted@latest
 ```
 
 #### Kitty (Generate Theme)
