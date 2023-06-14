@@ -98,14 +98,19 @@ require('packer').startup(function()
       local servers = {
         'bashls',
         'cssls',
+        'dhall_lsp_server',
         'dockerls',
+        'graphql',
         'html',
+        'jsonls',
+        'nxls',
         'ocamlls',
         'pyright',
+        'rust_analyzer',
         'svelte',
         'tsserver',
+        'typst_lsp',
         'vimls',
-        'rust_analyzer',
       }
 
       for _, lsp in ipairs(servers) do
@@ -145,6 +150,11 @@ require('packer').startup(function()
 
   -- Jenkinsfiles (groovyls doesn't work for me)
   use 'martinda/Jenkinsfile-vim-syntax'
+
+  use {
+    'kaarmu/typst.vim',
+    ft = { 'typst' }
+  }
 
   -- Comments
   -- visual mode = gc = comment

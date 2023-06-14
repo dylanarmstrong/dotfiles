@@ -7,15 +7,20 @@ Neovim > 0.7
 For LSP support run the following:
 
 ```bash
-npm i -g \
+pnpm add -g \
   bash-language-server@latest \
   dockerfile-language-server-nodejs@latest \
+  graphql-language-service-cli@latest \
+  nxls@latest \
   pyright@latest \
   svelte-language-server@latest \
-  typescript@latest \
   typescript-language-server@latest \
+  typescript@latest \
   vim-language-server@latest \
-  vscode-langservers-extracted@latest
+  vscode-langservers-extracted@latest \
+  yaml-language-server@latest
+
+brew install dhall-lsp-server
 ```
 
 #### Kitty (Generate Theme)
