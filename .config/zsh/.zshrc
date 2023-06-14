@@ -223,7 +223,7 @@ export MAGICK_HOME=/usr/local/opt/imagemagick@6
 export GPG_TTY=$(tty)
 
 # pnpm
-export PNPM_HOME="/Users/dylan/Library/pnpm"
+export PNPM_HOME="/Users/$(whoami)/Library/pnpm"
 # pnpm end
 
 # Reset PATH
