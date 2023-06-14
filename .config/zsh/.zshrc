@@ -1,29 +1,5 @@
 # zmodload zsh/zprof
 
-# Need system for osx vs gentoo
-platform='unknown'
-uname=`uname`
-if [[ "$uname" == 'Linux' ]]; then
-  platform='linux'
-else
-  platform='osx'
-fi
-
-# For the PATH
-NODE_VERSION=v16.20.0
-
-# Exports
-export LANG=en_US.UTF-8
-
-export EDITOR=nvim
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
-export LC_ALL=$LANG
-export LC_COLLATE=C
-export LC_CTYPE=C
-export THEOS=$HOME/src/theos
-export THEOS_DEVICE_IP=localhost
-export THEOS_DEVICE_PORT=2222
-
 # XDG
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_CONFIG_HOME=$HOME/.config
@@ -31,14 +7,36 @@ export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
 export XDG_RUNTIME_DIR=$HOME/.local/run
 
+# Need system for osx vs gentoo
+platform='unknown'
+uname=`uname`
+if [[ "$uname" == 'Linux' ]]; then
+  platform='linux'
+else
+  defaults write org.hammerspoon.Hammerspoon MJConfigFile "$XDG_CONFIG_HOME"/hammerspoon/init.lua
+  platform='osx'
+fi
+
+# For the PATH
+NODE_VERSION=v16.20.0
+
+# Exports
+export EDITOR=nvim
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+export LANG=en_US.UTF-8
+export LC_ALL=$LANG
+export LC_COLLATE=C
+export LC_CTYPE=C
+export THEOS=$HOME/src/theos
+export THEOS_DEVICE_IP=localhost
+export THEOS_DEVICE_PORT=2222
+
 # xdg-ninja
 HISTFILE="$XDG_CONFIG_HOME/zsh/history"
 
 alias mitmproxy="mitmproxy --set confdir=$XDG_CONFIG_HOME/mitmproxy"
 alias mitmweb="mitmweb --set confdir=$XDG_CONFIG_HOME/mitmproxy"
 alias wget="wget --hsts-file=""$XDG_DATA_HOME/wget-hsts"""
-
-defaults write org.hammerspoon.Hammerspoon MJConfigFile "$XDG_CONFIG_HOME"/hammerspoon/init.lua
 
 export ANSIBLE_HOME="$XDG_CONFIG_HOME/ansible"
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
