@@ -117,12 +117,7 @@ colors
 
 # Completion
 autoload -Uz compinit
-# Performance hack from https://gist.github.com/ctechols/ca1035271ad134841284#gistcomment-2308206
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-  compinit;
-else
-  compinit -C;
-fi;
+compinit
 
 zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' expand prefix suffix
@@ -195,6 +190,11 @@ function set_prompt {
 }
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
+
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 4); do /usr/bin/time $shell -i -c exit; done
+}
 
 # FZF
 if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
