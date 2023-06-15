@@ -6,271 +6,299 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 local use = require('packer').use
-require('packer').startup(function()
-  -- Packer
-  use 'wbthomason/packer.nvim'
+require('packer').startup({
+  function()
+    -- Packer
+    use 'wbthomason/packer.nvim'
 
-  -- Styling
-  use {
-    'catppuccin/nvim',
-    config = function()
-      require('catppuccin').setup {
-        flavour = 'mocha',
-        integrations = {
-          gitgutter = true,
-          indent_blankline = {
-            enabled = true,
-            colored_indent_levels = false,
-          },
-          lsp_trouble = true,
-          native_lsp = {
-            enabled = true,
-            underlines = {
-              errors = { 'underline' },
-              hints = { 'underline' },
-              information = { 'underline' },
-              warnings = { 'underline' },
+    -- Styling
+    use {
+      'catppuccin/nvim',
+      config = function()
+        require('catppuccin').setup {
+          flavour = 'mocha',
+          integrations = {
+            gitgutter = true,
+            indent_blankline = {
+              enabled = true,
+              colored_indent_levels = false,
             },
-            virtual_text = {
-              errors = { 'italic' },
-              hints = { 'italic' },
-              information = { 'italic' },
-              warnings = { 'italic' },
+            lsp_trouble = true,
+            native_lsp = {
+              enabled = true,
+              underlines = {
+                errors = { 'underline' },
+                hints = { 'underline' },
+                information = { 'underline' },
+                warnings = { 'underline' },
+              },
+              virtual_text = {
+                errors = { 'italic' },
+                hints = { 'italic' },
+                information = { 'italic' },
+                warnings = { 'italic' },
+              },
             },
-          },
-          nvimtree = true,
-          telescope = true,
-        },
-      }
-      vim.cmd[[ colorscheme catppuccin ]]
-    end
-  }
-
-  use 'lukas-reineke/indent-blankline.nvim'
-
-  use {
-    'norcalli/nvim-colorizer.lua',
-    event = 'BufRead',
-    config = function()
-      require('colorizer').setup()
-    end
-  }
-
-  -- Pug
-  use 'digitaltoad/vim-pug'
-
-  -- Git
-  use 'tpope/vim-fugitive'
-  use 'airblade/vim-gitgutter'
-
-  -- Finder
-  use {
-    'nvim-telescope/telescope.nvim',
-    run = 'vim.cmd[[TSUpdate]]',
-    requires = {
-      'nvim-lua/popup.nvim',
-      'nvim-lua/plenary.nvim',
-    },
-    config = function()
-      require('telescope').setup {
-        defaults = {
-          file_ignore_patterns = {
-            '.git',
-            'node_modules',
+            nvimtree = true,
+            telescope = true,
           },
         }
-      }
-    end
-  }
-  use {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    run = 'make',
-    config = function()
-      require('telescope').load_extension('fzf')
-    end
-  }
-
-  -- LSP
-  use {
-    'neovim/nvim-lspconfig',
-    config = function()
-      local nvim_lsp = require('lspconfig')
-      local servers = {
-        'bashls',
-        'cssls',
-        'dhall_lsp_server',
-        'dockerls',
-        'graphql',
-        'html',
-        'jsonls',
-        'nxls',
-        'ocamlls',
-        'pyright',
-        'rust_analyzer',
-        'svelte',
-        'tsserver',
-        'typst_lsp',
-        'vimls',
-      }
-
-      for _, lsp in ipairs(servers) do
-        nvim_lsp[lsp].setup {}
+        vim.cmd[[ colorscheme catppuccin ]]
       end
+    }
 
-      nvim_lsp.eslint.setup {
-        handlers = {
-          ['window/showMessageRequest'] = function(_, result, params) return result end
+    use 'lukas-reineke/indent-blankline.nvim'
+
+    use {
+      'norcalli/nvim-colorizer.lua',
+      event = 'BufRead',
+      config = function()
+        require('colorizer').setup()
+      end
+    }
+
+    -- Pug
+    use 'digitaltoad/vim-pug'
+
+    -- Git
+    use 'tpope/vim-fugitive'
+    use 'airblade/vim-gitgutter'
+
+    -- Finder
+    use {
+      'nvim-telescope/telescope.nvim',
+      run = 'vim.cmd[[TSUpdate]]',
+      requires = {
+        'nvim-lua/popup.nvim',
+        'nvim-lua/plenary.nvim',
+      },
+      config = function()
+        require('telescope').setup {
+          defaults = {
+            file_ignore_patterns = {
+              '.git',
+              'node_modules',
+            },
+          }
         }
-      }
-    end
-  }
-
-  -- Treesitter for fancy syntax
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    event = 'BufRead',
-    config = function()
-      require('nvim-treesitter.configs').setup {
-        ensure_installed = 'all',
-        ignore_install = {},
-        highlight = {
-          enable = true,
-          use_languagetree = true,
-        },
-      }
-    end
-  }
-
-  use {
-    'simrat39/symbols-outline.nvim',
-    config = function()
-      require('symbols-outline').setup()
-    end
-  }
-
-  -- Jenkinsfiles (groovyls doesn't work for me)
-  use 'martinda/Jenkinsfile-vim-syntax'
-
-  use {
-    'kaarmu/typst.vim',
-    ft = { 'typst' }
-  }
-
-  -- Comments
-  -- visual mode = gc = comment
-  use 'tpope/vim-commentary'
-
-  -- Status line
-  use {
-    'hoob3rt/lualine.nvim',
-    config = function()
-      -- Get character under cursor
-      local get_hex = function()
-        local hex = vim.api.nvim_exec([[
-          ascii
-        ]], true)
-        if hex == nil then
-          return 'nil'
-        end
-
-        hex = hex:match(',  Hex ([^,]+)')
-        if hex == nil then
-          return 'nil'
-        end
-
-        return '0x' .. hex
       end
+    }
+    use {
+      'nvim-telescope/telescope-fzf-native.nvim',
+      run = 'make',
+      config = function()
+        require('telescope').load_extension('fzf')
+      end
+    }
 
-      require('lualine').setup {
-        options = {
-          icons_enabled = false,
-          component_separators = '|',
-          section_separators = '',
-          theme = 'catppuccin',
-        },
-        sections = {
-          lualine_b = {
-            'fugitive#head'
-          },
-          lualine_y = {
-            {
-              'diagnostics',
-              sources = {
-                'nvim_diagnostic'
+    -- LSP
+    use {
+      'neovim/nvim-lspconfig',
+      config = function()
+        local nvim_lsp = require('lspconfig')
+        local servers = {
+          'bashls',
+          'cssls',
+          'dhall_lsp_server',
+          'dockerls',
+          'graphql',
+          'html',
+          'jsonls',
+          'nxls',
+          'ocamlls',
+          'pyright',
+          'rust_analyzer',
+          'svelte',
+          'tsserver',
+          'typst_lsp',
+          'vimls',
+        }
+
+        for _, lsp in ipairs(servers) do
+          nvim_lsp[lsp].setup {}
+        end
+
+        nvim_lsp.lua_ls.setup {
+          settings = {
+            Lua = {
+              runtime = {
+                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                version = 'LuaJIT',
               },
-              symbols = {
-                error = ' ',
-                warn = ' ',
-                info = ' '
+              diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = { 'vim' },
               },
-              color_error = '#ea51b2',
-              color_warn = '#00f769',
-              color_info = '#a1efe4',
-            },
-            get_hex,
-          },
-        },
-      }
-    end
-  }
-
-  -- Icons
-  use {
-    'nvim-tree/nvim-web-devicons',
-    config = function()
-      require('nvim-web-devicons').setup {
-        default = true,
-        color_icons = true,
-      }
-    end
-  }
-
-  -- File browser
-  use {
-    'kyazdani42/nvim-tree.lua',
-    config = function()
-      require('nvim-tree').setup {
-        renderer = {
-          icons = {
-            show = {
-              file = true,
-              folder_arrow = true,
-              folder = true,
-              git = false,
+              workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = vim.api.nvim_get_runtime_file('', true),
+              },
+              -- Do not send telemetry
+              telemetry = {
+                enable = false,
+              },
             },
           },
-          special_files = {
-            'Makefile',
-            'Cargo.toml',
-            'README.md',
-            'readme.md',
+        }
+
+        nvim_lsp.eslint.setup {
+          handlers = {
+            ['window/showMessageRequest'] = function(_, result) return result end
+          }
+        }
+      end
+    }
+
+    -- Treesitter for fancy syntax
+    use {
+      'nvim-treesitter/nvim-treesitter',
+      event = 'BufRead',
+      config = function()
+        require('nvim-treesitter.configs').setup {
+          ensure_installed = 'all',
+          ignore_install = {},
+          highlight = {
+            enable = true,
+            use_languagetree = true,
           },
-        },
+        }
+      end
+    }
+
+    use {
+      'simrat39/symbols-outline.nvim',
+      config = function()
+        require('symbols-outline').setup()
+      end
+    }
+
+    -- Jenkinsfiles (groovyls doesn't work for me)
+    use 'martinda/Jenkinsfile-vim-syntax'
+
+    use {
+      'kaarmu/typst.vim',
+      ft = { 'typst' }
+    }
+
+    -- Comments
+    -- visual mode = gc = comment
+    use 'tpope/vim-commentary'
+
+    -- Status line
+    use {
+      'hoob3rt/lualine.nvim',
+      config = function()
+        -- Get character under cursor
+        local get_hex = function()
+          local hex = vim.api.nvim_exec([[
+            ascii
+          ]], true)
+          if hex == nil then
+            return 'nil'
+          end
+
+          hex = hex:match(',  Hex ([^,]+)')
+          if hex == nil then
+            return 'nil'
+          end
+
+          return '0x' .. hex
+        end
+
+        require('lualine').setup {
+          options = {
+            icons_enabled = false,
+            component_separators = '|',
+            section_separators = '',
+            theme = 'catppuccin',
+          },
+          sections = {
+            lualine_b = {
+              'fugitive#head'
+            },
+            lualine_y = {
+              {
+                'diagnostics',
+                sources = {
+                  'nvim_diagnostic'
+                },
+                symbols = {
+                  error = ' ',
+                  warn = ' ',
+                  info = ' '
+                },
+                color_error = '#ea51b2',
+                color_warn = '#00f769',
+                color_info = '#a1efe4',
+              },
+              get_hex,
+            },
+          },
+        }
+      end
+    }
+
+    -- Icons
+    use {
+      'nvim-tree/nvim-web-devicons',
+      config = function()
+        require('nvim-web-devicons').setup {
+          default = true,
+          color_icons = true,
+        }
+      end
+    }
+
+    -- File browser
+    use {
+      'kyazdani42/nvim-tree.lua',
+      config = function()
+        require('nvim-tree').setup {
+          renderer = {
+            icons = {
+              show = {
+                file = true,
+                folder_arrow = true,
+                folder = true,
+                git = false,
+              },
+            },
+            special_files = {
+              'Makefile',
+              'Cargo.toml',
+              'README.md',
+              'readme.md',
+            },
+          },
+        }
+      end
+    }
+
+    -- Diagnostics
+    use {
+      'folke/trouble.nvim',
+      config = function()
+        require('trouble').setup {}
+      end
+    }
+
+    -- Templates
+    use {
+      'vigoux/templar.nvim',
+      config = function()
+        local templar = require('templar')
+        templar.register('*.html')
+        templar.register('*.py')
+        templar.register('*.sh')
+      end
+    }
+  end,
+  {
+    config = {
+      display = {
+        open_fn = require('packer.util').float,
       }
-    end
-  }
-
-  -- Diagnostics
-  use {
-    'folke/trouble.nvim',
-    config = function()
-      require('trouble').setup {}
-    end
-  }
-
-  -- Templates
-  use {
-    'vigoux/templar.nvim',
-    config = function()
-      local templar = require('templar')
-      templar.register('*.html')
-      templar.register('*.py')
-      templar.register('*.sh')
-    end
-  }
-end, {
-  display = {
-    open_fn = require('packer.util').float,
+    }
   }
 })
 

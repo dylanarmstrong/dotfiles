@@ -4,3 +4,4 @@
 .config/zsh/.zsh_sessions
 .config/zsh/.zcompdump
 .config/kitty/kitty.conf.bak
+.luarc.json

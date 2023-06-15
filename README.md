@@ -20,7 +20,7 @@ pnpm add -g \
   vscode-langservers-extracted@latest \
   yaml-language-server@latest
 
-brew install dhall-lsp-server
+brew install dhall-lsp-server lua-language-server
 ```
 
 #### Kitty (Generate Theme)
