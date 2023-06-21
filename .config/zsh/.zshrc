@@ -22,7 +22,7 @@ NODE_VERSION=v16.20.0
 
 # Exports
 export EDITOR=nvim
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+export JAVA_HOME=/opt/homebrew/opt/openjdk@11/
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C

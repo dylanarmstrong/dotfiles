@@ -141,6 +141,10 @@ require('packer').startup({
           },
         }
 
+        nvim_lsp.elixirls.setup {
+          cmd = { '/Users/dylan/bin/elixir-ls-v0.15.0/language_server.sh' }
+        }
+
         nvim_lsp.eslint.setup {
           handlers = {
             ['window/showMessageRequest'] = function(_, result) return result end
