@@ -91,11 +91,20 @@ require('packer').startup({
       end
     }
 
-    -- LSP
+    -- LSP (with autocomplete)
     use {
       'neovim/nvim-lspconfig',
+      requires = {
+        'hrsh7th/cmp-buffer',
+        'hrsh7th/cmp-nvim-lsp',
+        'hrsh7th/cmp-vsnip',
+        'hrsh7th/nvim-cmp',
+        'hrsh7th/vim-vsnip',
+      },
       config = function()
         local nvim_lsp = require('lspconfig')
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
         local servers = {
           'bashls',
           'cssls',
@@ -109,16 +118,20 @@ require('packer').startup({
           'pyright',
           'rust_analyzer',
           'svelte',
+          'tailwindcss',
           'tsserver',
           'typst_lsp',
           'vimls',
         }
 
         for _, lsp in ipairs(servers) do
-          nvim_lsp[lsp].setup {}
+          nvim_lsp[lsp].setup {
+            capabilities = capabilities,
+          }
         end
 
         nvim_lsp.lua_ls.setup {
+          capabilities = capabilities,
           settings = {
             Lua = {
               runtime = {
@@ -142,14 +155,40 @@ require('packer').startup({
         }
 
         nvim_lsp.elixirls.setup {
+          capabilities = capabilities,
           cmd = { '/Users/dylan/bin/elixir-ls-v0.15.0/language_server.sh' }
         }
 
         nvim_lsp.eslint.setup {
+          capabilities = capabilities,
           handlers = {
             ['window/showMessageRequest'] = function(_, result) return result end
           }
         }
+
+        local cmp = require('cmp')
+
+        cmp.setup {
+          snippet = {
+            expand = function(args)
+              vim.fn['vsnip#anonymous'](args.body)
+            end,
+          },
+          mapping = cmp.mapping.preset.insert({
+            ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-Space>'] = cmp.mapping.complete(),
+            ['<C-e>'] = cmp.mapping.abort(),
+            ['<CR>'] = cmp.mapping.confirm({ select = true }),
+          }),
+          sources = cmp.config.sources({
+            { name = 'nvim_lsp' },
+            { name = 'luasnip' },
+          }, {
+            { name = 'buffer' },
+          }),
+        }
+
       end
     }
 
@@ -168,6 +207,7 @@ require('packer').startup({
         }
       end
     }
+
 
     use {
       'simrat39/symbols-outline.nvim',

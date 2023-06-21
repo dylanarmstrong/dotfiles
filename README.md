@@ -8,20 +8,24 @@ For LSP support run the following:
 
 ```bash
 pnpm add -g \
+  @tailwindcss/language-server \
   bash-language-server \
   dockerfile-language-server-nodejs \
   graphql-language-service-cli \
   nxls \
   pyright \
   svelte-language-server \
-  typescript-language-server \
   typescript \
+  typescript-language-server \
   vim-language-server \
   vscode-langservers-extracted \
   yaml-language-server
 
 brew install dhall-lsp-server lua-language-server
 ```
+
+The following must be manually installed with path adjusted accordingly in `.config/nvim/init.lua`:
+* [elixir-ls](https://github.com/elixir-lsp/elixir-ls)
 
 #### Kitty (Generate Theme)
 
