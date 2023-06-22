@@ -1,7 +1,8 @@
-.config/nvim/plugin
-.config/zsh/history
 .config/aws/credentials
-.config/zsh/.zsh_sessions
-.config/zsh/.zcompdump
 .config/kitty/kitty.conf.bak
+.config/nvim/lazy-lock.json
+.config/nvim/plugin
+.config/zsh/.zcompdump
+.config/zsh/.zsh_sessions
+.config/zsh/history
 .luarc.json

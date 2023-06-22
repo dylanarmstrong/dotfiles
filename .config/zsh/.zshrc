@@ -22,7 +22,7 @@ NODE_VERSION=v16.20.0
 
 # Exports
 export EDITOR=nvim
-export JAVA_HOME=/opt/homebrew/opt/openjdk@11/
+export JAVA_HOME=/usr/local/opt/openjdk@11/
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
@@ -225,7 +225,7 @@ export PNPM_HOME="/Users/$(whoami)/Library/pnpm"
 # pnpm end
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3/bin:/usr/local/opt/java/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:/Applications/kitty.app/Contents/MacOS/:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin:$HOME/.gem/ruby/2.6.0/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3/bin:/usr/local/opt/java/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:/Applications/kitty.app/Contents/MacOS/:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 

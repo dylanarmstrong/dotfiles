@@ -2,7 +2,7 @@
 
 #### Neovim
 
-Neovim > 0.7
+Neovim > 0.9
 
 For LSP support run the following:
 
@@ -22,6 +22,24 @@ pnpm add -g \
   yaml-language-server
 
 brew install dhall-lsp-server lua-language-server
+
+# Groovy Support
+pushd $HOME/src && \
+    git clone https://github.com/GroovyLanguageServer/groovy-language-server || true && \
+    pushd groovy-language-server && \
+    ./gradlew build && \
+    popd && \
+    popd
+
+# Elixir Support
+pushd $HOME/src && \
+    git clone https://github.com/elixir-lsp/elixir-ls || true && \
+    pushd elixir-ls && \
+    mix deps.get && \
+    MIX_ENV=prod mix compile && \
+    MIX_ENV=prod mix elixir_ls.release2 -o ./dist && \
+    popd && \
+    popd
 ```
 
 The following must be manually installed with path adjusted accordingly in `.config/nvim/init.lua`:
