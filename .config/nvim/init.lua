@@ -136,6 +136,8 @@ require('lazy').setup({
               globals = { 'vim' },
             },
             workspace = {
+              -- Stop annoying popup on lua files
+              checkThirdParty = false,
               -- Make the server aware of Neovim runtime files
               library = vim.api.nvim_get_runtime_file('', true),
             },
@@ -167,6 +169,14 @@ require('lazy').setup({
       local cmp = require('cmp')
 
       cmp.setup {
+        enabled = function()
+          -- Don't enable autocomplete inside of comments
+          if require'cmp.config.context'.in_treesitter_capture('comment')==true or require'cmp.config.context'.in_syntax_group('Comment') then
+            return false
+          else
+            return true
+          end
+        end,
         snippet = {
           expand = function(args)
             vim.fn['vsnip#anonymous'](args.body)
