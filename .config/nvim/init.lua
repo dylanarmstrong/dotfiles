@@ -414,7 +414,6 @@ vim.g.mapleader = ','
 vim.opt.cursorline = true
 
 -- Paste
-vim.opt.pastetoggle = '<F2>'
 vim.opt.clipboard = 'unnamed'
 
 -- Regex
