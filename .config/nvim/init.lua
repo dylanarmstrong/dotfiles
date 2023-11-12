@@ -15,6 +15,7 @@ require('lazy').setup({
     -- Styling
   {
     'catppuccin/nvim',
+    lazy = false,
     config = function()
       require('catppuccin').setup {
         flavour = 'mocha',
@@ -62,10 +63,12 @@ require('lazy').setup({
   'tpope/vim-fugitive',
   'airblade/vim-gitgutter',
 
+  -- Undo
+  'mbbill/undotree',
+
   -- Finder
   {
     'nvim-telescope/telescope.nvim',
-    build = 'vim.cmd[[ TSUpdate ]]',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-fzf-native.nvim',
@@ -80,7 +83,7 @@ require('lazy').setup({
           '.git',
           'node_modules',
         },
-      }
+      },
     },
   },
 
@@ -123,31 +126,31 @@ require('lazy').setup({
         }
       end
 
-      nvim_lsp.lua_ls.setup {
-        capabilities = capabilities,
-        settings = {
-          Lua = {
-            runtime = {
-              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-              version = 'LuaJIT',
-            },
-            diagnostics = {
-              -- Get the language server to recognize the `vim` global
-              globals = { 'vim' },
-            },
-            workspace = {
-              -- Stop annoying popup on lua files
-              checkThirdParty = false,
-              -- Make the server aware of Neovim runtime files
-              library = vim.api.nvim_get_runtime_file('', true),
-            },
-            -- Do not send telemetry
-            telemetry = {
-              enable = false,
-            },
-          },
-        },
-      }
+      -- nvim_lsp.lua_ls.setup {
+      --   capabilities = capabilities,
+      --   settings = {
+      --     Lua = {
+      --       runtime = {
+      --         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+      --         version = 'LuaJIT',
+      --       },
+      --       diagnostics = {
+      --         -- Get the language server to recognize the `vim` global
+      --         globals = { 'vim' },
+      --       },
+      --       workspace = {
+      --         -- Stop annoying popup on lua files
+      --         checkThirdParty = false,
+      --         -- Make the server aware of Neovim runtime files
+      --         library = vim.api.nvim_get_runtime_file('', true),
+      --       },
+      --       -- Do not send telemetry
+      --       telemetry = {
+      --         enable = false,
+      --       },
+      --     },
+      --   },
+      -- }
 
       nvim_lsp.elixirls.setup {
         capabilities = capabilities,
@@ -306,7 +309,7 @@ require('lazy').setup({
 
   -- File browser
   {
-    'kyazdani42/nvim-tree.lua',
+    'nvim-tree/nvim-tree.lua',
     config = function()
       require('nvim-tree').setup {
         renderer = {

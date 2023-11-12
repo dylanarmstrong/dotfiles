@@ -18,7 +18,7 @@ else
 fi
 
 # For the PATH
-NODE_VERSION=v16.20.0
+NODE_VERSION=v18.17.1
 
 # Exports
 export EDITOR=nvim
@@ -41,7 +41,9 @@ alias wget="wget --hsts-file=""$XDG_DATA_HOME/wget-hsts"""
 export ANSIBLE_HOME="$XDG_CONFIG_HOME/ansible"
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
-export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME"/bundle
+export BUNDLE_USER_CACHE="$XDG_CACHE_HOME"/bundle
+export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME"/bundle
 export GEM_HOME="${XDG_DATA_HOME}"/gem
 export GEM_SPEC_CACHE="${XDG_CACHE_HOME}"/gem
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
@@ -197,9 +199,9 @@ timezsh() {
 }
 
 # FZF
-if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
-  source /usr/local/opt/fzf/shell/key-bindings.zsh
-  source /usr/local/opt/fzf/shell/completion.zsh
+if [ -e /opt/local/share/fzf/shell/completion.zsh ]; then
+  source /opt/local/share/fzf/shell/key-bindings.zsh
+  source /opt/local/share/fzf/shell/completion.zsh
 fi
 
 export FZF_DEFAULT_COMMAND='fd --type f'
@@ -225,7 +227,7 @@ export PNPM_HOME="/Users/$(whoami)/Library/pnpm"
 # pnpm end
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:/usr/local/opt/imagemagick@6/bin:/usr/local/opt/python@3/bin:/usr/local/opt/java/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:/Applications/kitty.app/Contents/MacOS/:/usr/local/bin:/bin:/usr/bin:$HOME/.local/bin
+export PATH=/sbin:/usr/sbin:/opt/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/opt/local/bin:/usr/local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
