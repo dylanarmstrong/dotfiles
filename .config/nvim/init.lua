@@ -112,7 +112,6 @@ require('lazy').setup({
         'nxls',
         'ocamlls',
         'pyright',
-        'rust_analyzer',
         'svelte',
         'tailwindcss',
         'tsserver',
@@ -159,10 +158,29 @@ require('lazy').setup({
 
       nvim_lsp.eslint.setup {
         capabilities = capabilities,
-        handlers = {
-          ['window/showMessageRequest'] = function(_, result) return result end
-        }
+        -- Fix issues on save
+        on_attach = function(client, bufnr)
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            buffer = bufnr,
+            command = 'EslintFixAll',
+          })
+        end,
       }
+
+      -- nvim_lsp.efm.setup {
+      --   init_options = { documentFormatting = true },
+      --   settings = {
+      --     rootMarkers = { '.git/' },
+      --     languages = {
+      --       javascript = {
+      --         {
+      --           formatCommand = 'prettier',
+      --           formatStdin = true,
+      --         },
+      --       },
+      --     },
+      --   },
+      -- }
 
       nvim_lsp.groovyls.setup {
         capabilities = capabilities,
@@ -202,6 +220,65 @@ require('lazy').setup({
 
     end
   },
+
+  {
+    'simrat39/rust-tools.nvim',
+    config = function()
+      local rt = require('rust-tools')
+      rt.setup({
+        tools = {
+          runnables = {
+            use_telescope = true,
+          },
+          inlay_hints = {
+            auto = true,
+            show_parameter_hints = false,
+            parameter_hints_prefix = '',
+            other_hints_prefix = '',
+          },
+        },
+        server = {
+          on_attach = function(_, bufnr)
+          end,
+          settings = {
+            ['rust-analyzer'] = {
+              checkOnSave = {
+                command = 'clippy',
+              },
+            },
+          },
+        },
+      })
+    end,
+  },
+
+  -- Debugger
+  -- {
+  --   'mfussenegger/nvim-dap',
+  --   dependencies = {
+  --     'mxsdev/nvim-dap-vscode-js',
+  --   },
+  --   config = function()
+  --     require('dap').adapters['pwa-node'] = {
+  --       type = 'server',
+  --       host = 'localhost',
+  --       port = '${port}',
+  --       executable = {
+  --         command = 'node',
+  --         args = {'/Users/dylan/Downloads/js-debug/src/dapDebugServer.js', '${port}'},
+  --       }
+  --     }
+  --     require('dap').configurations.javascript = {
+  --       {
+  --         type = 'pwa-node',
+  --         request = 'launch',
+  --         name = 'Launch file',
+  --         program = '${file}',
+  --         cwd = '${workspaceFolder}',
+  --       },
+  --     }
+  --   end,
+  -- },
 
   -- Treesitter for fancy syntax
   {

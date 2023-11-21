@@ -227,7 +227,7 @@ export PNPM_HOME="/Users/$(whoami)/Library/pnpm"
 # pnpm end
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/opt/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/opt/local/bin:/usr/local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin
+export PATH=/sbin:/usr/sbin:/opt/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/opt/local/bin:/usr/local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.cargo/bin
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
