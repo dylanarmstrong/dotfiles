@@ -21,7 +21,7 @@ pnpm add -g \
   vscode-langservers-extracted \
   yaml-language-server
 
-sudo port install lua-language-server
+brew install dhall-lsp-server lua-language-server
 
 # Groovy Support
 pushd $HOME/src && \

@@ -18,11 +18,11 @@ else
 fi
 
 # For the PATH
-NODE_VERSION=v18.17.1
+NODE_VERSION=v20.11.0
 
 # Exports
 export EDITOR=nvim
-export JAVA_HOME=/usr/local/opt/openjdk@11/
+export JAVA_HOME=/usr/local/opt/openjdk/
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
@@ -227,7 +227,7 @@ export PNPM_HOME="/Users/$(whoami)/Library/pnpm"
 # pnpm end
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/opt/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/opt/local/bin:/usr/local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.cargo/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.cargo/bin:$HOME/Library/Python/3.11/bin
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
