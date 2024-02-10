@@ -7,21 +7,27 @@ Neovim > 0.9
 For LSP support run the following:
 
 ```bash
-pnpm add -g \
-  @tailwindcss/language-server \
-  bash-language-server \
-  dockerfile-language-server-nodejs \
-  graphql-language-service-cli \
-  nxls \
-  pyright \
-  svelte-language-server \
-  typescript \
-  typescript-language-server \
-  vim-language-server \
-  vscode-langservers-extracted \
-  yaml-language-server
+npm install -g pnpm
 
-brew install dhall-lsp-server lua-language-server
+pnpm add -g \
+    @tailwindcss/language-server \
+    bash-language-server \
+    dockerfile-language-server-nodejs \
+    graphql-language-service-cli \
+    nxls \
+    pyright \
+    svelte-language-server \
+    typescript \
+    typescript-language-server \
+    vim-language-server \
+    vscode-langservers-extracted \
+    yaml-language-server
+
+brew install \
+    dhall-lsp-server \
+    efm-langserver
+    elixir \
+    lua-language-server
 
 # Groovy Support
 pushd $HOME/src && \
@@ -43,7 +49,8 @@ pushd $HOME/src && \
 ```
 
 The following must be manually installed with path adjusted accordingly in `.config/nvim/init.lua`:
-* [elixir-ls](https://github.com/elixir-lsp/elixir-ls)
+
+- [elixir-ls](https://github.com/elixir-lsp/elixir-ls)
 
 #### Kitty (Generate Theme)
 

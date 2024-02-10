@@ -103,7 +103,6 @@ require('lazy').setup({
 
       local servers = {
         'bashls',
-        'cssls',
         'dhall_lsp_server',
         'dockerls',
         'graphql',
@@ -125,31 +124,43 @@ require('lazy').setup({
         }
       end
 
-      -- nvim_lsp.lua_ls.setup {
-      --   capabilities = capabilities,
-      --   settings = {
-      --     Lua = {
-      --       runtime = {
-      --         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-      --         version = 'LuaJIT',
-      --       },
-      --       diagnostics = {
-      --         -- Get the language server to recognize the `vim` global
-      --         globals = { 'vim' },
-      --       },
-      --       workspace = {
-      --         -- Stop annoying popup on lua files
-      --         checkThirdParty = false,
-      --         -- Make the server aware of Neovim runtime files
-      --         library = vim.api.nvim_get_runtime_file('', true),
-      --       },
-      --       -- Do not send telemetry
-      --       telemetry = {
-      --         enable = false,
-      --       },
-      --     },
-      --   },
-      -- }
+      nvim_lsp.cssls.setup {
+        capabilities = capabilities,
+        settings = {
+          css = {
+            lint = {
+              unknownAtRules = 'ignore',
+            },
+          },
+        },
+      }
+
+
+      nvim_lsp.lua_ls.setup {
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            runtime = {
+              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+              version = 'LuaJIT',
+            },
+            diagnostics = {
+              -- Get the language server to recognize the `vim` global
+              globals = { 'vim' },
+            },
+            workspace = {
+              -- Stop annoying popup on lua files
+              checkThirdParty = false,
+              -- Make the server aware of Neovim runtime files
+              library = vim.api.nvim_get_runtime_file('', true),
+            },
+            -- Do not send telemetry
+            telemetry = {
+              enable = false,
+            },
+          },
+        },
+      }
 
       nvim_lsp.elixirls.setup {
         capabilities = capabilities,
@@ -159,7 +170,7 @@ require('lazy').setup({
       nvim_lsp.eslint.setup {
         capabilities = capabilities,
         -- Fix issues on save
-        on_attach = function(client, bufnr)
+        on_attach = function(_, bufnr)
           vim.api.nvim_create_autocmd('BufWritePre', {
             buffer = bufnr,
             command = 'EslintFixAll',
@@ -167,20 +178,20 @@ require('lazy').setup({
         end,
       }
 
-      -- nvim_lsp.efm.setup {
-      --   init_options = { documentFormatting = true },
-      --   settings = {
-      --     rootMarkers = { '.git/' },
-      --     languages = {
-      --       javascript = {
-      --         {
-      --           formatCommand = 'prettier',
-      --           formatStdin = true,
-      --         },
-      --       },
-      --     },
-      --   },
-      -- }
+      nvim_lsp.efm.setup {
+        init_options = { documentFormatting = true },
+        settings = {
+          rootMarkers = { '.git/' },
+          languages = {
+            javascript = {
+              {
+                formatCommand = 'prettier',
+                formatStdin = true,
+              },
+            },
+          },
+        },
+      }
 
       nvim_lsp.groovyls.setup {
         capabilities = capabilities,
