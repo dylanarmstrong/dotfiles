@@ -11,6 +11,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+vim.g.cmptoggle = true
+
 require('lazy').setup({
     -- Styling
   {
@@ -206,7 +208,7 @@ require('lazy').setup({
           if require'cmp.config.context'.in_treesitter_capture('comment')==true or require'cmp.config.context'.in_syntax_group('Comment') then
             return false
           else
-            return true
+            return vim.g.cmptoggle
           end
         end,
         snippet = {
@@ -249,7 +251,7 @@ require('lazy').setup({
           },
         },
         server = {
-          on_attach = function(_, bufnr)
+          on_attach = function(_, _)
           end,
           settings = {
             ['rust-analyzer'] = {
@@ -535,6 +537,7 @@ local maps = {
     ['<leader>gd'] = '<cmd>Gdiff<cr>',
     ['<leader>gs'] = '<cmd>Gstatus<cr>',
     ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
+    ['<leader>z'] = '<cmd>lua vim.g.cmptoggle = not vim.g.cmptoggle<cr>',
     ['K'] = '<cmd>lua vim.lsp.buf.hover()<cr>',
     -- Uppercase Y will grab entire line
     ['Y'] = 'yy',
