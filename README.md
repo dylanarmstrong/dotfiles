@@ -13,8 +13,8 @@ pnpm add -g \
     @tailwindcss/language-server \
     bash-language-server \
     dockerfile-language-server-nodejs \
+    emmet-ls \
     graphql-language-service-cli \
-    nxls \
     pyright \
     svelte-language-server \
     typescript \

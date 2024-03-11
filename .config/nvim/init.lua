@@ -134,7 +134,12 @@ require('lazy').setup({
 
       nvim_lsp.tailwindcss.setup {
         capabilities = capabilities,
-        root_dir = nvim_lsp.util.root_pattern('tailwind.config.js', '.git'),
+        root_dir = nvim_lsp.util.root_pattern('tailwind.config.ts', 'tailwind.config.js', '.git'),
+      }
+
+      nvim_lsp.emmet_ls.setup {
+        capabilities = capabilities,
+        filetypes = { 'css', 'html', 'javascript', 'javascriptreact', 'less', 'sass', 'scss', 'svelte', 'pug', 'typescriptreact', 'vue' },
       }
 
       nvim_lsp.cssls.setup {
@@ -189,6 +194,7 @@ require('lazy').setup({
             command = 'EslintFixAll',
           })
         end,
+        root_dir = nvim_lsp.util.root_pattern('.git'),
       }
 
       nvim_lsp.efm.setup {
