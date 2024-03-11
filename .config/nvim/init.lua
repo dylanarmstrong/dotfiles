@@ -110,11 +110,9 @@ require('lazy').setup({
         'graphql',
         'html',
         'jsonls',
-        'nxls',
         'ocamlls',
         'pyright',
         'svelte',
-        'tailwindcss',
         'tsserver',
         'typst_lsp',
         'vimls',
@@ -125,6 +123,19 @@ require('lazy').setup({
           capabilities = capabilities,
         }
       end
+
+      -- nvim_lsp.ltex.setup {
+      --   settings = {
+      --     ltex = {
+      --       language = 'fr',
+      --     },
+      --   },
+      -- }
+
+      nvim_lsp.tailwindcss.setup {
+        capabilities = capabilities,
+        root_dir = nvim_lsp.util.root_pattern('tailwind.config.js', '.git'),
+      }
 
       nvim_lsp.cssls.setup {
         capabilities = capabilities,
@@ -456,6 +467,33 @@ require('lazy').setup({
       },
     },
   },
+
+  -- Agenda / Org Mode
+  -- {
+  --   'nvim-orgmode/orgmode',
+  --   dependencies = {
+  --     { 'nvim-treesitter/nvim-treesitter', lazy = true },
+  --   },
+  --   event = 'VeryLazy',
+  --   config = function()
+  --     -- Load treesitter grammar for org
+  --     require('orgmode').setup_ts_grammar()
+
+  --     -- Setup treesitter
+  --     require('nvim-treesitter.configs').setup({
+  --       highlight = {
+  --         enable = true,
+  --       },
+  --       ensure_installed = { 'org' },
+  --     })
+
+  --     -- Setup orgmode
+  --     require('orgmode').setup({
+  --       org_agenda_files = '~/.local/share/orgfiles/**/*',
+  --       org_default_notes_file = '~/.local/share/orgfiles/refile.org',
+  --     })
+  --   end,
+  -- },
 })
 
 -- Per recommendation on nvim-tree
