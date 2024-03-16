@@ -199,11 +199,6 @@ timezsh() {
 }
 
 # FZF
-if [ -e /opt/local/share/fzf/shell/completion.zsh ]; then
-  source /opt/local/share/fzf/shell/key-bindings.zsh
-  source /opt/local/share/fzf/shell/completion.zsh
-fi
-
 export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -223,11 +218,11 @@ export MAGICK_HOME=/usr/local/opt/imagemagick@6
 export GPG_TTY=$(tty)
 
 # pnpm
-export PNPM_HOME="/Users/$(whoami)/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 # pnpm end
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.cargo/bin:$HOME/Library/Python/3.11/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.cargo/bin:$HOME/Library/Python/3.11/bin:/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
