@@ -112,6 +112,7 @@ require('lazy').setup({
         'jsonls',
         'ocamlls',
         'pyright',
+        -- 'sourcekit',
         'svelte',
         'tsserver',
         'typst_lsp',
@@ -123,6 +124,11 @@ require('lazy').setup({
           capabilities = capabilities,
         }
       end
+
+      nvim_lsp.clangd.setup {
+        capabilities = capabilities,
+        cmd = { 'clangd', '--offset-encoding=utf-16' },
+      }
 
       -- nvim_lsp.ltex.setup {
       --   settings = {
