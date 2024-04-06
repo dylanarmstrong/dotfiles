@@ -25,7 +25,7 @@ pnpm add -g \
 
 brew install \
     dhall-lsp-server \
-    efm-langserver
+    efm-langserver \
     elixir \
     lua-language-server
 

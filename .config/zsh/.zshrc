@@ -18,7 +18,7 @@ else
 fi
 
 # For the PATH
-NODE_VERSION=v20.11.1
+NODE_VERSION=v20.12.1
 
 # Exports
 export EDITOR=nvim
@@ -230,3 +230,4 @@ export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.loca
 [ -r $HOME/.post_env ] && . $HOME/.post_env
 
 # zprof
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
