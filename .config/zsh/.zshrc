@@ -18,7 +18,7 @@ else
 fi
 
 # For the PATH
-NODE_VERSION=v20.12.1
+NODE_VERSION=v22.9.0
 
 # Exports
 export EDITOR=nvim

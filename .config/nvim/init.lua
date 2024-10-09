@@ -1,20 +1,26 @@
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    'git',
-    'clone',
-    '--filter=blob:none',
-    'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable', -- latest stable release
-    lazypath,
-  })
+if not vim.uv.fs_stat(lazypath) then
+  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
+  local out = vim.fn.system({ 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { 'Failed to clone lazy.nvim:\n', 'ErrorMsg' },
+      { out, 'WarningMsg' },
+      { '\nPress any key to exit...' },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
 end
 vim.opt.rtp:prepend(lazypath)
+
+-- Leader, needs to be before lazy load
+vim.g.mapleader = ','
 
 vim.g.cmptoggle = true
 
 require('lazy').setup({
-    -- Styling
+  -- Styling
   {
     'catppuccin/nvim',
     lazy = false,
@@ -114,7 +120,7 @@ require('lazy').setup({
         'pyright',
         -- 'sourcekit',
         'svelte',
-        'tsserver',
+        'ts_ls',
         'typst_lsp',
         'vimls',
       }
@@ -162,8 +168,12 @@ require('lazy').setup({
 
       nvim_lsp.lua_ls.setup {
         capabilities = capabilities,
-        settings = {
-          Lua = {
+        on_init = function(client)
+          local path = client.workspace_folders[1].name
+          if vim.uv.fs_stat(path..'/.luarc.json') or vim.uv.fs_stat(path..'/.luarc.jsonc') then
+            return
+          end
+          client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
             runtime = {
               -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
               version = 'LuaJIT',
@@ -182,7 +192,10 @@ require('lazy').setup({
             telemetry = {
               enable = false,
             },
-          },
+          })
+        end,
+        settings = {
+          Lua = {}
         },
       }
 
@@ -289,45 +302,50 @@ require('lazy').setup({
   },
 
   -- Debugger
-  -- {
-  --   'mfussenegger/nvim-dap',
-  --   dependencies = {
-  --     'mxsdev/nvim-dap-vscode-js',
-  --   },
-  --   config = function()
-  --     require('dap').adapters['pwa-node'] = {
-  --       type = 'server',
-  --       host = 'localhost',
-  --       port = '${port}',
-  --       executable = {
-  --         command = 'node',
-  --         args = {'/Users/dylan/Downloads/js-debug/src/dapDebugServer.js', '${port}'},
-  --       }
-  --     }
-  --     require('dap').configurations.javascript = {
-  --       {
-  --         type = 'pwa-node',
-  --         request = 'launch',
-  --         name = 'Launch file',
-  --         program = '${file}',
-  --         cwd = '${workspaceFolder}',
-  --       },
-  --     }
-  --   end,
-  -- },
+  {
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      'mxsdev/nvim-dap-vscode-js',
+    },
+    config = function()
+      require('dap').adapters['pwa-node'] = {
+        type = 'server',
+        host = 'localhost',
+        port = '${port}',
+        executable = {
+          command = 'node',
+          args = {os.getenv('HOME') .. '/src/js-debug/src/dapDebugServer.js', '${port}'},
+        }
+      }
+      require('dap').configurations.javascript = {
+        {
+          type = 'pwa-node',
+          request = 'launch',
+          name = 'Launch file',
+          program = '${file}',
+          cwd = '${workspaceFolder}',
+        },
+      }
+    end,
+  },
 
   -- Treesitter for fancy syntax
   {
     'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
     event = 'BufRead',
     config = function()
       require('nvim-treesitter.configs').setup {
+        auto_install = true,
         ensure_installed = 'all',
-        ignore_install = {},
         highlight = {
           enable = true,
           use_languagetree = true,
         },
+        ignore_install = {},
+        indent = { enable = false },
+        modules = {},
+        sync_install = false,
       }
     end
   },
@@ -361,9 +379,10 @@ require('lazy').setup({
     config = function()
       -- Get character under cursor
       local get_hex = function()
-        local hex = vim.api.nvim_exec([[
+        local hex = vim.api.nvim_exec2([[
           ascii
-        ]], true)
+        ]], { output = true }).output
+
         if hex == nil then
           return 'nil'
         end
@@ -506,6 +525,7 @@ require('lazy').setup({
   --     })
   --   end,
   -- },
+  checker = { enabled = true },
 })
 
 -- Per recommendation on nvim-tree
@@ -550,9 +570,6 @@ vim.opt.undodir = os.getenv('HOME') .. '/.local/share/nvim/undo'
 -- Ignore
 vim.opt.wildignore = '*/node_modules/*,*/elm-stuff/*'
 
--- Leader
-vim.g.mapleader = ','
-
 -- Cursor lines are nice
 vim.opt.cursorline = true
 
@@ -582,7 +599,7 @@ local maps = {
     ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
     ['<leader>a'] = '<cmd>Telescope live_grep<cr>',
     ['<leader>b'] = '<cmd>Telescope buffers<cr>',
-    ['<leader>e'] = '<cmd>TroubleToggle workspace_diagnostics<cr>',
+    ['<leader>e'] = '<cmd>Trouble diagnostics toggle<cr>',
     ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
     ['<leader>gd'] = '<cmd>Gdiff<cr>',
     ['<leader>gs'] = '<cmd>Gstatus<cr>',
