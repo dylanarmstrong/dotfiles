@@ -2,7 +2,7 @@
 
 #### Neovim
 
-Neovim > 0.9
+Neovim > 0.10
 
 For LSP support run the following:
 
@@ -27,12 +27,14 @@ brew install \
     dhall-lsp-server \
     efm-langserver \
     elixir \
+    ltex-ls \
     lua-language-server
 
 # Groovy Support
 pushd $HOME/src && \
     git clone https://github.com/GroovyLanguageServer/groovy-language-server || true && \
     pushd groovy-language-server && \
+    git pull && \
     ./gradlew build && \
     popd && \
     popd
@@ -41,6 +43,7 @@ pushd $HOME/src && \
 pushd $HOME/src && \
     git clone https://github.com/elixir-lsp/elixir-ls || true && \
     pushd elixir-ls && \
+    git pull && \
     mix deps.get && \
     MIX_ENV=prod mix compile && \
     MIX_ENV=prod mix elixir_ls.release2 -o ./dist && \
@@ -48,9 +51,17 @@ pushd $HOME/src && \
     popd
 ```
 
-The following must be manually installed with path adjusted accordingly in `.config/nvim/init.lua`:
+The following must have the path adjusted accordingly in `.config/nvim/init.lua`:
 
 - [elixir-ls](https://github.com/elixir-lsp/elixir-ls)
+
+```lua
+  nvim_lsp.elixirls.setup {
+    capabilities = capabilities,
+    -- If you have a different `src` setup, adjust here:
+    cmd = { os.getenv('HOME') .. '/src/elixir-ls/dist/language_server.sh' }
+  }
+```
 
 #### Kitty (Generate Theme)
 
@@ -58,21 +69,8 @@ The following must be manually installed with path adjusted accordingly in `.con
 kitty +kitten themes --reload-in=all Catppuccin-Mocha
 ```
 
-#### Terminfo (for italics)
-
-1. Install Terminfo files with commands below
-2. Set iTerm to use xterm-256color-italic.
-3. Alias ssh to pass in a valid term that the remote machine will understand
+#### Terminfo (for kitty on macOS)
 
 ```bash
-# General italic support in iTerm2
-tic -x ./terminfo/xterm-256color-italic.terminfo
-tic -x ./terminfo/tmux-256color.terminfo
-```
-
-#### Terminfo (for kitty)
-
-```bash
-# General support for Kitty
 tic -x /Applications/kitty.app/Contents/Resources/kitty/terminfo/kitty.terminfo
 ```

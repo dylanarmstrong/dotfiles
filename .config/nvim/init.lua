@@ -116,6 +116,7 @@ require('lazy').setup({
         'graphql',
         'html',
         'jsonls',
+        'ltex',
         'ocamlls',
         'pyright',
         -- 'sourcekit',
@@ -136,13 +137,13 @@ require('lazy').setup({
         cmd = { 'clangd', '--offset-encoding=utf-16' },
       }
 
-      -- nvim_lsp.ltex.setup {
-      --   settings = {
-      --     ltex = {
-      --       language = 'fr',
-      --     },
-      --   },
-      -- }
+      nvim_lsp.ltex.setup {
+        settings = {
+          ltex = {
+            language = 'en-US',
+          },
+        },
+      }
 
       nvim_lsp.tailwindcss.setup {
         capabilities = capabilities,
@@ -164,7 +165,6 @@ require('lazy').setup({
           },
         },
       }
-
 
       nvim_lsp.lua_ls.setup {
         capabilities = capabilities,
@@ -314,7 +314,7 @@ require('lazy').setup({
         port = '${port}',
         executable = {
           command = 'node',
-          args = {os.getenv('HOME') .. '/src/js-debug/src/dapDebugServer.js', '${port}'},
+          args = { os.getenv('HOME') .. '/src/js-debug/src/dapDebugServer.js', '${port}' },
         }
       }
       require('dap').configurations.javascript = {
@@ -350,12 +350,12 @@ require('lazy').setup({
     end
   },
 
-  {
-    'simrat39/symbols-outline.nvim',
-    config = function()
-      require('symbols-outline').setup()
-    end
-  },
+  -- {
+  --   'simrat39/symbols-outline.nvim',
+  --   config = function()
+  --     require('symbols-outline').setup()
+  --   end
+  -- },
 
   -- Jenkinsfiles (groovyls doesn't work for me)
   'martinda/Jenkinsfile-vim-syntax',
@@ -525,12 +525,54 @@ require('lazy').setup({
   --     })
   --   end,
   -- },
+
+  -- {
+  --   'yetone/avante.nvim',
+  --   event = 'VeryLazy',
+  --   lazy = false,
+  --   version = false,
+  --   opts = {
+  --     debug = false,
+  --   },
+  --   build = 'make',
+  --   dependencies = {
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'stevearc/dressing.nvim',
+  --     'nvim-lua/plenary.nvim',
+  --     'MunifTanjim/nui.nvim',
+  --     'nvim-tree/nvim-web-devicons',
+  --     {
+  --       'HakonHarnes/img-clip.nvim',
+  --       event = 'VeryLazy',
+  --       opts = {
+  --         default = {
+  --           embed_image_as_base64 = false,
+  --           prompt_for_file_name = false,
+  --           drag_and_drop = {
+  --             insert_mode = true,
+  --           },
+  --         },
+  --       },
+  --     },
+  --     {
+  --       'MeanderingProgrammer/render-markdown.nvim',
+  --       opts = {
+  --         file_types = { 'markdown', 'Avante' },
+  --       },
+  --       ft = { 'markdown', 'Avante' },
+  --     },
+  --   },
+  -- },
+
   checker = { enabled = true },
 })
 
 -- Per recommendation on nvim-tree
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
+-- views can only be fully collapsed with the global statusline
+vim.opt.laststatus = 3
 
 -- Folding
 vim.opt.foldmethod = 'marker'
@@ -595,7 +637,7 @@ local maps = {
     [';'] = ':',
     ['<C-n>'] = '<cmd>NvimTreeToggle<cr>',
     ['<C-p>'] = '<cmd>Telescope find_files<cr>',
-    ['<C-s>'] = '<cmd>SymbolsOutline<cr>',
+    -- ['<C-s>'] = '<cmd>SymbolsOutline<cr>',
     ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
     ['<leader>a'] = '<cmd>Telescope live_grep<cr>',
     ['<leader>b'] = '<cmd>Telescope buffers<cr>',

@@ -18,11 +18,11 @@ else
 fi
 
 # For the PATH
-NODE_VERSION=v22.9.0
+NODE_VERSION=v22.10.0
 
 # Exports
 export EDITOR=nvim
-export JAVA_HOME=/usr/local/opt/openjdk/
+export JAVA_HOME=/usr/local/opt/openjdk@17/
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
