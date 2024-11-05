@@ -121,6 +121,7 @@ require('lazy').setup({
         'pyright',
         -- 'sourcekit',
         'svelte',
+        'terraformls',
         'ts_ls',
         'typst_lsp',
         'vimls',

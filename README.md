@@ -27,6 +27,7 @@ brew install \
     dhall-lsp-server \
     efm-langserver \
     elixir \
+    hashicorp/tap/terraform-ls \
     ltex-ls \
     lua-language-server
 
