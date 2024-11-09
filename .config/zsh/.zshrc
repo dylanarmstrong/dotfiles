@@ -1,3 +1,5 @@
+#! /usr/bin/env bash
+# shellcheck disable=SC2034,SC1091
 # zmodload zsh/zprof
 
 # XDG
@@ -6,16 +8,6 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
 export XDG_RUNTIME_DIR=$HOME/.local/run
-
-# Need system for osx vs gentoo
-platform='unknown'
-uname=`uname`
-if [[ "$uname" == 'Linux' ]]; then
-  platform='linux'
-else
-  defaults write org.hammerspoon.Hammerspoon MJConfigFile "$XDG_CONFIG_HOME"/hammerspoon/init.lua
-  platform='osx'
-fi
 
 # For the PATH
 NODE_VERSION=v22.11.0
@@ -34,9 +26,7 @@ export THEOS_DEVICE_PORT=2222
 # xdg-ninja
 HISTFILE="$XDG_CONFIG_HOME/zsh/history"
 
-alias mitmproxy="mitmproxy --set confdir=$XDG_CONFIG_HOME/mitmproxy"
-alias mitmweb="mitmweb --set confdir=$XDG_CONFIG_HOME/mitmproxy"
-alias wget="wget --hsts-file=""$XDG_DATA_HOME/wget-hsts"""
+defaults write org.hammerspoon.Hammerspoon MJConfigFile "$XDG_CONFIG_HOME"/hammerspoon/init.lua
 
 export ANSIBLE_HOME="$XDG_CONFIG_HOME/ansible"
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
@@ -64,8 +54,9 @@ export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 export _Z_DATA="$XDG_DATA_HOME/z"
 
 # Private environment variables
-[ -r $HOME/.env ] && . $HOME/.env
+[ -r "$HOME"/.env ] && . "$HOME"/.env
 
+# Telemetry
 export APOLLO_TELEMETRY_DISABLED=1
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export HOMEBREW_NO_ANALYTICS=1
@@ -73,8 +64,16 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_ENV_HINTS=1
 export SHOPIFY_CLI_NO_ANALYTICS=1
 
-# MacOS Sierra Tmux Fix
-export EVENT_NOKQUEUE=1
+# FZF
+export FZF_DEFAULT_COMMAND='fd --type f'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# https://github.com/keybase/keybase-issues/issues/2798
+# shellcheck disable=SC2155
+export GPG_TTY=$(tty)
+
+export PNPM_HOME="$HOME/Library/pnpm"
 
 # Options
 setopt always_to_end
@@ -102,13 +101,8 @@ setopt share_history
 
 # Keys
 bindkey -e
-if [[ $platform == 'osx' ]]; then
-  bindkey "\e[B" history-beginning-search-forward
-  bindkey "\e[A" history-beginning-search-backward
-else
-  bindkey "${terminfo[kcud1]}" history-beginning-search-forward
-  bindkey "${terminfo[kcuu1]}" history-beginning-search-backward
-fi
+bindkey "\e[B" history-beginning-search-forward
+bindkey "\e[A" history-beginning-search-backward
 bindkey "^L" forward-word
 bindkey "^H" backward-word
 bindkey " " magic-space
@@ -128,7 +122,7 @@ zstyle ':completion:*' list-suffixes true
 zstyle ':completion:*' matcher-list '' '+m:{a-z}={A-Z}' 'r:|[._-]=** r:|=**' 'l:|=* r:|=*'
 zstyle ':completion:*' preserve-prefix '//[^/]##/'
 zstyle ':completion:*' use-cache 1
-zstyle ':completion:*' cache-path $HOME/.zsh/cache
+zstyle ':completion:*' cache-path "$HOME"/.zsh/cache
 zstyle ':completion:::::' completer _complete _approximate
 zstyle ':completion:*:approximate:*' max-errors 2
 zstyle ':completion:*' completer _complete _prefix
@@ -136,14 +130,14 @@ zstyle ':completion::prefix-1:*' completer _complete
 zstyle ':completion:incremental:*' completer _complete _correct
 zstyle ':completion:predict:*' completer _complete
 zstyle ':completion::complete:*' use-cache 1
-zstyle ':completion::complete:*' cache-path $HOME/.zsh/cache/$HOST
+zstyle ':completion::complete:*' cache-path "$HOME"/.zsh/cache/"$HOST"
 zstyle ':completion:*' expand 'yes'
 zstyle ':completion:*' squeeze-slashes 'yes'
 zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:options' auto-description '%d'
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-zstyle ':completion:*:*:*:*:processes' command "ps -u `whoami` -o pid,user,comm -w -w"
+zstyle ':completion:*:*:*:*:processes' command "ps -u $(whoami) -o pid,user,comm -w -w"
 zstyle ':completion:*' menu select
 zstyle ":completion:*" list-colors ""
 zstyle ':completion:*:ssh:*' hosts off
@@ -163,6 +157,8 @@ alias jqp="jq '.' package.json"
 alias l='ls --color=always -F'
 alias ls='ls --color=always -F'
 alias lsh='ls -Fth . | head -n 25'
+alias mitmproxy='mitmproxy --set confdir=$XDG_CONFIG_HOME/mitmproxy'
+alias mitmweb='mitmweb --set confdir=$XDG_CONFIG_HOME/mitmproxy'
 alias mkdir='nocorrect mkdir -v'
 alias mv='nocorrect mv -v'
 alias rm='nocorrect rm -v'
@@ -170,6 +166,7 @@ alias scripts="jq '.scripts' package.json"
 alias ssh='TERM=xterm-256color ssh'
 alias view='nvim -R'
 alias vim='nvim'
+alias wget='wget --hsts-file=$XDG_DATA_HOME/wget-hsts'
 
 # Prompt
 setopt prompt_subst
@@ -180,52 +177,25 @@ zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' formats '%F{2}%b%u%f '
 zstyle ':vcs_info:*' unstagedstr '%F{1}*'
 
-function prompt_precmd() { vcs_info }
+function prompt_precmd() {
+  vcs_info
+}
 function set_prompt {
-  if [[ $platform == 'osx' ]]; then
-    PROMPT="%F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f "
-  else
-    PROMPT="%F{5}[%F{1}%n%F{5}@%F{1}%m%F{5}] %F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f "
-  fi
+  # shellcheck disable=SC2154
+  PROMPT="%F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f "
 }
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
-timezsh() {
-  shell=${1-$SHELL}
-  for i in $(seq 1 4); do /usr/bin/time $shell -i -c exit; done
-}
-
-# FZF
-export FZF_DEFAULT_COMMAND='fd --type f'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
-
-# Z (https://github.com/rupa/z)
-[ -e /usr/local/etc/profile.d/z.sh ] && . /usr/local/etc/profile.d/z.sh
-[ -e $HOME/bin/z.sh ] && . $HOME/bin/z.sh
-
-[ -s "$HOME/src/zsh-better-npm-completion" ] && source $HOME/src/zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh
-
 # Lazy loaded Nvm
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
 
-export MAGICK_HOME=/usr/local/opt/imagemagick@6
-
-# https://github.com/keybase/keybase-issues/issues/2798
-export GPG_TTY=$(tty)
-
-# pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
-# pnpm end
-
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.cargo/bin:$HOME/Library/Python/3.11/bin:$HOME/.docker/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.cargo/bin:$HOME/.docker/bin
 
 eval "$(fzf --zsh)"
 
 # Used for work specific stuff that runs after everything else
-[ -r $HOME/.post_env ] && . $HOME/.post_env
+[ -r "$HOME"/.post_env ] && . "$HOME"/.post_env
 
 # zprof
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
