@@ -24,12 +24,16 @@ pnpm add -g \
     yaml-language-server
 
 brew install \
+    bat \
     dhall-lsp-server \
+    difftastic \
     efm-langserver \
     elixir \
+    git-delta \
     hashicorp/tap/terraform-ls \
     ltex-ls \
-    lua-language-server
+    lua-language-server \
+    shellcheck
 
 # Groovy Support
 pushd $HOME/src && \

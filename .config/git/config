@@ -1,18 +1,33 @@
+[include]
+	path = /Users/dylan/src/delta/catppuccin.gitconfig
 [pull]
-	rebase = false
+  rebase = false
 [user]
-	name = Dylan Armstrong
-	email = dylan@dylan.is
-	signingkey = 1063EE65E5B24293036B309EB2D34C1A9269C6AE
+  signingkey = C574636C52BA5C5A
+  email = dylan@dylan.is
+  name = Dylan Armstrong
 [alias]
-	d = diff
-	p = push
-	s = status
-	c = checkout
-	fuck = reset --hard
+  c = checkout
+  d = diff
+  dt = -c diff.external=difft diff
+  fuck = reset --hard
+  p = push
+  s = status
 [push]
-	default = current
+  default = current
 [init]
-	defaultBranch = main
+  defaultBranch = main
 [commit]
-	gpgsign = true
+  gpgsign = true
+[core]
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true
+	features = catppuccin-mocha
+  line-numbers = true
+[merge]
+  conflictstyle = zdiff3
+[diff]
+	noprefix = true

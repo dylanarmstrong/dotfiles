@@ -18,7 +18,7 @@ else
 fi
 
 # For the PATH
-NODE_VERSION=v22.10.0
+NODE_VERSION=v22.11.0
 
 # Exports
 export EDITOR=nvim
@@ -168,8 +168,6 @@ alias mv='nocorrect mv -v'
 alias rm='nocorrect rm -v'
 alias scripts="jq '.scripts' package.json"
 alias ssh='TERM=xterm-256color ssh'
-alias tam='tmux -u -2 attach'
-alias tmux='tmux -u -2'
 alias view='nvim -R'
 alias vim='nvim'
 
