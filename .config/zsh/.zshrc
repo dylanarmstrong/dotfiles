@@ -256,13 +256,13 @@ olp()       { _olp "$OLLAMA_MODEL_NEMO" "$@" }
 olp_nemo()  { _olp "$OLLAMA_MODEL_NEMO" "$@" }
 olp_llama() { _olp "$OLLAMA_MODEL_LLAMA" "$@" }
 
-# Define a word, i.e. define 'hello' ->
+# Define a word, i.e. define 'hello' -> '**Definition:** "Hello" is an interjection used to greet...'
 ai_factory "define" "You are a helpful AI Agent designed to define words. How would you define and use the following word:"
 
-# Explains a concept, i.e. explain 'why is the sky blue?' ->
+# Explains a concept, i.e. explain 'why is the sky blue?' -> 'The sky appears blue due to a phenomenon called Rayleigh...'
 ai_factory "explain" "You are a helpful AI Agent designed to explain complicated concepts. Only provide the explanation and no additional commentary. How would you explain:"
 
-# Corrects grammer, i.e. grammer 'helo world; my nam is dylan'
+# Corrects grammer, i.e. grammar 'helo world, my nam is dylan' -> 'Hello world, My name is Dylan'
 ai_factory "grammar" "You are a helpful AI Agent designed to correct grammar. Only provide the corrected text and nothing else, no explanations, prefixes, or suffixes of the following text:"
 
 # Answer a provided prompt, but keep it simple, i.e. 'why is the sky blue?' -> 'Rayleigh scattering'
