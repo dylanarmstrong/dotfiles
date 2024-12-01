@@ -42,8 +42,8 @@ export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export MACHINE_STORAGE_PATH="$XDG_DATA_HOME"/docker-machine
 export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
-export NVM_DIR="$XDG_DATA_HOME"/nvm
 export OPAMROOT="$XDG_DATA_HOME/opam"
+export NVM_DIR="/usr/local/opt/nvm"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
 export PYTHONSTARTUP="/etc/python/pythonrc"
 export RANDFILE="$XDG_DATA_HOME/rnd"
@@ -195,12 +195,98 @@ add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
 # Lazy loaded Nvm
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
 
 # Reset PATH
 export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.cargo/bin:$HOME/.docker/bin
 
 eval "$(fzf --zsh)"
+
+# LLM Stuff
+# Remote
+claude() {
+  response=$(curl -s \
+    -X POST \
+    --header "anthropic-version: 2023-06-01" \
+    --header "content-type: application/json" \
+    --header "x-api-key: $ANTHROPIC_API_ZSH_KEY" \
+    --data "$(jq -n --arg msg "$1" '{
+      model: "claude-3-5-sonnet-20241022",
+      max_tokens: 1024,
+      messages: [{role: "user", content: $msg}]
+    }')" \
+    https://api.anthropic.com/v1/messages | jq -r '.content[0].text')
+
+  echo "$response" | while IFS= read -r line; do
+    if [[ $line =~ ^"\`\`\`"* ]]; then
+      lang=$(echo "$line" | sed 's/^```//')
+      while IFS= read -r code_line && [[ ! "$code_line" =~ ^"\`\`\`"$ ]]; do
+        echo "$code_line"
+      done | bat --language="$lang" --style=plain
+    else
+      echo "$line"
+    fi
+  done
+}
+
+# Local
+export OLLAMA_MODEL_LLAMA="llama3.2:3b-instruct-q4_K_M"
+export OLLAMA_MODEL_NEMO="mistral-nemo:12b-instruct-2407-q4_K_M"
+
+alias llama="ollama run $OLLAMA_MODEL_LLAMA"
+alias nemo="ollama run $OLLAMA_MODEL_NEMO"
+
+# I want a default method that uses mistral-nemo 12b, but a faster option that uses llama 3b
+ai_factory() {
+  local name="$1"
+  local p="$2"
+
+  eval "${name}()       { ollama run \"\$OLLAMA_MODEL_NEMO\" \"$p \${*:-\$(pbpaste)}\"; }"
+  eval "${name}_nemo()  { ollama run \"\$OLLAMA_MODEL_NEMO\" \"$p \${*:-\$(pbpaste)}\"; }"
+  eval "${name}_llama() { ollama run \"\$OLLAMA_MODEL_LLAMA\" \"$p \${*:-\$(pbpaste)}\"; }"
+}
+
+# Designed for asking a question about clipboard, i.e. ls -lathr . | pbcopy && olp "what is the newest file here?"
+_olp() {
+  ollama run "${1:-$OLLAMA_MODEL_NEMO}" "$2
+
+${3:-$(pbpaste)}"
+}
+olp()       { _olp "$OLLAMA_MODEL_NEMO" "$@" }
+olp_nemo()  { _olp "$OLLAMA_MODEL_NEMO" "$@" }
+olp_llama() { _olp "$OLLAMA_MODEL_LLAMA" "$@" }
+
+# Define a word, i.e. define 'hello' ->
+ai_factory "define" "You are a helpful AI Agent designed to define words. How would you define and use the following word:"
+
+# Explains a concept, i.e. explain 'why is the sky blue?' ->
+ai_factory "explain" "You are a helpful AI Agent designed to explain complicated concepts. Only provide the explanation and no additional commentary. How would you explain:"
+
+# Corrects grammer, i.e. grammer 'helo world; my nam is dylan'
+ai_factory "grammar" "You are a helpful AI Agent designed to correct grammar. Only provide the corrected text and nothing else, no explanations, prefixes, or suffixes of the following text:"
+
+# Answer a provided prompt, but keep it simple, i.e. 'why is the sky blue?' -> 'Rayleigh scattering'
+ai_factory "ols" "You are a helpful AI Agent designed to answer a question in as few words as possible. Do not add comments, explanations, puncutation, prefixes, or suffixes. Here's the prompt you are expected to answer:"
+
+# Answer a provided prompt, i.e. ol 'why is the sky blue?' -> 'The sky appears blue because of a phenomenon called Rayleigh...'
+ai_factory "ol" "You are a helpful AI Agent designed to answer a question. Here's the prompt you are expected to answer:"
+
+# Translates text into english, i.e. translate 'bonjour' -> 'hello'
+ai_factory "translate" "You are a helpful AI Agent designed to translate text into English. Only provide the translated English text and nothing else, no explanations, prefixes, or suffixes of the following text:"
+
+# Generates a commit message, i.e. commit $(git -P diff)
+ai_factory "commit" "You are a helpful AI Agent designed to read a 'git diff' and generate a concise commit message summarizing all changes. The commit message must:
+1. Use one of the following commitlint prefixes, based on the nature of the changes:
+  chore: Changes to build processes, tooling, or configuration that don't modify app behavior.
+  docs: Updates to documentation (e.g., README files, code comments).
+  feat: Introduction of new features or significant enhancements.
+  fix: Bug fixes or corrections to existing functionality.
+  revert: Reversal of a previous commit.
+  style: Code style updates (e.g., formatting, linting) without functional changes.
+  test: Changes related to tests, such as adding new tests or fixing existing ones.
+2. Be 72 characters or fewer.
+3. Clearly and concisely describe the changes.
+Output only the commit message in this format (e.g., 'feat: added new route for handling authentication') with no additional commentary or explanation. Use the 'git diff' provided below to create the message. Here's the 'git diff' to summarize:"
 
 # Used for work specific stuff that runs after everything else
 [ -r "$HOME"/.post_env ] && . "$HOME"/.post_env
