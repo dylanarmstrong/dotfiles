@@ -1,3 +1,4 @@
+.config/hammerspoon/Spoons
 .config/aws/credentials
 .config/kitty/kitty.conf.bak
 .config/nvim/lazy-lock.json
