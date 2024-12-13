@@ -12,9 +12,15 @@ export XDG_RUNTIME_DIR=$HOME/.local/run
 # For the PATH
 NODE_VERSION=v22.11.0
 
+# For arm64 / i386
+BREW_ROOT="/usr/local"
+if [[ $(arch) == 'arm64' ]]; then
+  BREW_ROOT="/opt/homebrew"
+fi
+
 # Exports
 export EDITOR=nvim
-export JAVA_HOME=/usr/local/opt/openjdk@17/
+export JAVA_HOME=$BREW_ROOT/opt/openjdk@17/
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
@@ -43,7 +49,7 @@ export MACHINE_STORAGE_PATH="$XDG_DATA_HOME"/docker-machine
 export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export OPAMROOT="$XDG_DATA_HOME/opam"
-export NVM_DIR="/usr/local/opt/nvm"
+export NVM_DIR="$BREW_ROOT/opt/nvm"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
 export PYTHONSTARTUP="/etc/python/pythonrc"
 export RANDFILE="$XDG_DATA_HOME/rnd"
@@ -198,9 +204,9 @@ add-zsh-hook precmd set_prompt
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.cargo/bin:$HOME/.docker/bin
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:$BREW_ROOT/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.cargo/bin:$HOME/.docker/bin
 
-eval "$(fzf --zsh)"
+[ -s "$BREW_ROOT/bin/fzf" ] && eval "$($BREW_ROOT/bin/fzf --zsh)"
 
 # LLM Stuff
 # Remote
