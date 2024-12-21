@@ -119,11 +119,11 @@ require('lazy').setup({
         'ltex',
         'ocamlls',
         'pyright',
-        -- 'sourcekit',
+        'sourcekit',
         'svelte',
         'terraformls',
+        'tinymist',
         'ts_ls',
-        'typst_lsp',
         'vimls',
       }
 
@@ -675,3 +675,5 @@ for mode, mappings in pairs(maps) do
     vim.api.nvim_set_keymap(mode, keys, mapping, { noremap = true })
   end
 end
+
+-- vim: shiftwidth=2:
