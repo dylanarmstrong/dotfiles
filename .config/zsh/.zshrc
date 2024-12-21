@@ -208,20 +208,48 @@ export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.loca
 
 [ -s "$BREW_ROOT/bin/fzf" ] && eval "$($BREW_ROOT/bin/fzf --zsh)"
 
-# LLM Stuff
+# LLM Stuff (open-webui)
+# Local
+export LLM_TOKEN_LOCAL="\$_LLM_TOKEN_LOCAL"
+export LLM_URL_LOCAL="\$_LLM_URL_LOCAL"
+export LLM_LLAMA="llama3.2:3b-instruct-q4_K_M"
+export LLM_NEMO="mistral-nemo:12b-instruct-2407-q4_K_M"
+# I have anthropic pipelines set up locally, but not remote atm
+export LLM_SONNET="anthropic.claude-3-5-sonnet-20241022"
+
 # Remote
-claude() {
-  response=$(curl -s \
+export LLM_TOKEN_REMOTE="\$_LLM_TOKEN_REMOTE"
+export LLM_URL_REMOTE="\$_LLM_URL_REMOTE"
+export LLM_O1_MINI="o1-mini-2024-09-12"
+export LLM_GPT4="gpt-4o-2024-11-20"
+
+export LLM_DEFAULT="$LLM_GPT4"
+export LLM_URL_DEFAULT="$LLM_URL_REMOTE"
+export LLM_TOKEN_DEFAULT="$LLM_TOKEN_REMOTE"
+
+llm() {
+  if [ ! $# -eq 4 ]; then
+    echo "Usage: llm url token model message" >&2
+    return
+  fi
+  local url="$1"
+  local token="$2"
+  local model="$3"
+  local message="$4"
+
+  local response=$(curl \
+    -s \
     -X POST \
-    --header "anthropic-version: 2023-06-01" \
-    --header "content-type: application/json" \
-    --header "x-api-key: $ANTHROPIC_API_ZSH_KEY" \
-    --data "$(jq -n --arg msg "$1" '{
-      model: "claude-3-5-sonnet-20241022",
-      max_tokens: 1024,
-      messages: [{role: "user", content: $msg}]
-    }')" \
-    https://api.anthropic.com/v1/messages | jq -r '.content[0].text')
+    --header "Authorization: Bearer $token" \
+    --header "Content-Type: application/json" \
+    --data "$(jq -n \
+      --arg message "$message" \
+      --arg model "$model" \
+      '{
+        model: $model,
+        messages: [{role: "user", content: $message}]
+      }')" \
+    "$url" | jq -r '.choices[0].message.content')
 
   echo "$response" | while IFS= read -r line; do
     if [[ $line =~ ^"\`\`\`"* ]]; then
@@ -235,53 +263,51 @@ claude() {
   done
 }
 
-# Local
-export OLLAMA_MODEL_LLAMA="llama3.2:3b-instruct-q4_K_M"
-export OLLAMA_MODEL_NEMO="mistral-nemo:12b-instruct-2407-q4_K_M"
-
-alias llama="ollama run $OLLAMA_MODEL_LLAMA"
-alias nemo="ollama run $OLLAMA_MODEL_NEMO"
-
-# I want a default method that uses mistral-nemo 12b, but a faster option that uses llama 3b
-ai_factory() {
+llm_factory() {
   local name="$1"
   local p="$2"
 
-  eval "${name}()       { ollama run \"\$OLLAMA_MODEL_NEMO\" \"$p \${*:-\$(pbpaste)}\"; }"
-  eval "${name}_nemo()  { ollama run \"\$OLLAMA_MODEL_NEMO\" \"$p \${*:-\$(pbpaste)}\"; }"
-  eval "${name}_llama() { ollama run \"\$OLLAMA_MODEL_LLAMA\" \"$p \${*:-\$(pbpaste)}\"; }"
+  eval "${name}()         { llm \"$LLM_URL_DEFAULT\" \"$LLM_TOKEN_DEFAULT\" \"$LLM_DEFAULT\" \"$p \${*:-\$(pbpaste)}\"; }"
+  eval "${name}_llama()   { llm \"$LLM_URL_LOCAL\" \"$LLM_TOKEN_LOCAL\" \"$LLM_LLAMA\" \"$p \${*:-\$(pbpaste)}\"; }"
+  eval "${name}_nemo()    { llm \"$LLM_URL_LOCAL\" \"$LLM_TOKEN_LOCAL\" \"$LLM_NEMO\" \"$p \${*:-\$(pbpaste)}\"; }"
+  eval "${name}_o1_mini() { llm \"$LLM_URL_REMOTE\" \"$LLM_TOKEN_REMOTE\" \"$LLM_O1_MINI\" \"$p \${*:-\$(pbpaste)}\"; }"
+  eval "${name}_gpt4()    { llm \"$LLM_URL_REMOTE\" \"$LLM_TOKEN_REMOTE\" \"$LLM_GPT4\" \"$p \${*:-\$(pbpaste)}\"; }"
+  eval "${name}_sonnet()  { llm \"$LLM_URL_LOCAL\" \"$LLM_TOKEN_LOCAL\" \"$LLM_SONNET\" \"$p \${*:-\$(pbpaste)}\"; }"
 }
 
 # Designed for asking a question about clipboard, i.e. ls -lathr . | pbcopy && olp "what is the newest file here?"
 _olp() {
-  ollama run "${1:-$OLLAMA_MODEL_NEMO}" "$2
+  llm "${3:-$LLM_DEFAULT}" "$4
 
-${3:-$(pbpaste)}"
+${5:-$(pbpaste)}"
 }
-olp()       { _olp "$OLLAMA_MODEL_NEMO" "$@" }
-olp_nemo()  { _olp "$OLLAMA_MODEL_NEMO" "$@" }
-olp_llama() { _olp "$OLLAMA_MODEL_LLAMA" "$@" }
+olp()         { _olp "$LLM_URL_DEFAULT" "$LLM_TOKEN_DEFAULT" "$LLM_DEFAULT" "$@" }
+olp_llama()   { _olp "$LLM_URL_LOCAL" "$LLM_TOKEN_LOCAL" "$LLM_LLAMA" "$@" }
+olp_nemo()    { _olp "$LLM_URL_LOCAL" "$LLM_TOKEN_LOCAL" "$LLM_NEMO" "$@" }
+olp_o1_mini() { _olp "$LLM_URL_REMOTE" "$LLM_TOKEN_REMOTE" "$LLM_O1_MINI" "$@" }
+olp_gpt4()    { _olp "$LLM_URL_REMOTE" "$LLM_TOKEN_REMOTE" "$LLM_GPT4" "$@" }
+olp_sonnet()  { _olp "$LLM_URL_LOCAL" "$LLM_TOKEN_LOCAL" "$LLM_SONNET" "$@" }
 
 # Define a word, i.e. define 'hello' -> '**Definition:** "Hello" is an interjection used to greet...'
-ai_factory "define" "You are a helpful AI Agent designed to define words. How would you define and use the following word:"
+llm_factory "define" "How would you define and use the following word:"
 
 # Explains a concept, i.e. explain 'why is the sky blue?' -> 'The sky appears blue due to a phenomenon called Rayleigh...'
-ai_factory "explain" "You are a helpful AI Agent designed to explain complicated concepts. Only provide the explanation and no additional commentary. How would you explain:"
+llm_factory "explain" "I need a complicated concept explained to me. Only provide the explanation and no additional commentary. How would you explain:"
 
 # Corrects grammer, i.e. grammar 'helo world, my nam is dylan' -> 'Hello world, My name is Dylan'
-ai_factory "grammar" "You are a helpful AI Agent designed to correct grammar. Only provide the corrected text and nothing else, no explanations, prefixes, or suffixes of the following text:"
+llm_factory "grammar" "I need my grammar checked. Only provide the corrected text and nothing else, no explanations, prefixes, or suffixes of the following text:"
 
 # Answer a provided prompt, but keep it simple, i.e. 'why is the sky blue?' -> 'Rayleigh scattering'
-ai_factory "ols" "You are a helpful AI Agent designed to answer a question in as few words as possible. Do not add comments, explanations, puncutation, prefixes, or suffixes. Here's the prompt you are expected to answer:"
+llm_factory "ols" "I need a response to this in as few words as possible. Do not add comments, explanations, puncutation, prefixes, or suffixes. Here's the prompt you are expected to answer:"
 
 # Answer a provided prompt, i.e. ol 'why is the sky blue?' -> 'The sky appears blue because of a phenomenon called Rayleigh...'
-ai_factory "ol" "You are a helpful AI Agent designed to answer a question. Here's the prompt you are expected to answer:"
+llm_factory "ol" "Please answer the following prompt:"
 
 # Translates text into english, i.e. translate 'bonjour' -> 'hello'
-ai_factory "translate" "You are a helpful AI Agent designed to translate text into English. Only provide the translated English text and nothing else, no explanations, prefixes, or suffixes of the following text:"
+llm_factory "translate" "I need this text translated into English. Only provide the translated English text and nothing else, no explanations, prefixes, or suffixes of the following text:"
 
 # Generates a commit message, i.e. commit $(git -P diff)
-ai_factory "commit" "You are a helpful AI Agent designed to read a 'git diff' and generate a concise commit message summarizing all changes. The commit message must:
+llm_factory "commit" "I need you to read a 'git diff' and generate a concise commit message summarizing all changes. The commit message must:
 1. Use one of the following commitlint prefixes, based on the nature of the changes:
   chore: Changes to build processes, tooling, or configuration that don't modify app behavior.
   docs: Updates to documentation (e.g., README files, code comments).
