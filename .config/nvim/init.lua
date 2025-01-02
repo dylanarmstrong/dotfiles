@@ -442,23 +442,18 @@ require('lazy').setup({
 
   -- File browser
   {
-    'nvim-tree/nvim-tree.lua',
+    'nvim-neo-tree/neo-tree.nvim',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons',
+    },
     config = function()
-      require('nvim-tree').setup {
-        renderer = {
-          icons = {
-            show = {
-              file = true,
-              folder_arrow = true,
-              folder = true,
-              git = false,
-            },
-          },
-          special_files = {
-            'Makefile',
-            'Cargo.toml',
-            'README.md',
-            'readme.md',
+      require('neo-tree').setup {
+        close_if_last_window = true,
+        filesystem = {
+          filtered_items = {
+            hide_dotfiles = false,
           },
         },
       }
@@ -636,7 +631,7 @@ local maps = {
   n = {
     [':'] = ';',
     [';'] = ':',
-    ['<C-n>'] = '<cmd>NvimTreeToggle<cr>',
+    ['<C-n>'] = '<cmd>Neotree toggle<cr>',
     ['<C-p>'] = '<cmd>Telescope find_files<cr>',
     -- ['<C-s>'] = '<cmd>SymbolsOutline<cr>',
     ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
