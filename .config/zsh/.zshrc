@@ -150,9 +150,9 @@ zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:options' auto-description '%d'
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-zstyle ':completion:*:*:*:*:processes' command "ps -u $(whoami) -o pid,user,comm -w -w"
+zstyle ':completion:*:*:*:*:processes' command 'ps -u $(whoami) -o pid,user,comm -w -w'
 zstyle ':completion:*' menu select
-zstyle ":completion:*" list-colors ""
+zstyle ':completion:*' list-colors ''
 zstyle ':completion:*:ssh:*' hosts off
 zstyle ':completion:*:scp:*' hosts off
 zstyle ':completion:*:rsync:*' hosts off
@@ -166,7 +166,7 @@ alias e='exit'
 alias gc='git checkout'
 alias gd='git diff'
 alias grep='grep --color=auto'
-alias jqp="jq '.' package.json"
+alias jqp='jq '.' package.json'
 alias l='ls --color=always -F'
 alias ls='ls --color=always -F'
 alias lsh='ls -Fth . | head -n 25'
@@ -175,7 +175,7 @@ alias mitmweb='mitmweb --set confdir=$XDG_CONFIG_HOME/mitmproxy'
 alias mkdir='nocorrect mkdir -v'
 alias mv='nocorrect mv -v'
 alias rm='nocorrect rm -v'
-alias scripts="jq '.scripts' package.json"
+alias scripts='jq '.scripts' package.json'
 alias ssh='TERM=xterm-256color ssh'
 alias view='nvim -R'
 alias vim='nvim'

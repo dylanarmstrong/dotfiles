@@ -11,8 +11,10 @@
   d = diff
   dt = -c diff.external=difft diff
   fuck = reset --hard
+  l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --decorate --date=short --color --decorate
   p = push
   s = status
+  st = status -sb
 [push]
   default = current
 [init]
