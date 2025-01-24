@@ -24,52 +24,72 @@ require('lazy').setup({
   {
     'catppuccin/nvim',
     lazy = false,
-    config = function()
-      require('catppuccin').setup {
-        flavour = 'mocha',
-        integrations = {
-          gitgutter = true,
-          indent_blankline = {
-            enabled = true,
-            colored_indent_levels = false,
-          },
-          lsp_trouble = true,
-          native_lsp = {
-            enabled = true,
-            underlines = {
-              errors = { 'underline' },
-              hints = { 'underline' },
-              information = { 'underline' },
-              warnings = { 'underline' },
-            },
-            virtual_text = {
+    priority = 1000,
+    opts = {
+      flavour = 'mocha',
+      integrations = {
+        indent_blankline = {
+          colored_indent_levels = false,
+          enabled = true,
+          scope_color = '',
+        },
+        gitsigns = true,
+        lsp_trouble = true,
+        lualine = true,
+        markdown = true,
+        native_lsp = {
+          enabled = true,
+          virtual_text = {
               errors = { 'italic' },
               hints = { 'italic' },
-              information = { 'italic' },
               warnings = { 'italic' },
-            },
+              information = { 'italic' },
+              ok = { 'italic' },
           },
-          nvimtree = true,
-          telescope = true,
+          underlines = {
+              errors = { 'underline' },
+              hints = { 'underline' },
+              warnings = { 'underline' },
+              information = { 'underline' },
+              ok = { 'underline' },
+          },
+          inlay_hints = {
+              background = true,
+          },
         },
-      }
+        neotree = true,
+        symbols_outline = true,
+        telescope = true,
+      },
+    },
+    config = function()
       vim.cmd[[ colorscheme catppuccin ]]
     end
   },
 
-  'lukas-reineke/indent-blankline.nvim',
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
+    opts = {},
+  },
 
   {
-    'norcalli/nvim-colorizer.lua',
-    event = 'BufRead',
-    config = function()
-      require('colorizer').setup()
-    end
+    'brenoprata10/nvim-highlight-colors',
+    event = 'BufReadPre',
+    opts = {
+      render = 'virtual',
+      virtual_symbol_position = 'eol',
+      virtual_symbol_suffix = '',
+      enable_tailwind = true,
+    },
   },
 
   -- Git
   'tpope/vim-fugitive',
-  'airblade/vim-gitgutter',
+  {
+    'lewis6991/gitsigns.nvim',
+    opts = {},
+  },
 
   -- Undo
   'mbbill/undotree',
@@ -79,11 +99,6 @@ require('lazy').setup({
     'nvim-telescope/telescope.nvim',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope-fzf-native.nvim',
-      build = 'make',
-      config = function()
-        require('telescope').load_extension('fzf')
-      end,
     },
     opts = {
       defaults = {
@@ -95,15 +110,65 @@ require('lazy').setup({
     },
   },
 
+  {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
+    build = 'make',
+    config = function()
+      require('telescope').load_extension('fzf')
+    end,
+  },
+
   -- LSP (with autocomplete)
   {
-    'neovim/nvim-lspconfig',
+    'hrsh7th/nvim-cmp',
     dependencies = {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-vsnip',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
+    },
+    main = 'cmp',
+    opts = function(_, opts)
+      opts.enabled = function()
+        -- Don't enable autocomplete inside of comments
+        local context = require 'cmp.config.context'
+        local buftype = vim.bo.buftype
+
+        -- Don't enable on prompts either
+        if buftype == 'prompt' then
+          return false
+        end
+
+        -- Disabled globally
+        if not vim.g.cmptoggle then
+          return false
+        end
+
+        if vim.api.nvim_get_mode().mode == 'c' then
+          return true
+        else
+          return not context.in_treesitter_capture('comment') and not context.in_syntax_group('Comment')
+        end
+      end
+      opts.sources = {
+        { name = 'nvim_lsp' },
+        { name = 'buffer' },
+        { name = 'nvim_lsp_signature_help' },
+      }
+      local cmp = require('cmp')
+      opts.mapping = cmp.mapping.preset.insert({
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      })
+    end,
+  },
+
+  {
+    'neovim/nvim-lspconfig',
+    dependencies = {
       'hrsh7th/nvim-cmp',
-      'hrsh7th/vim-vsnip',
     },
     config = function()
       local nvim_lsp = require('lspconfig')
@@ -174,29 +239,27 @@ require('lazy').setup({
           if vim.uv.fs_stat(path..'/.luarc.json') or vim.uv.fs_stat(path..'/.luarc.jsonc') then
             return
           end
-          client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+        end,
+        settings = {
+          Lua = {
             runtime = {
-              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
               version = 'LuaJIT',
             },
             diagnostics = {
-              -- Get the language server to recognize the `vim` global
               globals = { 'vim' },
             },
             workspace = {
-              -- Stop annoying popup on lua files
               checkThirdParty = false,
-              -- Make the server aware of Neovim runtime files
-              library = vim.api.nvim_get_runtime_file('', true),
+              -- Using vim.api.nvim_get_runtime_file('', true) causes issues when working on nvim/init.lua
+              library = {
+                vim.env.VIMRUNTIME,
+                '${3rd}/luv/library',
+              }
             },
-            -- Do not send telemetry
             telemetry = {
               enable = false,
             },
-          })
-        end,
-        settings = {
-          Lua = {}
+          }
         },
       }
 
@@ -236,70 +299,35 @@ require('lazy').setup({
         capabilities = capabilities,
         cmd = { 'java', '-jar', os.getenv('HOME') .. '/src/groovy-language-server/build/libs/groovy-language-server-all.jar' }
       }
-
-      local cmp = require('cmp')
-
-      cmp.setup {
-        enabled = function()
-          -- Don't enable autocomplete inside of comments
-          if require'cmp.config.context'.in_treesitter_capture('comment')==true or require'cmp.config.context'.in_syntax_group('Comment') then
-            return false
-          else
-            return vim.g.cmptoggle
-          end
-        end,
-        snippet = {
-          expand = function(args)
-            vim.fn['vsnip#anonymous'](args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<C-e>'] = cmp.mapping.abort(),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }),
-        }),
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-        }, {
-          { name = 'buffer' },
-        }),
-      }
-
     end
   },
 
   {
     'simrat39/rust-tools.nvim',
-    config = function()
-      local rt = require('rust-tools')
-      rt.setup({
-        tools = {
-          runnables = {
-            use_telescope = true,
-          },
-          inlay_hints = {
-            auto = true,
-            show_parameter_hints = false,
-            parameter_hints_prefix = '',
-            other_hints_prefix = '',
-          },
+    opts = {
+      tools = {
+        runnables = {
+          use_telescope = true,
         },
-        server = {
-          on_attach = function(_, _)
-          end,
-          settings = {
-            ['rust-analyzer'] = {
-              checkOnSave = {
-                command = 'clippy',
-              },
+        inlay_hints = {
+          auto = true,
+          show_parameter_hints = false,
+          parameter_hints_prefix = '',
+          other_hints_prefix = '',
+        },
+      },
+      server = {
+        on_attach = function(_, _)
+        end,
+        settings = {
+          ['rust-analyzer'] = {
+            checkOnSave = {
+              command = 'clippy',
             },
           },
         },
-      })
-    end,
+      },
+    },
   },
 
   -- Debugger
@@ -335,28 +363,25 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     event = 'BufRead',
-    config = function()
-      require('nvim-treesitter.configs').setup {
-        auto_install = true,
-        ensure_installed = 'all',
-        highlight = {
-          enable = true,
-          use_languagetree = true,
-        },
-        ignore_install = {},
-        indent = { enable = false },
-        modules = {},
-        sync_install = false,
-      }
-    end
+    opts = {
+      auto_install = true,
+      ensure_installed = 'all',
+      highlight = {
+        enable = true,
+        use_languagetree = true,
+      },
+      ignore_install = {},
+      indent = { enable = false },
+      modules = {},
+      sync_install = false,
+    },
+    main = 'nvim-treesitter.configs',
   },
 
-  -- {
-  --   'simrat39/symbols-outline.nvim',
-  --   config = function()
-  --     require('symbols-outline').setup()
-  --   end
-  -- },
+  {
+    'hedyhli/outline.nvim',
+    opts = {},
+  },
 
   -- Jenkinsfiles (groovyls doesn't work for me)
   'martinda/Jenkinsfile-vim-syntax',
@@ -377,67 +402,41 @@ require('lazy').setup({
   -- Status line
   {
     'hoob3rt/lualine.nvim',
-    config = function()
-      -- Get character under cursor
-      local get_hex = function()
-        local hex = vim.api.nvim_exec2([[
-          ascii
-        ]], { output = true }).output
-
-        if hex == nil then
-          return 'nil'
-        end
-
-        hex = hex:match(',  Hex ([^,]+)')
-        if hex == nil then
-          return 'nil'
-        end
-
-        return '0x' .. hex
-      end
-
-      require('lualine').setup {
-        options = {
-          icons_enabled = false,
-          component_separators = '|',
-          section_separators = '',
-          theme = 'catppuccin',
+    opts = {
+      options = {
+        icons_enabled = false,
+        component_separators = '|',
+        section_separators = '',
+        theme = 'catppuccin',
+      },
+      sections = {
+        lualine_b = {
+          'fugitive#head'
         },
-        sections = {
-          lualine_b = {
-            'fugitive#head'
-          },
-          lualine_y = {
-            {
-              'diagnostics',
-              sources = {
-                'nvim_diagnostic'
-              },
-              symbols = {
-                error = ' ',
-                warn = ' ',
-                info = ' '
-              },
-              color_error = '#ea51b2',
-              color_warn = '#00f769',
-              color_info = '#a1efe4',
+        lualine_y = {
+          {
+            'diagnostics',
+            sources = {
+              'nvim_diagnostic'
             },
-            get_hex,
+            symbols = {
+              error = ' ',
+              warn = ' ',
+              info = ' '
+            },
           },
         },
-      }
-    end
+      },
+    },
   },
 
   -- Icons
   {
     'nvim-tree/nvim-web-devicons',
-    config = function()
-      require('nvim-web-devicons').setup {
-        default = true,
-        color_icons = true,
-      }
-    end
+    opts = {
+      default = true,
+      color_icons = true,
+    },
   },
 
   -- File browser
@@ -448,24 +447,22 @@ require('lazy').setup({
       'nvim-lua/plenary.nvim',
       'nvim-tree/nvim-web-devicons',
     },
-    config = function()
-      require('neo-tree').setup {
-        close_if_last_window = true,
-        filesystem = {
-          filtered_items = {
-            hide_dotfiles = false,
-          },
+    opts = {
+      close_if_last_window = true,
+      filesystem = {
+        filtered_items = {
+          hide_dotfiles = false,
         },
-      }
-    end
+      },
+    },
   },
 
   -- Diagnostics
   {
     'folke/trouble.nvim',
-    config = function()
-      require('trouble').setup {}
-    end
+    opts = {
+      focus = true,
+    },
   },
 
   -- Templates
@@ -494,71 +491,6 @@ require('lazy').setup({
       },
     },
   },
-
-  -- Agenda / Org Mode
-  -- {
-  --   'nvim-orgmode/orgmode',
-  --   dependencies = {
-  --     { 'nvim-treesitter/nvim-treesitter', lazy = true },
-  --   },
-  --   event = 'VeryLazy',
-  --   config = function()
-  --     -- Load treesitter grammar for org
-  --     require('orgmode').setup_ts_grammar()
-
-  --     -- Setup treesitter
-  --     require('nvim-treesitter.configs').setup({
-  --       highlight = {
-  --         enable = true,
-  --       },
-  --       ensure_installed = { 'org' },
-  --     })
-
-  --     -- Setup orgmode
-  --     require('orgmode').setup({
-  --       org_agenda_files = '~/.local/share/orgfiles/**/*',
-  --       org_default_notes_file = '~/.local/share/orgfiles/refile.org',
-  --     })
-  --   end,
-  -- },
-
-  -- {
-  --   'yetone/avante.nvim',
-  --   event = 'VeryLazy',
-  --   lazy = false,
-  --   version = false,
-  --   opts = {
-  --     debug = false,
-  --   },
-  --   build = 'make',
-  --   dependencies = {
-  --     'nvim-treesitter/nvim-treesitter',
-  --     'stevearc/dressing.nvim',
-  --     'nvim-lua/plenary.nvim',
-  --     'MunifTanjim/nui.nvim',
-  --     'nvim-tree/nvim-web-devicons',
-  --     {
-  --       'HakonHarnes/img-clip.nvim',
-  --       event = 'VeryLazy',
-  --       opts = {
-  --         default = {
-  --           embed_image_as_base64 = false,
-  --           prompt_for_file_name = false,
-  --           drag_and_drop = {
-  --             insert_mode = true,
-  --           },
-  --         },
-  --       },
-  --     },
-  --     {
-  --       'MeanderingProgrammer/render-markdown.nvim',
-  --       opts = {
-  --         file_types = { 'markdown', 'Avante' },
-  --       },
-  --       ft = { 'markdown', 'Avante' },
-  --     },
-  --   },
-  -- },
 
   checker = { enabled = true },
 })
@@ -606,7 +538,7 @@ vim.opt.undofile = true
 vim.opt.undodir = os.getenv('HOME') .. '/.local/share/nvim/undo'
 
 -- Ignore
-vim.opt.wildignore = '*/node_modules/*,*/elm-stuff/*'
+vim.opt.wildignore = '*/node_modules/*'
 
 -- Cursor lines are nice
 vim.opt.cursorline = true
@@ -633,12 +565,13 @@ local maps = {
     [';'] = ':',
     ['<C-n>'] = '<cmd>Neotree toggle<cr>',
     ['<C-p>'] = '<cmd>Telescope find_files<cr>',
-    -- ['<C-s>'] = '<cmd>SymbolsOutline<cr>',
     ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
     ['<leader>a'] = '<cmd>Telescope live_grep<cr>',
     ['<leader>b'] = '<cmd>Telescope buffers<cr>',
     ['<leader>e'] = '<cmd>Trouble diagnostics toggle<cr>',
     ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
+    ['<leader>o'] = '<cmd>Outline<cr>',
+    ['<leader>u'] = '<cmd>UndotreeToggle<cr>',
     ['<leader>gd'] = '<cmd>Gdiff<cr>',
     ['<leader>gs'] = '<cmd>Gstatus<cr>',
     ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
