@@ -10,7 +10,7 @@ export XDG_STATE_HOME=$HOME/.local/state
 export XDG_RUNTIME_DIR=$HOME/.local/run
 
 # For the PATH
-NODE_VERSION=v22.11.0
+NODE_VERSION=v22.14.0
 
 # For arm64 / i386
 BREW_ROOT="/usr/local"
