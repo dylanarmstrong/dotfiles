@@ -5,7 +5,7 @@ if not vim.uv.fs_stat(lazypath) then
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
       { 'Failed to clone lazy.nvim:\n', 'ErrorMsg' },
-      { out, 'WarningMsg' },
+      { out,                            'WarningMsg' },
       { '\nPress any key to exit...' },
     }, true, {})
     vim.fn.getchar()
@@ -40,21 +40,21 @@ require('lazy').setup({
         native_lsp = {
           enabled = true,
           virtual_text = {
-              errors = { 'italic' },
-              hints = { 'italic' },
-              warnings = { 'italic' },
-              information = { 'italic' },
-              ok = { 'italic' },
+            errors = { 'italic' },
+            hints = { 'italic' },
+            warnings = { 'italic' },
+            information = { 'italic' },
+            ok = { 'italic' },
           },
           underlines = {
-              errors = { 'underline' },
-              hints = { 'underline' },
-              warnings = { 'underline' },
-              information = { 'underline' },
-              ok = { 'underline' },
+            errors = { 'underline' },
+            hints = { 'underline' },
+            warnings = { 'underline' },
+            information = { 'underline' },
+            ok = { 'underline' },
           },
           inlay_hints = {
-              background = true,
+            background = true,
           },
         },
         neotree = true,
@@ -63,18 +63,20 @@ require('lazy').setup({
       },
     },
     config = function()
-      vim.cmd[[ colorscheme catppuccin ]]
-    end
+      vim.cmd([[ colorscheme catppuccin ]])
+    end,
   },
 
   {
     'lukas-reineke/indent-blankline.nvim',
+    cond = not vim.g.vscode,
     main = 'ibl',
     opts = {},
   },
 
   {
     'brenoprata10/nvim-highlight-colors',
+    cond = not vim.g.vscode,
     event = 'BufReadPre',
     opts = {
       render = 'virtual',
@@ -85,18 +87,27 @@ require('lazy').setup({
   },
 
   -- Git
-  'tpope/vim-fugitive',
+  {
+    'tpope/vim-fugitive',
+    cond = not vim.g.vscode,
+  },
+
   {
     'lewis6991/gitsigns.nvim',
+    cond = not vim.g.vscode,
     opts = {},
   },
 
   -- Undo
-  'mbbill/undotree',
+  {
+    'mbbill/undotree',
+    cond = not vim.g.vscode,
+  },
 
   -- Finder
   {
     'nvim-telescope/telescope.nvim',
+    cond = not vim.g.vscode,
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
@@ -112,6 +123,7 @@ require('lazy').setup({
 
   {
     'nvim-telescope/telescope-fzf-native.nvim',
+    cond = not vim.g.vscode,
     dependencies = {
       'nvim-telescope/telescope.nvim',
     },
@@ -124,16 +136,16 @@ require('lazy').setup({
   -- LSP (with autocomplete)
   {
     'hrsh7th/nvim-cmp',
+    cond = not vim.g.vscode,
     dependencies = {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
     },
     main = 'cmp',
     opts = function(_, opts)
       opts.enabled = function()
         -- Don't enable autocomplete inside of comments
-        local context = require 'cmp.config.context'
+        local context = require('cmp.config.context')
         local buftype = vim.bo.buftype
 
         -- Don't enable on prompts either
@@ -155,7 +167,6 @@ require('lazy').setup({
       opts.sources = {
         { name = 'nvim_lsp' },
         { name = 'buffer' },
-        { name = 'nvim_lsp_signature_help' },
       }
       local cmp = require('cmp')
       opts.mapping = cmp.mapping.preset.insert({
@@ -167,6 +178,7 @@ require('lazy').setup({
 
   {
     'neovim/nvim-lspconfig',
+    cond = not vim.g.vscode,
     dependencies = {
       'hrsh7th/nvim-cmp',
     },
@@ -193,35 +205,47 @@ require('lazy').setup({
       }
 
       for _, lsp in ipairs(servers) do
-        nvim_lsp[lsp].setup {
+        nvim_lsp[lsp].setup({
           capabilities = capabilities,
-        }
+        })
       end
 
-      nvim_lsp.clangd.setup {
+      nvim_lsp.clangd.setup({
         capabilities = capabilities,
         cmd = { 'clangd', '--offset-encoding=utf-16' },
-      }
+      })
 
-      nvim_lsp.ltex.setup {
+      nvim_lsp.ltex.setup({
         settings = {
           ltex = {
             language = 'en-US',
           },
         },
-      }
+      })
 
-      nvim_lsp.tailwindcss.setup {
+      nvim_lsp.tailwindcss.setup({
         capabilities = capabilities,
         root_dir = nvim_lsp.util.root_pattern('tailwind.config.ts', 'tailwind.config.js', '.git'),
-      }
+      })
 
-      nvim_lsp.emmet_ls.setup {
+      nvim_lsp.emmet_ls.setup({
         capabilities = capabilities,
-        filetypes = { 'css', 'html', 'javascript', 'javascriptreact', 'less', 'sass', 'scss', 'svelte', 'pug', 'typescriptreact', 'vue' },
-      }
+        filetypes = {
+          'css',
+          'html',
+          'javascript',
+          'javascriptreact',
+          'less',
+          'sass',
+          'scss',
+          'svelte',
+          'pug',
+          'typescriptreact',
+          'vue',
+        },
+      })
 
-      nvim_lsp.cssls.setup {
+      nvim_lsp.cssls.setup({
         capabilities = capabilities,
         settings = {
           css = {
@@ -230,13 +254,13 @@ require('lazy').setup({
             },
           },
         },
-      }
+      })
 
-      nvim_lsp.lua_ls.setup {
+      nvim_lsp.lua_ls.setup({
         capabilities = capabilities,
         on_init = function(client)
           local path = client.workspace_folders[1].name
-          if vim.uv.fs_stat(path..'/.luarc.json') or vim.uv.fs_stat(path..'/.luarc.jsonc') then
+          if vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc') then
             return
           end
         end,
@@ -254,21 +278,21 @@ require('lazy').setup({
               library = {
                 vim.env.VIMRUNTIME,
                 '${3rd}/luv/library',
-              }
+              },
             },
             telemetry = {
               enable = false,
             },
-          }
+          },
         },
-      }
+      })
 
-      nvim_lsp.elixirls.setup {
+      nvim_lsp.elixirls.setup({
         capabilities = capabilities,
-        cmd = { os.getenv('HOME') .. '/src/elixir-ls/dist/language_server.sh' }
-      }
+        cmd = { os.getenv('HOME') .. '/src/elixir-ls/dist/language_server.sh' },
+      })
 
-      nvim_lsp.eslint.setup {
+      nvim_lsp.eslint.setup({
         capabilities = capabilities,
         -- Fix issues on save
         on_attach = function(_, bufnr)
@@ -277,10 +301,30 @@ require('lazy').setup({
             command = 'EslintFixAll',
           })
         end,
+        handlers = {
+          ['eslint/noConfig'] = function()
+            return {}
+          end,
+          ['eslint/noLibrary'] = function()
+            return {}
+          end,
+        },
         root_dir = nvim_lsp.util.root_pattern('.git'),
-      }
+      })
 
-      nvim_lsp.efm.setup {
+      nvim_lsp.oxlint.setup({
+        capabilities = capabilities,
+        -- Fix issues on save
+        -- on_attach = function(_, bufnr)
+        --   vim.api.nvim_create_autocmd('BufWritePre', {
+        --     buffer = bufnr,
+        --     command = 'OxcFixAll',
+        --   })
+        -- end,
+        root_dir = nvim_lsp.util.root_pattern('.git'),
+      })
+
+      nvim_lsp.efm.setup({
         init_options = { documentFormatting = true },
         settings = {
           rootMarkers = { '.git/' },
@@ -293,17 +337,41 @@ require('lazy').setup({
             },
           },
         },
-      }
+      })
 
-      nvim_lsp.groovyls.setup {
+      nvim_lsp.groovyls.setup({
         capabilities = capabilities,
-        cmd = { 'java', '-jar', os.getenv('HOME') .. '/src/groovy-language-server/build/libs/groovy-language-server-all.jar' }
-      }
-    end
+        cmd = {
+          'java',
+          '-jar',
+          os.getenv('HOME') .. '/src/groovy-language-server/build/libs/groovy-language-server-all.jar',
+        },
+      })
+    end,
+  },
+
+  -- Having issues with efm langserver on typescriptreact
+  {
+    'stevearc/conform.nvim',
+    cond = not vim.g.vscode,
+    opts = {
+      formatters_by_ft = {
+        javascript = { 'prettier' },
+        typescript = { 'prettier' },
+        json = { 'prettier' },
+        html = { 'prettier' },
+        css = { 'prettier' },
+      },
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_fallback = true,
+      },
+    },
   },
 
   {
     'simrat39/rust-tools.nvim',
+    cond = not vim.g.vscode,
     opts = {
       tools = {
         runnables = {
@@ -317,8 +385,7 @@ require('lazy').setup({
         },
       },
       server = {
-        on_attach = function(_, _)
-        end,
+        on_attach = function(_, _) end,
         settings = {
           ['rust-analyzer'] = {
             checkOnSave = {
@@ -333,6 +400,7 @@ require('lazy').setup({
   -- Debugger
   {
     'mfussenegger/nvim-dap',
+    cond = not vim.g.vscode,
     dependencies = {
       'mxsdev/nvim-dap-vscode-js',
     },
@@ -344,7 +412,7 @@ require('lazy').setup({
         executable = {
           command = 'node',
           args = { os.getenv('HOME') .. '/src/js-debug/src/dapDebugServer.js', '${port}' },
-        }
+        },
       }
       require('dap').configurations.javascript = {
         {
@@ -380,20 +448,28 @@ require('lazy').setup({
 
   {
     'hedyhli/outline.nvim',
+    cond = not vim.g.vscode,
     opts = {},
   },
 
   -- Jenkinsfiles (groovyls doesn't work for me)
-  'martinda/Jenkinsfile-vim-syntax',
+  {
+    'martinda/Jenkinsfile-vim-syntax',
+    cond = not vim.g.vscode,
+  },
 
   -- Typst support
   {
     'kaarmu/typst.vim',
-    ft = { 'typst' }
+    cond = not vim.g.vscode,
+    ft = { 'typst' },
   },
 
   -- Pug support
-  'digitaltoad/vim-pug',
+  {
+    'digitaltoad/vim-pug',
+    cond = not vim.g.vscode,
+  },
 
   -- Comments
   -- visual mode = gc = comment
@@ -402,6 +478,7 @@ require('lazy').setup({
   -- Status line
   {
     'hoob3rt/lualine.nvim',
+    cond = not vim.g.vscode,
     opts = {
       options = {
         icons_enabled = false,
@@ -411,18 +488,18 @@ require('lazy').setup({
       },
       sections = {
         lualine_b = {
-          'fugitive#head'
+          'fugitive#head',
         },
         lualine_y = {
           {
             'diagnostics',
             sources = {
-              'nvim_diagnostic'
+              'nvim_diagnostic',
             },
             symbols = {
               error = ' ',
               warn = ' ',
-              info = ' '
+              info = ' ',
             },
           },
         },
@@ -433,6 +510,7 @@ require('lazy').setup({
   -- Icons
   {
     'nvim-tree/nvim-web-devicons',
+    cond = not vim.g.vscode,
     opts = {
       default = true,
       color_icons = true,
@@ -442,6 +520,7 @@ require('lazy').setup({
   -- File browser
   {
     'nvim-neo-tree/neo-tree.nvim',
+    cond = not vim.g.vscode,
     dependencies = {
       'MunifTanjim/nui.nvim',
       'nvim-lua/plenary.nvim',
@@ -460,6 +539,7 @@ require('lazy').setup({
   -- Diagnostics
   {
     'folke/trouble.nvim',
+    cond = not vim.g.vscode,
     opts = {
       focus = true,
     },
@@ -468,12 +548,13 @@ require('lazy').setup({
   -- Templates
   {
     'vigoux/templar.nvim',
+    cond = not vim.g.vscode,
     config = function()
       local templar = require('templar')
       templar.register('*.html')
       templar.register('*.py')
       templar.register('*.sh')
-    end
+    end,
   },
 
   -- Movement
@@ -556,42 +637,49 @@ vim.opt.background = 'dark'
 -- SQL has a massive slowdown for me
 vim.g.omni_sql_no_default_maps = true
 
+local common_maps = {
+  [':'] = ';',
+  [';'] = ':',
+  -- Uppercase Y will grab entire line
+  ['Y'] = 'yy',
+  -- Natural movement over visual lines
+  ['j'] = 'gj',
+  ['k'] = 'gk',
+}
+
+local nvim_only_maps = {
+  ['<C-n>'] = '<cmd>Neotree toggle<cr>',
+  ['<C-p>'] = '<cmd>Telescope find_files<cr>',
+  ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
+  ['<leader>a'] = '<cmd>Telescope live_grep<cr>',
+  ['<leader>b'] = '<cmd>Telescope buffers<cr>',
+  ['<leader>e'] = '<cmd>Trouble diagnostics toggle<cr>',
+  ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
+  ['<leader>o'] = '<cmd>Outline<cr>',
+  ['<leader>u'] = '<cmd>UndotreeToggle<cr>',
+  ['<leader>gd'] = '<cmd>Gdiff<cr>',
+  ['<leader>gs'] = '<cmd>Gstatus<cr>',
+  ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
+  ['<leader>z'] = '<cmd>lua vim.g.cmptoggle = not vim.g.cmptoggle<cr>',
+  ['K'] = '<cmd>lua vim.lsp.buf.hover()<cr>',
+  ['[d'] = '<cmd>lua vim.lsp.buf.goto_prev()<cr>',
+  [']d'] = '<cmd>lua vim.lsp.buf.goto_next()<cr>',
+  ['gD'] = '<cmd>lua vim.lsp.buf.declaration()<cr>',
+  ['gd'] = '<cmd>lua vim.lsp.buf.definition()<cr>',
+  ['gi'] = '<cmd>lua vim.lsp.buf.implementation()<cr>',
+  ['gr'] = '<cmd>lua vim.lsp.buf.references()<cr>',
+}
+
+-- If we're on Cursor, only load keybindings available
+local maps_n = vim.g.vscode and common_maps or vim.tbl_extend('force', common_maps, nvim_only_maps)
+
 local maps = {
   i = {
     ['<C-c>'] = '<Esc>',
   },
-  n = {
-    [':'] = ';',
-    [';'] = ':',
-    ['<C-n>'] = '<cmd>Neotree toggle<cr>',
-    ['<C-p>'] = '<cmd>Telescope find_files<cr>',
-    ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
-    ['<leader>a'] = '<cmd>Telescope live_grep<cr>',
-    ['<leader>b'] = '<cmd>Telescope buffers<cr>',
-    ['<leader>e'] = '<cmd>Trouble diagnostics toggle<cr>',
-    ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
-    ['<leader>o'] = '<cmd>Outline<cr>',
-    ['<leader>u'] = '<cmd>UndotreeToggle<cr>',
-    ['<leader>gd'] = '<cmd>Gdiff<cr>',
-    ['<leader>gs'] = '<cmd>Gstatus<cr>',
-    ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
-    ['<leader>z'] = '<cmd>lua vim.g.cmptoggle = not vim.g.cmptoggle<cr>',
-    ['K'] = '<cmd>lua vim.lsp.buf.hover()<cr>',
-    -- Uppercase Y will grab entire line
-    ['Y'] = 'yy',
-    ['[d'] = '<cmd>lua vim.lsp.buf.goto_prev()<cr>',
-    [']d'] = '<cmd>lua vim.lsp.buf.goto_next()<cr>',
-    ['gD'] = '<cmd>lua vim.lsp.buf.declaration()<cr>',
-    ['gd'] = '<cmd>lua vim.lsp.buf.definition()<cr>',
-    ['gi'] = '<cmd>lua vim.lsp.buf.implementation()<cr>',
-    ['gr'] = '<cmd>lua vim.lsp.buf.references()<cr>',
-    -- Natural movement over visual lines
-    ['j'] = 'gj',
-    ['k'] = 'gk',
-  },
+  n = maps_n,
   v = {
-    -- Sort lines under visual select
-    ['<leader>s'] = ":'<,'>sort<cr>",
+    ['<leader>s'] = ':\'<,\'>sort<cr>',
   },
   [''] = {
     ['<space>'] = '@q',
