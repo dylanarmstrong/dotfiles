@@ -195,7 +195,6 @@ require('lazy').setup({
         'jsonls',
         'ltex',
         'ocamlls',
-        'pyright',
         'sourcekit',
         'svelte',
         'terraformls',
@@ -209,6 +208,22 @@ require('lazy').setup({
           capabilities = capabilities,
         })
       end
+
+      local venv_python = vim.fn.getcwd() .. '/.venv/bin/python'
+      local default_python = vim.fn.exepath('python3')
+
+      nvim_lsp.pyright.setup({
+        settings = {
+          python = {
+            analysis = {
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+              diagnosticMode = 'workspace'
+            },
+            pythonPath = vim.fn.filereadable(venv_python) and venv_python or default_python
+          }
+        }
+      })
 
       nvim_lsp.clangd.setup({
         capabilities = capabilities,
