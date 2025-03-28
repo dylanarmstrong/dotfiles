@@ -74,6 +74,7 @@ require('lazy').setup({
     opts = {},
   },
 
+  -- FIXME: This is using deprecated request
   {
     'brenoprata10/nvim-highlight-colors',
     cond = not vim.g.vscode,
@@ -133,179 +134,161 @@ require('lazy').setup({
     end,
   },
 
-  -- LSP (with autocomplete)
   {
-    'hrsh7th/nvim-cmp',
-    cond = not vim.g.vscode,
+    'saghen/blink.cmp',
     dependencies = {
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-nvim-lsp',
+      'rafamadriz/friendly-snippets',
     },
-    main = 'cmp',
-    opts = function(_, opts)
-      opts.enabled = function()
-        -- Don't enable autocomplete inside of comments
-        local context = require('cmp.config.context')
-        local buftype = vim.bo.buftype
-
-        -- Don't enable on prompts either
-        if buftype == 'prompt' then
-          return false
-        end
-
-        -- Disabled globally
-        if not vim.g.cmptoggle then
-          return false
-        end
-
-        if vim.api.nvim_get_mode().mode == 'c' then
-          return true
-        else
-          return not context.in_treesitter_capture('comment') and not context.in_syntax_group('Comment')
-        end
-      end
-      opts.sources = {
-        { name = 'nvim_lsp' },
-        { name = 'buffer' },
-      }
-      local cmp = require('cmp')
-      opts.mapping = cmp.mapping.preset.insert({
-        ['<C-e>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
-      })
-    end,
+    build = 'cargo build --release',
+    opts = {
+      keymap = { preset = 'default' },
+      appearance = {
+        nerd_font_variant = 'mono'
+      },
+      completion = { documentation = { auto_show = true } },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
+      },
+      fuzzy = { implementation = 'prefer_rust_with_warning' }
+    },
+    opts_extend = { 'sources.default' }
   },
 
+  -- TODO: Once more stable with vim.lsp.config, change over with root_markers
   {
     'neovim/nvim-lspconfig',
-    cond = not vim.g.vscode,
     dependencies = {
-      'hrsh7th/nvim-cmp',
+      'saghen/blink.cmp',
     },
-    config = function()
-      local nvim_lsp = require('lspconfig')
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-      local servers = {
-        'bashls',
-        'dhall_lsp_server',
-        'dockerls',
-        'graphql',
-        'html',
-        'jsonls',
-        'ltex',
-        'ocamlls',
-        'sourcekit',
-        'svelte',
-        'terraformls',
-        'tinymist',
-        'ts_ls',
-        'vimls',
-      }
-
-      for _, lsp in ipairs(servers) do
-        nvim_lsp[lsp].setup({
-          capabilities = capabilities,
-        })
-      end
-
-      local venv_python = vim.fn.getcwd() .. '/.venv/bin/python'
-      local default_python = vim.fn.exepath('python3')
-
-      nvim_lsp.pyright.setup({
-        settings = {
-          python = {
-            analysis = {
-              autoSearchPaths = true,
-              useLibraryCodeForTypes = true,
-              diagnosticMode = 'workspace'
-            },
-            pythonPath = vim.fn.filereadable(venv_python) and venv_python or default_python
-          }
-        }
-      })
-
-      nvim_lsp.clangd.setup({
-        capabilities = capabilities,
-        cmd = { 'clangd', '--offset-encoding=utf-16' },
-      })
-
-      nvim_lsp.ltex.setup({
-        settings = {
-          ltex = {
-            language = 'en-US',
-          },
+    opts = {
+      servers = {
+        bashls = {},
+        clangd = {
+          cmd = { 'clangd', '--offset-encoding=utf-16' },
         },
-      })
-
-      nvim_lsp.tailwindcss.setup({
-        capabilities = capabilities,
-        root_dir = nvim_lsp.util.root_pattern('tailwind.config.ts', 'tailwind.config.js', '.git'),
-      })
-
-      nvim_lsp.emmet_ls.setup({
-        capabilities = capabilities,
-        filetypes = {
-          'css',
-          'html',
-          'javascript',
-          'javascriptreact',
-          'less',
-          'sass',
-          'scss',
-          'svelte',
-          'pug',
-          'typescriptreact',
-          'vue',
-        },
-      })
-
-      nvim_lsp.cssls.setup({
-        capabilities = capabilities,
-        settings = {
-          css = {
-            lint = {
-              unknownAtRules = 'ignore',
-            },
-          },
-        },
-      })
-
-      nvim_lsp.lua_ls.setup({
-        capabilities = capabilities,
-        on_init = function(client)
-          local path = client.workspace_folders[1].name
-          if vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc') then
-            return
-          end
-        end,
-        settings = {
-          Lua = {
-            runtime = {
-              version = 'LuaJIT',
-            },
-            diagnostics = {
-              globals = { 'vim' },
-            },
-            workspace = {
-              checkThirdParty = false,
-              -- Using vim.api.nvim_get_runtime_file('', true) causes issues when working on nvim/init.lua
-              library = {
-                vim.env.VIMRUNTIME,
-                '${3rd}/luv/library',
+        cssls = {
+          settings = {
+            css = {
+              lint = {
+                unknownAtRules = 'ignore',
               },
             },
-            telemetry = {
-              enable = false,
+          },
+        },
+        dhall_lsp_server = {},
+        dockerls = {},
+        efm = {
+          init_options = { documentFormatting = true },
+          settings = {
+            rootMarkers = { '.git/' },
+            languages = {
+              javascript = {
+                {
+                  formatCommand = 'prettier',
+                  formatStdin = true,
+                },
+              },
             },
           },
         },
-      })
+        elixirls = {
+          cmd = { os.getenv('HOME') .. '/src/elixir-ls/dist/language_server.sh' },
+        },
+        emmet_ls = {
+          filetypes = {
+            'css',
+            'html',
+            'javascript',
+            'javascriptreact',
+            'less',
+            'sass',
+            'scss',
+            'svelte',
+            'pug',
+            'typescriptreact',
+            'vue',
+          },
+        },
+        -- eslint = {},
+        graphql = {},
+        groovyls = {
+          cmd = {
+            'java',
+            '-jar',
+            os.getenv('HOME') .. '/src/groovy-language-server/build/libs/groovy-language-server-all.jar',
+          },
+        },
+        helm_ls = {},
+        html = {},
+        jsonls = {},
+        ltex = {
+          settings = {
+            ltex = {
+              language = 'en-US',
+            },
+          },
+        },
+        lua_ls = {
+          on_init = function(client)
+            local path = client.workspace_folders[1].name
+            if vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc') then
+              return
+            end
+          end,
+          settings = {
+            Lua = {
+              runtime = {
+                version = 'LuaJIT',
+              },
+              diagnostics = {
+                globals = { 'vim' },
+              },
+              workspace = {
+                checkThirdParty = false,
+                -- Using vim.api.nvim_get_runtime_file('', true) causes issues when working on nvim/init.lua
+                library = {
+                  vim.env.VIMRUNTIME,
+                  '${3rd}/luv/library',
+                },
+              },
+              telemetry = {
+                enable = false,
+              },
+            },
+          },
+        },
+        ocamlls = {},
+        -- oxlint = {},
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                diagnosticMode = 'workspace'
+              },
+              pythonPath = vim.fn.filereadable(vim.fn.getcwd() .. './.venv/bin/python') and
+                  vim.fn.getcwd() .. './venv/bin/python' or vim.fn.exepath('python3')
+            }
+          }
+        },
+        sourcekit = {},
+        svelte = {},
+        terraformls = {},
+        -- tailwindcss = {},
+        tinymist = {},
+        ts_ls = {},
+        vimls = {},
+      },
+    },
+    config = function(_, opts)
+      local nvim_lsp = require('lspconfig')
+      for server, config in pairs(opts.servers) do
+        config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+        nvim_lsp[server].setup(config)
+      end
 
-      nvim_lsp.elixirls.setup({
-        capabilities = capabilities,
-        cmd = { os.getenv('HOME') .. '/src/elixir-ls/dist/language_server.sh' },
-      })
+      local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       nvim_lsp.eslint.setup({
         capabilities = capabilities,
@@ -327,6 +310,11 @@ require('lazy').setup({
         root_dir = nvim_lsp.util.root_pattern('.git'),
       })
 
+      nvim_lsp.tailwindcss.setup({
+        capabilities = capabilities,
+        root_dir = nvim_lsp.util.root_pattern('tailwind.config.ts', 'tailwind.config.js', '.git'),
+      })
+
       nvim_lsp.oxlint.setup({
         capabilities = capabilities,
         -- Fix issues on save
@@ -337,30 +325,6 @@ require('lazy').setup({
         --   })
         -- end,
         root_dir = nvim_lsp.util.root_pattern('.git'),
-      })
-
-      nvim_lsp.efm.setup({
-        init_options = { documentFormatting = true },
-        settings = {
-          rootMarkers = { '.git/' },
-          languages = {
-            javascript = {
-              {
-                formatCommand = 'prettier',
-                formatStdin = true,
-              },
-            },
-          },
-        },
-      })
-
-      nvim_lsp.groovyls.setup({
-        capabilities = capabilities,
-        cmd = {
-          'java',
-          '-jar',
-          os.getenv('HOME') .. '/src/groovy-language-server/build/libs/groovy-language-server-all.jar',
-        },
       })
     end,
   },
@@ -385,31 +349,9 @@ require('lazy').setup({
   },
 
   {
-    'simrat39/rust-tools.nvim',
-    cond = not vim.g.vscode,
-    opts = {
-      tools = {
-        runnables = {
-          use_telescope = true,
-        },
-        inlay_hints = {
-          auto = true,
-          show_parameter_hints = false,
-          parameter_hints_prefix = '',
-          other_hints_prefix = '',
-        },
-      },
-      server = {
-        on_attach = function(_, _) end,
-        settings = {
-          ['rust-analyzer'] = {
-            checkOnSave = {
-              command = 'clippy',
-            },
-          },
-        },
-      },
-    },
+    'mrcjkb/rustaceanvim',
+    version = '^5',
+    lazy = false,
   },
 
   -- Debugger
@@ -470,20 +412,24 @@ require('lazy').setup({
   -- Jenkinsfiles (groovyls doesn't work for me)
   {
     'martinda/Jenkinsfile-vim-syntax',
-    cond = not vim.g.vscode,
   },
 
   -- Typst support
   {
     'kaarmu/typst.vim',
-    cond = not vim.g.vscode,
     ft = { 'typst' },
   },
 
   -- Pug support
   {
     'digitaltoad/vim-pug',
-    cond = not vim.g.vscode,
+    ft = { 'pug' },
+  },
+
+  -- Helm support
+  {
+    'towolf/vim-helm',
+    ft = { 'helm' },
   },
 
   -- Comments
@@ -651,6 +597,14 @@ vim.opt.background = 'dark'
 
 -- SQL has a massive slowdown for me
 vim.g.omni_sql_no_default_maps = true
+
+vim.filetype.add({
+  pattern = {
+    ['.*/templates/.*%.tpl'] = 'helm',
+    ['.*/templates/.*%.ya?ml'] = 'helm',
+    ['helmfile.*%.ya?ml'] = 'helm',
+  },
+})
 
 local common_maps = {
   [':'] = ';',

@@ -161,6 +161,7 @@ zstyle ':completion:*:rsync:*' hosts off
 alias 7zx='7z x'
 alias bc='bc -l'
 alias c='clear'
+alias cd='z'
 alias cp='nocorrect cp -v'
 alias e='exit'
 alias gc='git checkout'
@@ -207,118 +208,27 @@ add-zsh-hook precmd set_prompt
 export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:$BREW_ROOT/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.cargo/bin:$HOME/.docker/bin
 
 [ -s "$BREW_ROOT/bin/fzf" ] && eval "$($BREW_ROOT/bin/fzf --zsh)"
+eval "$(zoxide init zsh)"
+. "$HOME/.cargo/env"
 
-# LLM Stuff (open-webui)
-# Local
-export LLM_TOKEN_LOCAL="\$_LLM_TOKEN_LOCAL"
-export LLM_URL_LOCAL="\$_LLM_URL_LOCAL"
-export LLM_LLAMA="llama3.2:3b-instruct-q4_K_M"
-export LLM_NEMO="mistral-nemo:12b-instruct-2407-q4_K_M"
-# I have anthropic pipelines set up locally, but not remote atm
-export LLM_SONNET="anthropic.claude-3-5-sonnet-20241022"
-
-# Remote
-export LLM_TOKEN_REMOTE="\$_LLM_TOKEN_REMOTE"
-export LLM_URL_REMOTE="\$_LLM_URL_REMOTE"
-export LLM_O1_MINI="o1-mini-2024-09-12"
-export LLM_GPT4="gpt-4o-2024-11-20"
-
-export LLM_DEFAULT="$LLM_GPT4"
-export LLM_URL_DEFAULT="$LLM_URL_REMOTE"
-export LLM_TOKEN_DEFAULT="$LLM_TOKEN_REMOTE"
-
-llm() {
-  if [ ! $# -eq 4 ]; then
-    echo "Usage: llm url token model message" >&2
-    return
+function fv() {
+  local file
+  file="$(fzf --height 80% --reverse --preview 'bat --style=numbers --color=always {} 2>/dev/null || cat {}')"
+  if [ -n "$file" ]; then
+    nvim "$file"
   fi
-  local url="$1"
-  local token="$2"
-  local model="$3"
-  local message="$4"
-
-  local response=$(curl \
-    -s \
-    -X POST \
-    --header "Authorization: Bearer $token" \
-    --header "Content-Type: application/json" \
-    --data "$(jq -n \
-      --arg message "$message" \
-      --arg model "$model" \
-      '{
-        model: $model,
-        messages: [{role: "user", content: $message}]
-      }')" \
-    "$url" | jq -r '.choices[0].message.content')
-
-  echo "$response" | while IFS= read -r line; do
-    if [[ $line =~ ^"\`\`\`"* ]]; then
-      lang=$(echo "$line" | sed 's/^```//')
-      while IFS= read -r code_line && [[ ! "$code_line" =~ ^"\`\`\`"$ ]]; do
-        echo "$code_line"
-      done | bat --language="$lang" --style=plain
-    else
-      echo "$line"
-    fi
-  done
 }
 
-llm_factory() {
-  local name="$1"
-  local p="$2"
-
-  eval "${name}()         { llm \"$LLM_URL_DEFAULT\" \"$LLM_TOKEN_DEFAULT\" \"$LLM_DEFAULT\" \"$p \${*:-\$(pbpaste)}\"; }"
-  eval "${name}_llama()   { llm \"$LLM_URL_LOCAL\" \"$LLM_TOKEN_LOCAL\" \"$LLM_LLAMA\" \"$p \${*:-\$(pbpaste)}\"; }"
-  eval "${name}_nemo()    { llm \"$LLM_URL_LOCAL\" \"$LLM_TOKEN_LOCAL\" \"$LLM_NEMO\" \"$p \${*:-\$(pbpaste)}\"; }"
-  eval "${name}_o1_mini() { llm \"$LLM_URL_REMOTE\" \"$LLM_TOKEN_REMOTE\" \"$LLM_O1_MINI\" \"$p \${*:-\$(pbpaste)}\"; }"
-  eval "${name}_gpt4()    { llm \"$LLM_URL_REMOTE\" \"$LLM_TOKEN_REMOTE\" \"$LLM_GPT4\" \"$p \${*:-\$(pbpaste)}\"; }"
-  eval "${name}_sonnet()  { llm \"$LLM_URL_LOCAL\" \"$LLM_TOKEN_LOCAL\" \"$LLM_SONNET\" \"$p \${*:-\$(pbpaste)}\"; }"
+function fz() {
+  local file
+  file="$(fzf --height 80% --reverse --preview 'bat --style=numbers --color=always {} 2>/dev/null || cat {}')"
+  if [ -n "$file" ]; then
+    local dir
+    dir="$(dirname "$file")"
+    zoxide add "$dir"  # Add the directory to zoxide's database
+    cd "$dir"
+  fi
 }
-
-# Designed for asking a question about clipboard, i.e. ls -lathr . | pbcopy && olp "what is the newest file here?"
-_olp() {
-  llm "${3:-$LLM_DEFAULT}" "$4
-
-${5:-$(pbpaste)}"
-}
-olp()         { _olp "$LLM_URL_DEFAULT" "$LLM_TOKEN_DEFAULT" "$LLM_DEFAULT" "$@" }
-olp_llama()   { _olp "$LLM_URL_LOCAL" "$LLM_TOKEN_LOCAL" "$LLM_LLAMA" "$@" }
-olp_nemo()    { _olp "$LLM_URL_LOCAL" "$LLM_TOKEN_LOCAL" "$LLM_NEMO" "$@" }
-olp_o1_mini() { _olp "$LLM_URL_REMOTE" "$LLM_TOKEN_REMOTE" "$LLM_O1_MINI" "$@" }
-olp_gpt4()    { _olp "$LLM_URL_REMOTE" "$LLM_TOKEN_REMOTE" "$LLM_GPT4" "$@" }
-olp_sonnet()  { _olp "$LLM_URL_LOCAL" "$LLM_TOKEN_LOCAL" "$LLM_SONNET" "$@" }
-
-# Define a word, i.e. define 'hello' -> '**Definition:** "Hello" is an interjection used to greet...'
-llm_factory "define" "How would you define and use the following word:"
-
-# Explains a concept, i.e. explain 'why is the sky blue?' -> 'The sky appears blue due to a phenomenon called Rayleigh...'
-llm_factory "explain" "I need a complicated concept explained to me. Only provide the explanation and no additional commentary. How would you explain:"
-
-# Corrects grammer, i.e. grammar 'helo world, my nam is dylan' -> 'Hello world, My name is Dylan'
-llm_factory "grammar" "I need my grammar checked. Only provide the corrected text and nothing else, no explanations, prefixes, or suffixes of the following text:"
-
-# Answer a provided prompt, but keep it simple, i.e. 'why is the sky blue?' -> 'Rayleigh scattering'
-llm_factory "ols" "I need a response to this in as few words as possible. Do not add comments, explanations, puncutation, prefixes, or suffixes. Here's the prompt you are expected to answer:"
-
-# Answer a provided prompt, i.e. ol 'why is the sky blue?' -> 'The sky appears blue because of a phenomenon called Rayleigh...'
-llm_factory "ol" "Please answer the following prompt:"
-
-# Translates text into english, i.e. translate 'bonjour' -> 'hello'
-llm_factory "translate" "I need this text translated into English. Only provide the translated English text and nothing else, no explanations, prefixes, or suffixes of the following text:"
-
-# Generates a commit message, i.e. commit $(git -P diff)
-llm_factory "commit" "I need you to read a 'git diff' and generate a concise commit message summarizing all changes. The commit message must:
-1. Use one of the following commitlint prefixes, based on the nature of the changes:
-  chore: Changes to build processes, tooling, or configuration that don't modify app behavior.
-  docs: Updates to documentation (e.g., README files, code comments).
-  feat: Introduction of new features or significant enhancements.
-  fix: Bug fixes or corrections to existing functionality.
-  revert: Reversal of a previous commit.
-  style: Code style updates (e.g., formatting, linting) without functional changes.
-  test: Changes related to tests, such as adding new tests or fixing existing ones.
-2. Be 72 characters or fewer.
-3. Clearly and concisely describe the changes.
-Output only the commit message in this format (e.g., 'feat: added new route for handling authentication') with no additional commentary or explanation. Use the 'git diff' provided below to create the message. Here's the 'git diff' to summarize:"
 
 # Used for work specific stuff that runs after everything else
 [ -r "$HOME"/.post_env ] && . "$HOME"/.post_env

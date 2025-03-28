@@ -2,7 +2,7 @@
 
 #### Neovim
 
-Neovim > 0.10
+Neovim > 0.11
 
 For LSP support run the following:
 
@@ -31,6 +31,7 @@ brew install \
     elixir \
     git-delta \
     hashicorp/tap/terraform-ls \
+    helm-ls \
     ltex-ls \
     lua-language-server \
     shellcheck
