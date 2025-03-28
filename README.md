@@ -34,7 +34,8 @@ brew install \
     helm-ls \
     ltex-ls \
     lua-language-server \
-    shellcheck
+    shellcheck \
+    zoxide
 
 # Groovy Support
 pushd $HOME/src && \
