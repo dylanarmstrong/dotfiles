@@ -80,3 +80,9 @@ kitty +kitten themes --reload-in=all Catppuccin-Mocha
 ```bash
 tic -x /Applications/kitty.app/Contents/Resources/kitty/terminfo/kitty.terminfo
 ```
+
+#### Rustup (for blink.cmp in Neovim)
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
