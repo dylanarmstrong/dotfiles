@@ -335,11 +335,12 @@ require('lazy').setup({
     cond = not vim.g.vscode,
     opts = {
       formatters_by_ft = {
-        javascript = { 'prettier' },
-        typescript = { 'prettier' },
-        json = { 'prettier' },
-        html = { 'prettier' },
         css = { 'prettier' },
+        html = { 'prettier' },
+        javascript = { 'prettier' },
+        json = { 'prettier' },
+        python = { 'ruff_format' },
+        typescript = { 'prettier' },
       },
       format_on_save = {
         timeout_ms = 500,
@@ -598,6 +599,13 @@ vim.opt.background = 'dark'
 -- SQL has a massive slowdown for me
 vim.g.omni_sql_no_default_maps = true
 
+-- Sorta like rounded on floating windows
+vim.o.winborder = 'rounded'
+
+-- In-line diagnostic messages
+vim.diagnostic.config({ virtual_lines = { current_line = true } })
+vim.diagnostic.config({ virtual_lines = true })
+
 vim.filetype.add({
   pattern = {
     ['.*/templates/.*%.tpl'] = 'helm',
@@ -630,9 +638,6 @@ local nvim_only_maps = {
   ['<leader>gs'] = '<cmd>Gstatus<cr>',
   ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
   ['<leader>z'] = '<cmd>lua vim.g.cmptoggle = not vim.g.cmptoggle<cr>',
-  ['K'] = '<cmd>lua vim.lsp.buf.hover()<cr>',
-  ['[d'] = '<cmd>lua vim.lsp.buf.goto_prev()<cr>',
-  [']d'] = '<cmd>lua vim.lsp.buf.goto_next()<cr>',
   ['gD'] = '<cmd>lua vim.lsp.buf.declaration()<cr>',
   ['gd'] = '<cmd>lua vim.lsp.buf.definition()<cr>',
   ['gi'] = '<cmd>lua vim.lsp.buf.implementation()<cr>',

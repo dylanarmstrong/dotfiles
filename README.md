@@ -15,6 +15,7 @@ pnpm add -g \
     dockerfile-language-server-nodejs \
     emmet-ls \
     graphql-language-service-cli \
+    oxlint \
     pyright \
     svelte-language-server \
     typescript \
