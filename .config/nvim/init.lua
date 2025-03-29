@@ -228,20 +228,6 @@ require('lazy').setup({
         },
         dhall_lsp_server = {},
         dockerls = {},
-        efm = {
-          init_options = { documentFormatting = true },
-          settings = {
-            rootMarkers = { '.git/' },
-            languages = {
-              javascript = {
-                {
-                  formatCommand = 'prettier',
-                  formatStdin = true,
-                },
-              },
-            },
-          },
-        },
         elixirls = {
           cmd = { os.getenv('HOME') .. '/src/elixir-ls/dist/language_server.sh' },
         },
@@ -381,7 +367,8 @@ require('lazy').setup({
     end,
   },
 
-  -- Having issues with efm langserver on typescriptreact
+  -- This seems less problematic than efm-langserver
+  -- For formatting on save
   {
     'stevearc/conform.nvim',
     cond = not vim.g.vscode,
@@ -404,13 +391,24 @@ require('lazy').setup({
         },
       },
       formatters_by_ft = {
+        ['markdown.mdx'] = { 'prettier' },
         css = { 'prettier' },
+        graphql = { 'prettier' },
+        handlebars = { 'prettier' },
         html = { 'prettier' },
         javascript = { 'prettier' },
+        javascriptreact = { 'prettier' },
         json = { 'prettier' },
+        jsonc = { 'prettier' },
+        less = { 'prettier' },
         lua = { 'stylua' },
+        markdown = { 'prettier' },
         python = { 'ruff_format' },
+        scss = { 'prettier' },
         typescript = { 'prettier' },
+        typescriptreact = { 'prettier' },
+        vue = { 'prettier' },
+        yaml = { 'prettier' },
       },
       format_on_save = function(bufnr)
         if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
@@ -422,7 +420,7 @@ require('lazy').setup({
         end
         return {
           timeout_ms = 500,
-          lsp_fallback = true,
+          lsp_format = 'fallback',
         }
       end,
     },
