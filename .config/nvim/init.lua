@@ -5,7 +5,7 @@ if not vim.uv.fs_stat(lazypath) then
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
       { 'Failed to clone lazy.nvim:\n', 'ErrorMsg' },
-      { out,                            'WarningMsg' },
+      { out, 'WarningMsg' },
       { '\nPress any key to exit...' },
     }, true, {})
     vim.fn.getchar()
@@ -18,6 +18,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = ','
 
 vim.g.cmptoggle = true
+vim.g.disable_autoformat = false
 
 require('lazy').setup({
   -- Styling
@@ -74,7 +75,6 @@ require('lazy').setup({
     opts = {},
   },
 
-  -- FIXME: This is using deprecated request
   {
     'brenoprata10/nvim-highlight-colors',
     cond = not vim.g.vscode,
@@ -135,23 +135,74 @@ require('lazy').setup({
   },
 
   {
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    opts = {
+      library = {
+        -- Load luvit types when the `vim.uv` word is found
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      },
+    },
+  },
+
+  {
     'saghen/blink.cmp',
     dependencies = {
       'rafamadriz/friendly-snippets',
     },
     build = 'cargo build --release',
     opts = {
-      keymap = { preset = 'default' },
+      keymap = {
+        preset = 'default',
+        ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+        ['<C-e>'] = { 'hide', 'fallback' },
+        ['<CR>'] = { 'accept', 'fallback' },
+      },
       appearance = {
-        nerd_font_variant = 'mono'
+        nerd_font_variant = 'normal',
       },
-      completion = { documentation = { auto_show = true } },
+      completion = {
+        accept = { auto_brackets = { enabled = true } },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 250,
+          update_delay_ms = 50,
+          window = { border = 'rounded' },
+        },
+        list = {
+          selection = {
+            preselect = false,
+            auto_insert = false,
+          },
+        },
+        menu = {
+          border = 'rounded',
+          draw = {
+            columns = {
+              { 'label', 'label_description', gap = 1 },
+              { 'kind_icon', 'kind' },
+            },
+            treesitter = { 'lsp' },
+          },
+        },
+      },
+      signature = {
+        enabled = true,
+        window = { border = 'rounded' },
+      },
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer' },
+        default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
+        providers = {
+          lazydev = {
+            module = 'lazydev.integrations.blink',
+            name = 'LazyDev',
+            score_offset = 100,
+          },
+        },
       },
-      fuzzy = { implementation = 'prefer_rust_with_warning' }
+      fuzzy = { implementation = 'prefer_rust_with_warning' },
     },
-    opts_extend = { 'sources.default' }
+    opts_extend = { 'sources.default' },
   },
 
   -- TODO: Once more stable with vim.lsp.config, change over with root_markers
@@ -265,12 +316,13 @@ require('lazy').setup({
               analysis = {
                 autoSearchPaths = true,
                 useLibraryCodeForTypes = true,
-                diagnosticMode = 'workspace'
+                diagnosticMode = 'workspace',
               },
-              pythonPath = vim.fn.filereadable(vim.fn.getcwd() .. './.venv/bin/python') and
-                  vim.fn.getcwd() .. './venv/bin/python' or vim.fn.exepath('python3')
-            }
-          }
+              pythonPath = vim.fn.filereadable(vim.fn.getcwd() .. './.venv/bin/python')
+                  and vim.fn.getcwd() .. './venv/bin/python'
+                or vim.fn.exepath('python3'),
+            },
+          },
         },
         sourcekit = {},
         svelte = {},
@@ -334,18 +386,45 @@ require('lazy').setup({
     'stevearc/conform.nvim',
     cond = not vim.g.vscode,
     opts = {
+      formatters = {
+        stylua = {
+          args = {
+            '--search-parent-directories',
+            '--respect-ignores',
+            '--quote-style',
+            'AutoPreferSingle',
+            '--indent-type',
+            'spaces',
+            '--indent-width',
+            '2',
+            '--stdin-filepath',
+            '$FILENAME',
+            '-',
+          },
+        },
+      },
       formatters_by_ft = {
         css = { 'prettier' },
         html = { 'prettier' },
         javascript = { 'prettier' },
         json = { 'prettier' },
+        lua = { 'stylua' },
         python = { 'ruff_format' },
         typescript = { 'prettier' },
       },
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_fallback = true,
-      },
+      format_on_save = function(bufnr)
+        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+          return
+        end
+        local bufname = vim.api.nvim_buf_get_name(bufnr)
+        if bufname:match('/node_modules/') then
+          return
+        end
+        return {
+          timeout_ms = 500,
+          lsp_fallback = true,
+        }
+      end,
     },
   },
 
@@ -603,8 +682,9 @@ vim.g.omni_sql_no_default_maps = true
 vim.o.winborder = 'rounded'
 
 -- In-line diagnostic messages
-vim.diagnostic.config({ virtual_lines = { current_line = true } })
-vim.diagnostic.config({ virtual_lines = true })
+-- TODO: Toggle this
+-- vim.diagnostic.config({ virtual_lines = { current_line = true } })
+-- vim.diagnostic.config({ virtual_lines = true })
 
 vim.filetype.add({
   pattern = {
@@ -637,6 +717,7 @@ local nvim_only_maps = {
   ['<leader>gd'] = '<cmd>Gdiff<cr>',
   ['<leader>gs'] = '<cmd>Gstatus<cr>',
   ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
+  ['<leader>y'] = '<cmd>lua vim.g.disable_autoformat = not vim.g.disable_autoformat<cr>',
   ['<leader>z'] = '<cmd>lua vim.g.cmptoggle = not vim.g.cmptoggle<cr>',
   ['gD'] = '<cmd>lua vim.lsp.buf.declaration()<cr>',
   ['gd'] = '<cmd>lua vim.lsp.buf.definition()<cr>',
@@ -653,7 +734,7 @@ local maps = {
   },
   n = maps_n,
   v = {
-    ['<leader>s'] = ':\'<,\'>sort<cr>',
+    ['<leader>s'] = ":'<,'>sort<cr>",
   },
   [''] = {
     ['<space>'] = '@q',
