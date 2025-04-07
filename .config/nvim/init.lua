@@ -205,7 +205,6 @@ require('lazy').setup({
     opts_extend = { 'sources.default' },
   },
 
-  -- TODO: Once more stable with vim.lsp.config, change over with root_markers
   {
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -214,9 +213,7 @@ require('lazy').setup({
     opts = {
       servers = {
         bashls = {},
-        clangd = {
-          cmd = { 'clangd', '--offset-encoding=utf-16' },
-        },
+        clangd = {},
         cssls = {
           settings = {
             css = {
@@ -231,21 +228,7 @@ require('lazy').setup({
         elixirls = {
           cmd = { os.getenv('HOME') .. '/src/elixir-ls/dist/language_server.sh' },
         },
-        emmet_ls = {
-          filetypes = {
-            'css',
-            'html',
-            'javascript',
-            'javascriptreact',
-            'less',
-            'sass',
-            'scss',
-            'svelte',
-            'pug',
-            'typescriptreact',
-            'vue',
-          },
-        },
+        emmet_ls = {},
         -- eslint = {},
         graphql = {},
         groovyls = {
@@ -313,22 +296,22 @@ require('lazy').setup({
         sourcekit = {},
         svelte = {},
         terraformls = {},
-        -- tailwindcss = {},
+        tailwindcss = {},
         tinymist = {},
         ts_ls = {},
         vimls = {},
       },
     },
     config = function(_, opts)
-      local nvim_lsp = require('lspconfig')
+      local lspconfig = require('lspconfig')
       for server, config in pairs(opts.servers) do
         config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
-        nvim_lsp[server].setup(config)
+        lspconfig[server].setup(config)
       end
 
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-      nvim_lsp.eslint.setup({
+      lspconfig.eslint.setup({
         capabilities = capabilities,
         -- Fix issues on save
         on_attach = function(_, bufnr)
@@ -345,24 +328,16 @@ require('lazy').setup({
             return {}
           end,
         },
-        root_dir = nvim_lsp.util.root_pattern('.git'),
       })
 
-      nvim_lsp.tailwindcss.setup({
+      lspconfig.oxlint.setup({
         capabilities = capabilities,
-        root_dir = nvim_lsp.util.root_pattern('tailwind.config.ts', 'tailwind.config.js', '.git'),
-      })
-
-      nvim_lsp.oxlint.setup({
-        capabilities = capabilities,
-        -- Fix issues on save
-        -- on_attach = function(_, bufnr)
-        --   vim.api.nvim_create_autocmd('BufWritePre', {
-        --     buffer = bufnr,
-        --     command = 'OxcFixAll',
-        --   })
-        -- end,
-        root_dir = nvim_lsp.util.root_pattern('.git'),
+        on_attach = function(_, bufnr)
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            buffer = bufnr,
+            command = 'OxcFixAll',
+          })
+        end,
       })
     end,
   },
@@ -680,9 +655,40 @@ vim.g.omni_sql_no_default_maps = true
 vim.o.winborder = 'rounded'
 
 -- In-line diagnostic messages
--- TODO: Toggle this
--- vim.diagnostic.config({ virtual_lines = { current_line = true } })
--- vim.diagnostic.config({ virtual_lines = true })
+local has_virtual_lines = false
+
+local diag_config_vertical = {
+  virtual_text = {
+    severity = {
+      max = vim.diagnostic.severity.WARN,
+    },
+  },
+  virtual_lines = {
+    severity = {
+      min = vim.diagnostic.severity.ERROR,
+    },
+  },
+}
+
+local diag_config_horizontal = {
+  virtual_text = true,
+  virtual_lines = false,
+}
+
+local toggle_diagnostics = function()
+  if has_virtual_lines then
+    vim.diagnostic.config(diag_config_vertical)
+    has_virtual_lines = false
+  else
+    vim.diagnostic.config(diag_config_horizontal)
+    has_virtual_lines = true
+  end
+end
+
+-- Default to horizontal lines only
+vim.diagnostic.config(diag_config_horizontal)
+
+vim.keymap.set('n', '<leader>v', toggle_diagnostics, { noremap = true })
 
 vim.filetype.add({
   pattern = {
