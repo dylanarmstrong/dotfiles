@@ -20,6 +20,13 @@ vim.g.mapleader = ','
 vim.g.cmptoggle = true
 vim.g.disable_autoformat = false
 
+-- Spaces (these should be adjusted by tpope/vim-sleuth)
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+vim.opt.tabstop = 2
+vim.opt.numberwidth = 4
+
 require('lazy').setup({
   -- Styling
   {
@@ -85,6 +92,12 @@ require('lazy').setup({
       virtual_symbol_suffix = '',
       enable_tailwind = true,
     },
+  },
+
+  -- Adjust spaces on file
+  {
+    'tpope/vim-sleuth',
+    cond = not vim.g.vscode,
   },
 
   -- Git
@@ -599,13 +612,6 @@ vim.opt.laststatus = 3
 
 -- Folding
 vim.opt.foldmethod = 'marker'
-
--- Spaces
-vim.opt.expandtab = true
-vim.opt.shiftwidth = 2
-vim.opt.softtabstop = 2
-vim.opt.tabstop = 2
-vim.opt.numberwidth = 4
 
 -- Completion
 vim.opt.completeopt = 'menuone,noselect'
