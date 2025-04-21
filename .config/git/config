@@ -1,9 +1,9 @@
 [include]
-	path = /Users/dylan/src/delta/catppuccin.gitconfig
+  path = /Users/dylan/src/delta/catppuccin.gitconfig
 [pull]
   rebase = false
 [user]
-  signingkey = C574636C52BA5C5A
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJpQNEFHxmhIZv639zMV+jlJ4nHKV7Og5+BkQcZBitYe
   email = dylan@dylan.is
   name = Dylan Armstrong
 [alias]
@@ -11,6 +11,7 @@
   d = diff
   dt = -c diff.external=difft diff
   fuck = reset --hard
+  fucked = reset --hard
   l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --decorate --date=short --color --decorate
   p = push
   s = status
@@ -27,16 +28,20 @@
   diffFilter = delta --color-only
 [delta]
   navigate = true
-	features = catppuccin-mocha
+  features = catppuccin-mocha
   line-numbers = true
 [merge]
   conflictstyle = zdiff3
 [diff]
-	noprefix = true
+  noprefix = true
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 [url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+  insteadOf = https://github.com/
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
