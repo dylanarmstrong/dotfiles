@@ -1,11 +1,14 @@
 [include]
   path = /Users/dylan/src/delta/catppuccin.gitconfig
+
 [pull]
   rebase = false
+
 [user]
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJpQNEFHxmhIZv639zMV+jlJ4nHKV7Og5+BkQcZBitYe
   email = dylan@dylan.is
   name = Dylan Armstrong
+
 [alias]
   c = checkout
   d = diff
@@ -16,32 +19,47 @@
   p = push
   s = status
   st = status -sb
+
 [push]
   default = current
+
 [init]
   defaultBranch = main
+
 [commit]
   gpgsign = true
+
 [core]
   pager = delta
+
 [interactive]
   diffFilter = delta --color-only
+
 [delta]
   navigate = true
   features = catppuccin-mocha
   line-numbers = true
+
 [merge]
   conflictstyle = zdiff3
+
 [diff]
   noprefix = true
+
 [filter "lfs"]
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f
   process = git-lfs filter-process
   required = true
+
 [url "ssh://git@github.com/"]
   insteadOf = https://github.com/
+
 [gpg]
   format = ssh
+
 [gpg "ssh"]
   program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+
+[includeIf "gitdir:~/work/"]
+  path = ~/work/.gitconfig
