@@ -300,8 +300,8 @@ require('lazy').setup({
                 useLibraryCodeForTypes = true,
                 diagnosticMode = 'workspace',
               },
-              pythonPath = vim.fn.filereadable(vim.fn.getcwd() .. './.venv/bin/python')
-                  and vim.fn.getcwd() .. './venv/bin/python'
+              pythonPath = vim.fn.filereadable(vim.fn.getcwd() .. '/.venv/bin/python')
+                  and vim.fn.getcwd() .. '/.venv/bin/python'
                 or vim.fn.exepath('python3'),
             },
           },
