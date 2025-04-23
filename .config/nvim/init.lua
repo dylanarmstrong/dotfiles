@@ -20,7 +20,7 @@ vim.g.mapleader = ','
 vim.g.cmptoggle = true
 vim.g.disable_autoformat = false
 
--- Spaces (these should be adjusted by tpope/vim-sleuth)
+-- Spaces (these should be adjusted by nmac427/guess-indent.nvim)
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
 vim.opt.softtabstop = 2
@@ -36,43 +36,74 @@ require('lazy').setup({
     opts = {
       flavour = 'mocha',
       integrations = {
+        blink_cmp = true,
+        flash = true,
+        gitsigns = true,
         indent_blankline = {
           colored_indent_levels = false,
           enabled = true,
           scope_color = '',
         },
-        gitsigns = true,
         lsp_trouble = true,
         lualine = true,
         markdown = true,
         native_lsp = {
           enabled = true,
-          virtual_text = {
-            errors = { 'italic' },
-            hints = { 'italic' },
-            warnings = { 'italic' },
-            information = { 'italic' },
-            ok = { 'italic' },
-          },
+          inlay_hints = { background = true },
           underlines = {
             errors = { 'underline' },
             hints = { 'underline' },
-            warnings = { 'underline' },
             information = { 'underline' },
             ok = { 'underline' },
+            warnings = { 'underline' },
           },
-          inlay_hints = {
-            background = true,
+          virtual_text = {
+            errors = { 'italic' },
+            hints = { 'italic' },
+            information = { 'italic' },
+            ok = { 'italic' },
+            warnings = { 'italic' },
           },
         },
         neotree = true,
+        noice = true,
         symbols_outline = true,
         telescope = true,
+        treesitter = true,
       },
     },
     config = function()
       vim.cmd([[ colorscheme catppuccin ]])
     end,
+  },
+
+  -- Fancy UI
+  {
+    'folke/noice.nvim',
+    event = 'VeryLazy',
+    opts = {
+      cmdline = {
+        view = 'cmdline',
+      },
+      lsp = {
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
+        },
+      },
+      -- you can enable a preset for easier configuration
+      presets = {
+        bottom_search = true,
+        command_palette = true,
+        long_message_to_split = true,
+        inc_rename = false,
+        lsp_doc_border = false,
+      },
+    },
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'rcarriga/nvim-notify',
+    },
   },
 
   {
@@ -95,9 +126,11 @@ require('lazy').setup({
   },
 
   -- Adjust spaces on file
+  -- Works more consistently than vim-sleuth I've found
   {
-    'tpope/vim-sleuth',
+    'nmac427/guess-indent.nvim',
     cond = not vim.g.vscode,
+    opts = {},
   },
 
   -- Git
@@ -407,7 +440,7 @@ require('lazy').setup({
           return
         end
         return {
-          timeout_ms = 500,
+          timeout_ms = 1000,
           lsp_format = 'fallback',
         }
       end,
@@ -516,6 +549,9 @@ require('lazy').setup({
       sections = {
         lualine_b = {
           'fugitive#head',
+        },
+        lualine_c = {
+          { 'filename', path = 1 },
         },
         lualine_y = {
           {
@@ -694,7 +730,47 @@ end
 -- Default to horizontal lines only
 vim.diagnostic.config(diag_config_horizontal)
 
-vim.keymap.set('n', '<leader>v', toggle_diagnostics, { noremap = true })
+local yank_file_name = function()
+  local relative = vim.fn.expand('%')
+  local git_root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+  if vim.v.shell_error == 0 and git_root and git_root ~= '' then
+    local absolute = vim.fn.fnamemodify(vim.fn.expand('%:p'), ':p'):gsub('/+$', '')
+    git_root = vim.fn.fnamemodify(git_root, ':p'):gsub('/+$', '')
+    local prefix = git_root .. '/'
+    relative = absolute:sub(#prefix + 1)
+  end
+  vim.fn.setreg('+', relative)
+  print('Copied: ' .. relative)
+end
+
+local yank_github_url = function()
+  local filepath = vim.fn.expand('%:p')
+  local git_root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+  if vim.v.shell_error ~= 0 or not git_root or git_root == '' then
+    print('Not inside a Git repository.')
+    return
+  end
+
+  git_root = vim.fn.fnamemodify(git_root, ':p'):gsub('/+$', '')
+  filepath = vim.fn.fnamemodify(filepath, ':p'):gsub('/+$', '')
+  local relpath = filepath:sub(#git_root + 2)
+
+  local remote_url = vim.fn.systemlist('git config --get remote.origin.url')[1]
+  if not remote_url or remote_url == '' then
+    print('No Git remote found.')
+    return
+  end
+
+  remote_url = remote_url:gsub('^git@([^:]+):', 'https://%1/'):gsub('%.git$', ''):gsub('^git://', 'https://')
+
+  local commit = vim.fn.systemlist('git rev-parse HEAD')[1]
+  local line = vim.fn.line('.')
+
+  local url = string.format('%s/blob/%s/%s#L%d', remote_url, commit, relpath, line)
+
+  vim.fn.setreg('+', url)
+  print('Copied: ' .. url)
+end
 
 vim.filetype.add({
   pattern = {
@@ -751,9 +827,15 @@ local maps = {
   },
 }
 
+local keymap_opts = { noremap = true }
+
+vim.keymap.set('n', '<leader>v', toggle_diagnostics, keymap_opts)
+vim.keymap.set('n', '<leader>yf', yank_file_name, keymap_opts)
+vim.keymap.set('n', '<leader>yg', yank_github_url, keymap_opts)
+
 for mode, mappings in pairs(maps) do
   for keys, mapping in pairs(mappings) do
-    vim.api.nvim_set_keymap(mode, keys, mapping, { noremap = true })
+    vim.api.nvim_set_keymap(mode, keys, mapping, keymap_opts)
   end
 end
 
