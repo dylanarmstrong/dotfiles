@@ -327,6 +327,9 @@ require('lazy').setup({
         -- oxlint = {},
         pyright = {
           settings = {
+            pyright = {
+              disableOrganizeImports = true,
+            },
             python = {
               analysis = {
                 autoSearchPaths = true,
@@ -339,6 +342,7 @@ require('lazy').setup({
             },
           },
         },
+        ruff = {},
         sourcekit = {},
         svelte = {},
         terraformls = {},
@@ -424,7 +428,7 @@ require('lazy').setup({
         less = { 'prettier' },
         lua = { 'stylua' },
         markdown = { 'prettier' },
-        python = { 'ruff_format' },
+        python = { 'ruff_fix', 'ruff_format', 'ruff_organize_imports' },
         scss = { 'prettier' },
         typescript = { 'prettier' },
         typescriptreact = { 'prettier' },
@@ -778,6 +782,21 @@ vim.filetype.add({
     ['.*/templates/.*%.ya?ml'] = 'helm',
     ['helmfile.*%.ya?ml'] = 'helm',
   },
+})
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client == nil then
+      return
+    end
+    if client.name == 'ruff' then
+      -- Disable hover in favor of Pyright
+      client.server_capabilities.hoverProvider = false
+    end
+  end,
+  desc = 'LSP: Disable hover capability from Ruff',
 })
 
 local common_maps = {

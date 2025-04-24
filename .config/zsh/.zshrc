@@ -10,7 +10,7 @@ export XDG_STATE_HOME=$HOME/.local/state
 export XDG_RUNTIME_DIR=$HOME/.local/run
 
 # For the PATH
-NODE_VERSION=v22.14.0
+NODE_VERSION=v22.15.0
 
 # For arm64 / i386
 BREW_ROOT="/usr/local"
@@ -210,6 +210,9 @@ export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.loca
 [ -s "$BREW_ROOT/bin/fzf" ] && eval "$($BREW_ROOT/bin/fzf --zsh)"
 eval "$(zoxide init zsh)"
 . "$HOME/.cargo/env"
+
+eval "$(uv generate-shell-completion zsh)"
+eval "$(uvx --generate-shell-completion zsh)"
 
 function fv() {
   local file
