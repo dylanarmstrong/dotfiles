@@ -20,6 +20,10 @@ vim.g.mapleader = ','
 vim.g.cmptoggle = true
 vim.g.disable_autoformat = false
 
+-- Yes.. I know, not my plugins though
+---@diagnostic disable-next-line
+vim.deprecate = function() end
+
 -- Spaces (these should be adjusted by nmac427/guess-indent.nvim)
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
