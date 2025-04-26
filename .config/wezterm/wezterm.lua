@@ -4,10 +4,11 @@ local config = wezterm.config_builder()
 
 -- Colors
 local custom = wezterm.color.get_builtin_schemes()['Catppuccin Mocha']
-custom.tab_bar.background = '#101019'
 custom.tab_bar.active_tab.bg_color = '#CBA6F7'
+custom.tab_bar.background = '#101019'
 custom.tab_bar.inactive_tab.bg_color = '#181824'
 custom.tab_bar.new_tab.bg_color = '#181824'
+
 config.color_schemes = {
   ['cat'] = custom,
 }
@@ -15,8 +16,12 @@ config.color_scheme = 'cat'
 
 -- Fonts
 config.adjust_window_size_when_changing_font_size = false
+config.bold_brightens_ansi_colors = true
 config.font = wezterm.font('Berkeley Mono')
-config.font_size = 12
+config.font_size = 16
+config.freetype_load_flags = 'NO_HINTING'
+config.freetype_load_target = 'Light'
+config.freetype_render_target = 'HorizontalLcd'
 
 -- Decoration
 config.macos_window_background_blur = 20
@@ -47,5 +52,18 @@ config.window_close_confirmation = 'NeverPrompt'
 
 -- Check for updates via brew
 config.check_for_updates = false
+
+-- Keybindings
+config.keys = {
+  -- Left & right arrows should go between tabs with ctrl + shift
+  { key = 'LeftArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTabRelative(-1) },
+  { key = 'RightArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTabRelative(1) },
+}
+
+-- To type accented keys
+config.ime_preedit_rendering = 'System'
+config.send_composed_key_when_left_alt_is_pressed = true
+config.use_dead_keys = true
+config.use_ime = true
 
 return config
