@@ -42,6 +42,7 @@ require('lazy').setup({
       integrations = {
         blink_cmp = true,
         flash = true,
+        fzf = true,
         gitsigns = true,
         indent_blankline = {
           colored_indent_levels = false,
@@ -70,44 +71,13 @@ require('lazy').setup({
           },
         },
         neotree = true,
-        noice = true,
         symbols_outline = true,
-        telescope = true,
         treesitter = true,
       },
     },
     config = function()
       vim.cmd([[ colorscheme catppuccin ]])
     end,
-  },
-
-  -- Fancy UI
-  {
-    'folke/noice.nvim',
-    event = 'VeryLazy',
-    opts = {
-      cmdline = {
-        view = 'cmdline',
-      },
-      lsp = {
-        override = {
-          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-          ['vim.lsp.util.stylize_markdown'] = true,
-        },
-      },
-      -- you can enable a preset for easier configuration
-      presets = {
-        bottom_search = true,
-        command_palette = true,
-        long_message_to_split = true,
-        inc_rename = false,
-        lsp_doc_border = false,
-      },
-    },
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'rcarriga/nvim-notify',
-    },
   },
 
   {
@@ -157,33 +127,12 @@ require('lazy').setup({
 
   -- Finder
   {
-    'nvim-telescope/telescope.nvim',
-    cond = not vim.g.vscode,
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
-    opts = {
-      defaults = {
-        file_ignore_patterns = {
-          '.git',
-          'node_modules',
-        },
-      },
-    },
+    'ibhagwan/fzf-lua',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {},
   },
 
-  {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    cond = not vim.g.vscode,
-    dependencies = {
-      'nvim-telescope/telescope.nvim',
-    },
-    build = 'make',
-    config = function()
-      require('telescope').load_extension('fzf')
-    end,
-  },
-
+  -- Lua
   {
     'folke/lazydev.nvim',
     ft = 'lua',
@@ -195,6 +144,7 @@ require('lazy').setup({
     },
   },
 
+  -- Completion
   {
     'saghen/blink.cmp',
     dependencies = {
@@ -455,39 +405,11 @@ require('lazy').setup({
     },
   },
 
+  -- Rust
   {
     'mrcjkb/rustaceanvim',
     version = '^5',
     lazy = false,
-  },
-
-  -- Debugger
-  {
-    'mfussenegger/nvim-dap',
-    cond = not vim.g.vscode,
-    dependencies = {
-      'mxsdev/nvim-dap-vscode-js',
-    },
-    config = function()
-      require('dap').adapters['pwa-node'] = {
-        type = 'server',
-        host = 'localhost',
-        port = '${port}',
-        executable = {
-          command = 'node',
-          args = { os.getenv('HOME') .. '/src/js-debug/src/dapDebugServer.js', '${port}' },
-        },
-      }
-      require('dap').configurations.javascript = {
-        {
-          type = 'pwa-node',
-          request = 'launch',
-          name = 'Launch file',
-          program = '${file}',
-          cwd = '${workspaceFolder}',
-        },
-      }
-    end,
   },
 
   -- Treesitter for fancy syntax
@@ -540,7 +462,6 @@ require('lazy').setup({
   },
 
   -- Comments
-  -- visual mode = gc = comment
   'tpope/vim-commentary',
 
   -- Status line
@@ -815,10 +736,10 @@ local common_maps = {
 
 local nvim_only_maps = {
   ['<C-n>'] = '<cmd>Neotree toggle<cr>',
-  ['<C-p>'] = '<cmd>Telescope find_files<cr>',
+  ['<C-p>'] = '<cmd>FzfLua files<cr>',
   ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
-  ['<leader>a'] = '<cmd>Telescope live_grep<cr>',
-  ['<leader>b'] = '<cmd>Telescope buffers<cr>',
+  ['<leader>a'] = '<cmd>FzfLua live_grep<cr>',
+  ['<leader>b'] = '<cmd>FzfLua buffers<cr>',
   ['<leader>e'] = '<cmd>Trouble diagnostics toggle<cr>',
   ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
   ['<leader>o'] = '<cmd>Outline<cr>',
