@@ -76,7 +76,7 @@ require('lazy').setup({
       },
     },
     config = function()
-      vim.cmd([[ colorscheme catppuccin ]])
+      vim.cmd.colorscheme('catppuccin')
     end,
   },
 
@@ -128,18 +128,21 @@ require('lazy').setup({
   -- Finder
   {
     'ibhagwan/fzf-lua',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    opts = {},
-  },
-
-  -- Lua
-  {
-    'folke/lazydev.nvim',
-    ft = 'lua',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
     opts = {
-      library = {
-        -- Load luvit types when the `vim.uv` word is found
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      { 'border-fused' },
+      defaults = {
+        file_icons = 'devicons',
+        formatter = 'path.filename_first',
+      },
+      winopts = {
+        height = '0.95',
+        preview = {
+          layout = 'vertical',
+          vertical = 'down:65%',
+        },
       },
     },
   },
@@ -241,13 +244,6 @@ require('lazy').setup({
         helm_ls = {},
         html = {},
         jsonls = {},
-        ltex = {
-          settings = {
-            ltex = {
-              language = 'en-US',
-            },
-          },
-        },
         lua_ls = {
           on_init = function(client)
             local path = client.workspace_folders[1].name
@@ -405,13 +401,6 @@ require('lazy').setup({
     },
   },
 
-  -- Rust
-  {
-    'mrcjkb/rustaceanvim',
-    version = '^5',
-    lazy = false,
-  },
-
   -- Treesitter for fancy syntax
   {
     'nvim-treesitter/nvim-treesitter',
@@ -461,14 +450,39 @@ require('lazy').setup({
     ft = { 'helm' },
   },
 
+  -- Lua
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    opts = {
+      library = {
+        -- Load luvit types when the `vim.uv` word is found
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      },
+    },
+  },
+
+  -- Rust support
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^5',
+    lazy = false,
+  },
+
   -- Comments
   'tpope/vim-commentary',
 
   -- Status line
   {
-    'hoob3rt/lualine.nvim',
+    'nvim-lualine/lualine.nvim',
     cond = not vim.g.vscode,
     opts = {
+      extensions = {
+        'fzf',
+        'neo-tree',
+        'symbols-outline',
+        'trouble',
+      },
       options = {
         icons_enabled = false,
         component_separators = '|',
@@ -483,6 +497,14 @@ require('lazy').setup({
           { 'filename', path = 1 },
         },
         lualine_y = {
+          {
+            'lsp_status',
+            ignore_lsp = {
+              'emmet_ls',
+              'eslint',
+              'oxlint',
+            },
+          },
           {
             'diagnostics',
             sources = {
@@ -742,17 +764,17 @@ local nvim_only_maps = {
   ['<leader>b'] = '<cmd>FzfLua buffers<cr>',
   ['<leader>e'] = '<cmd>Trouble diagnostics toggle<cr>',
   ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
-  ['<leader>o'] = '<cmd>Outline<cr>',
-  ['<leader>u'] = '<cmd>UndotreeToggle<cr>',
   ['<leader>gd'] = '<cmd>Gdiff<cr>',
-  ['<leader>gs'] = '<cmd>Gstatus<cr>',
+  ['<leader>l'] = '<cmd>FzfLua<cr>',
+  ['<leader>o'] = '<cmd>Outline<cr>',
+  ['<leader>s'] = '<cmd>FzfLua lsp_document_symbols<cr>',
   ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
+  ['<leader>u'] = '<cmd>UndotreeToggle<cr>',
   ['<leader>y'] = '<cmd>lua vim.g.disable_autoformat = not vim.g.disable_autoformat<cr>',
   ['<leader>z'] = '<cmd>lua vim.g.cmptoggle = not vim.g.cmptoggle<cr>',
-  ['gD'] = '<cmd>lua vim.lsp.buf.declaration()<cr>',
-  ['gd'] = '<cmd>lua vim.lsp.buf.definition()<cr>',
-  ['gi'] = '<cmd>lua vim.lsp.buf.implementation()<cr>',
-  ['gr'] = '<cmd>lua vim.lsp.buf.references()<cr>',
+  ['gd'] = '<cmd>FzfLua lsp_definitions<cr>',
+  ['gi'] = '<cmd>FzfLua lsp_implementations<cr>',
+  ['gr'] = '<cmd>FzfLua lsp_references<cr>',
 }
 
 -- If we're on Cursor, only load keybindings available
