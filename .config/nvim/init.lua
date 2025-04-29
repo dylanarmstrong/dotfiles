@@ -1,4 +1,5 @@
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+
 if not vim.uv.fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
   local out = vim.fn.system({ 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath })
@@ -31,6 +32,8 @@ vim.opt.softtabstop = 2
 vim.opt.tabstop = 2
 vim.opt.numberwidth = 4
 
+local flavor = 'mocha'
+
 require('lazy').setup({
   -- Styling
   {
@@ -38,7 +41,7 @@ require('lazy').setup({
     lazy = false,
     priority = 1000,
     opts = {
-      flavour = 'mocha',
+      flavour = flavor,
       integrations = {
         blink_cmp = true,
         flash = true,
@@ -52,6 +55,10 @@ require('lazy').setup({
         lsp_trouble = true,
         lualine = true,
         markdown = true,
+        mini = {
+          enabled = true,
+          indentscope_color = '',
+        },
         native_lsp = {
           enabled = true,
           inlay_hints = { background = true },
@@ -107,6 +114,19 @@ require('lazy').setup({
     opts = {},
   },
 
+  -- Mini
+  {
+    'echasnovski/mini.nvim',
+    cond = not vim.g.vscode,
+    config = function()
+      -- Comments with gc
+      require('mini.comment').setup()
+
+      -- Icons
+      require('mini.icons').setup()
+    end,
+  },
+
   -- Git
   {
     'tpope/vim-fugitive',
@@ -129,12 +149,12 @@ require('lazy').setup({
   {
     'ibhagwan/fzf-lua',
     dependencies = {
-      'nvim-tree/nvim-web-devicons',
+      'echasnovski/mini.nvim',
     },
     opts = {
       { 'border-fused' },
       defaults = {
-        file_icons = 'devicons',
+        file_icons = 'mini',
         formatter = 'path.filename_first',
       },
       winopts = {
@@ -165,7 +185,11 @@ require('lazy').setup({
         nerd_font_variant = 'normal',
       },
       completion = {
-        accept = { auto_brackets = { enabled = true } },
+        accept = {
+          auto_brackets = {
+            enabled = false,
+          },
+        },
         documentation = {
           auto_show = true,
           auto_show_delay_ms = 250,
@@ -405,7 +429,11 @@ require('lazy').setup({
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
+    dependencies = {
+      'OXY2DEV/markview.nvim',
+    },
     event = 'BufRead',
+    main = 'nvim-treesitter.configs',
     opts = {
       auto_install = true,
       ensure_installed = 'all',
@@ -418,7 +446,6 @@ require('lazy').setup({
       modules = {},
       sync_install = false,
     },
-    main = 'nvim-treesitter.configs',
   },
 
   {
@@ -469,34 +496,86 @@ require('lazy').setup({
     lazy = false,
   },
 
-  -- Comments
-  'tpope/vim-commentary',
+  -- Markdown viewer
+  {
+    'OXY2DEV/markview.nvim',
+    dependencies = {
+      'catppuccin/nvim',
+      'echasnovski/mini.nvim',
+    },
+    opts = function(_, opts)
+      local presets = require('markview.presets')
+      opts.markdown = {
+        headings = presets.headings.glow,
+        horizontal_rules = presets.horizontal_rules.thin,
+      }
+
+      opts.preview = {
+        icon_provider = 'mini',
+      }
+    end,
+  },
+
+  -- Better repeating
+  'tpope/vim-repeat',
+
+  -- Better c-a / c-x
+  'tpope/vim-speeddating',
 
   -- Status line
   {
     'nvim-lualine/lualine.nvim',
     cond = not vim.g.vscode,
-    opts = {
-      extensions = {
+    dependencies = {
+      'catppuccin/nvim',
+    },
+    opts = function(_, opts)
+      local colors = require('catppuccin.palettes').get_palette(flavor)
+
+      local function modified()
+        if vim.bo.modified then
+          return '+'
+        elseif vim.bo.modifiable == false or vim.bo.readonly == true then
+          return '-'
+        end
+        return ''
+      end
+
+      opts.extensions = {
         'fzf',
         'neo-tree',
         'symbols-outline',
         'trouble',
-      },
-      options = {
+      }
+
+      opts.options = {
         icons_enabled = false,
         component_separators = '|',
-        section_separators = '',
+        section_separators = { left = '', right = '' },
         theme = 'catppuccin',
-      },
-      sections = {
+      }
+
+      opts.sections = {
+        lualine_a = { 'mode' },
         lualine_b = {
-          'fugitive#head',
+          {
+            modified,
+            color = {
+              fg = colors.red,
+            },
+          },
         },
         lualine_c = {
-          { 'filename', path = 1 },
+          { 'filename', file_status = false, path = 1 },
+          {
+            '%r',
+            cond = function()
+              return vim.bo.readonly
+            end,
+          },
         },
-        lualine_y = {
+        lualine_x = {
+          'filetype',
           {
             'lsp_status',
             ignore_lsp = {
@@ -505,30 +584,30 @@ require('lazy').setup({
               'oxlint',
             },
           },
+        },
+        lualine_y = {
           {
             'diagnostics',
-            sources = {
-              'nvim_diagnostic',
+            source = { 'nvim' },
+            sections = { 'error', 'warn' },
+            diagnostics_color = {
+              error = {
+                bg = colors.red,
+                fg = colors.crust,
+              },
+              warn = {
+                bg = colors.peach,
+                fg = colors.crust,
+              },
             },
             symbols = {
               error = ' ',
               warn = ' ',
-              info = ' ',
             },
           },
         },
-      },
-    },
-  },
-
-  -- Icons
-  {
-    'nvim-tree/nvim-web-devicons',
-    cond = not vim.g.vscode,
-    opts = {
-      default = true,
-      color_icons = true,
-    },
+      }
+    end,
   },
 
   -- File browser
@@ -537,14 +616,48 @@ require('lazy').setup({
     cond = not vim.g.vscode,
     dependencies = {
       'MunifTanjim/nui.nvim',
+      'echasnovski/mini.nvim',
       'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons',
     },
+
     opts = {
       close_if_last_window = true,
       filesystem = {
         filtered_items = {
           hide_dotfiles = false,
+        },
+      },
+      default_component_configs = {
+        -- Pulled from here to swap out for mini.icons:
+        -- https://github.com/nvim-neo-tree/neo-tree.nvim/pull/1527#issuecomment-2233186777
+        kind_icon = {
+          provider = function(icon, node)
+            local mini_icons = require('mini.icons')
+            icon.text, icon.highlight = mini_icons.get('lsp', node.extra.kind.name)
+          end,
+        },
+        icon = {
+          provider = function(icon, node) -- setup a custom icon provider
+            local text, hl
+            local mini_icons = require('mini.icons')
+            if node.type == 'file' then -- if it's a file, set the text/hl
+              text, hl = mini_icons.get('file', node.name)
+            elseif node.type == 'directory' then -- get directory icons
+              text, hl = mini_icons.get('directory', node.name)
+              -- only set the icon text if it is not expanded
+              if node:is_expanded() then
+                text = nil
+              end
+            end
+
+            -- set the icon text/highlight only if it exists
+            if text then
+              icon.text = text
+            end
+            if hl then
+              icon.highlight = hl
+            end
+          end,
         },
       },
     },
@@ -766,6 +879,7 @@ local nvim_only_maps = {
   ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
   ['<leader>gd'] = '<cmd>Gdiff<cr>',
   ['<leader>l'] = '<cmd>FzfLua<cr>',
+  ['<leader>m'] = '<cmd>Markview toggle<cr>',
   ['<leader>o'] = '<cmd>Outline<cr>',
   ['<leader>s'] = '<cmd>FzfLua lsp_document_symbols<cr>',
   ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',

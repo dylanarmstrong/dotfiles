@@ -28,7 +28,6 @@ brew install \
     bat \
     dhall-lsp-server \
     difftastic \
-    efm-langserver \
     elixir \
     git-delta \
     hashicorp/tap/terraform-ls \
