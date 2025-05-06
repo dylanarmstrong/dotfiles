@@ -429,9 +429,6 @@ require('lazy').setup({
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    dependencies = {
-      'OXY2DEV/markview.nvim',
-    },
     event = 'BufRead',
     main = 'nvim-treesitter.configs',
     opts = {
@@ -496,24 +493,32 @@ require('lazy').setup({
     lazy = false,
   },
 
-  -- Markdown viewer
+  -- Obsidian
   {
-    'OXY2DEV/markview.nvim',
+    'obsidian-nvim/obsidian.nvim',
     dependencies = {
-      'catppuccin/nvim',
-      'echasnovski/mini.nvim',
+      'ibhagwan/fzf-lua',
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'saghen/blink.cmp',
     },
-    opts = function(_, opts)
-      local presets = require('markview.presets')
-      opts.markdown = {
-        headings = presets.headings.glow,
-        horizontal_rules = presets.horizontal_rules.thin,
-      }
-
-      opts.preview = {
-        icon_provider = 'mini',
-      }
-    end,
+    ft = 'markdown',
+    lazy = true,
+    opts = {
+      completion = {
+        blink = true,
+        nvim_cmp = false,
+      },
+      picker = {
+        name = 'fzf-lua',
+      },
+      workspaces = {
+        {
+          name = 'Vaulted',
+          path = os.getenv('HOME') .. '/Documents/Obsidian/Vaulted',
+        },
+      },
+    },
   },
 
   -- Better repeating
@@ -754,6 +759,9 @@ vim.opt.re = 0
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 
+-- Text replacement
+vim.opt.conceallevel = 1
+
 -- SQL has a massive slowdown for me
 vim.g.omni_sql_no_default_maps = true
 
@@ -879,7 +887,6 @@ local nvim_only_maps = {
   ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
   ['<leader>gd'] = '<cmd>Gdiff<cr>',
   ['<leader>l'] = '<cmd>FzfLua<cr>',
-  ['<leader>m'] = '<cmd>Markview toggle<cr>',
   ['<leader>o'] = '<cmd>Outline<cr>',
   ['<leader>s'] = '<cmd>FzfLua lsp_document_symbols<cr>',
   ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
