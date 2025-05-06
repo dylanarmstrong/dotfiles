@@ -741,7 +741,7 @@ vim.opt.number = true
 
 -- Undo
 vim.opt.undofile = true
-vim.opt.undodir = os.getenv('HOME') .. '/.local/share/nvim/undo'
+vim.opt.undodir = vim.fn.stdpath('data') .. '/undo'
 
 -- Ignore
 vim.opt.wildignore = '*/node_modules/*'
@@ -875,6 +875,8 @@ local common_maps = {
   -- Natural movement over visual lines
   ['j'] = 'gj',
   ['k'] = 'gk',
+  -- Replay macro q with space
+  ['<space>'] = '@q',
 }
 
 local nvim_only_maps = {
@@ -888,8 +890,8 @@ local nvim_only_maps = {
   ['<leader>gd'] = '<cmd>Gdiff<cr>',
   ['<leader>l'] = '<cmd>FzfLua<cr>',
   ['<leader>o'] = '<cmd>Outline<cr>',
-  ['<leader>s'] = '<cmd>FzfLua lsp_document_symbols<cr>',
   ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
+  ['<leader>s'] = '<cmd>FzfLua lsp_document_symbols<cr>',
   ['<leader>u'] = '<cmd>UndotreeToggle<cr>',
   ['<leader>y'] = '<cmd>lua vim.g.disable_autoformat = not vim.g.disable_autoformat<cr>',
   ['<leader>z'] = '<cmd>lua vim.g.cmptoggle = not vim.g.cmptoggle<cr>',
@@ -908,9 +910,6 @@ local maps = {
   n = maps_n,
   v = {
     ['<leader>s'] = ":'<,'>sort<cr>",
-  },
-  [''] = {
-    ['<space>'] = '@q',
   },
 }
 
