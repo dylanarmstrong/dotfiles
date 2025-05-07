@@ -502,8 +502,26 @@ require('lazy').setup({
       'nvim-treesitter/nvim-treesitter',
       'saghen/blink.cmp',
     },
-    ft = 'markdown',
+    init = function()
+      vim.api.nvim_create_autocmd('BufEnter', {
+        callback = function()
+          local buf = vim.api.nvim_get_current_buf()
+          local filepath = vim.api.nvim_buf_get_name(buf)
+          local filetype = vim.bo[buf].filetype
+
+          local is_markdown = filetype == 'markdown'
+          local in_vault = filepath:match(os.getenv('HOME') .. '/Documents/Obsidian/Vaulted')
+
+          if is_markdown and in_vault then
+            vim.wo.conceallevel = 1
+          else
+            vim.wo.conceallevel = 0
+          end
+        end,
+      })
+    end,
     lazy = true,
+    event = 'BufReadPre ' .. os.getenv('HOME') .. '/Documents/Obsidian/Vaulted/*.md',
     opts = {
       completion = {
         blink = true,
@@ -760,7 +778,7 @@ vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 
 -- Text replacement
-vim.opt.conceallevel = 1
+vim.opt.conceallevel = 0
 
 -- SQL has a massive slowdown for me
 vim.g.omni_sql_no_default_maps = true
