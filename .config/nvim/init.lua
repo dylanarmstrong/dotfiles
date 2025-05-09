@@ -239,6 +239,23 @@ require('lazy').setup({
     },
     opts = {
       servers = {
+        basedpyright = {
+          settings = {
+            basedpyright = {
+              analysis = {
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                diagnosticMode = 'workspace',
+              },
+              disableOrganizeImports = true,
+            },
+            python = {
+              pythonPath = vim.fn.filereadable(vim.fn.getcwd() .. '/.venv/bin/python')
+                  and vim.fn.getcwd() .. '/.venv/bin/python'
+                or vim.fn.exepath('python3'),
+            },
+          },
+        },
         bashls = {},
         clangd = {},
         cssls = {
@@ -299,23 +316,6 @@ require('lazy').setup({
         },
         ocamlls = {},
         -- oxlint = {},
-        pyright = {
-          settings = {
-            pyright = {
-              disableOrganizeImports = true,
-            },
-            python = {
-              analysis = {
-                autoSearchPaths = true,
-                useLibraryCodeForTypes = true,
-                diagnosticMode = 'workspace',
-              },
-              pythonPath = vim.fn.filereadable(vim.fn.getcwd() .. '/.venv/bin/python')
-                  and vim.fn.getcwd() .. '/.venv/bin/python'
-                or vim.fn.exepath('python3'),
-            },
-          },
-        },
         ruff = {},
         sourcekit = {},
         svelte = {},
