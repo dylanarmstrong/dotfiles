@@ -787,7 +787,7 @@ vim.g.omni_sql_no_default_maps = true
 vim.o.winborder = 'rounded'
 
 -- In-line diagnostic messages
-local has_virtual_lines = false
+local has_virtual_lines = true
 
 local diag_config_vertical = {
   virtual_text = {
