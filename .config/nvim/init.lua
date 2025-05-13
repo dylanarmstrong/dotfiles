@@ -131,6 +131,9 @@ require('lazy').setup({
   {
     'tpope/vim-fugitive',
     cond = not vim.g.vscode,
+    keys = {
+      { '<leader>gd', '<cmd>Gdiff<cr>' },
+    },
   },
 
   {
@@ -143,6 +146,9 @@ require('lazy').setup({
   {
     'mbbill/undotree',
     cond = not vim.g.vscode,
+    keys = {
+      { '<leader>u', '<cmd>UndotreeToggle<cr>' },
+    },
   },
 
   -- Finder
@@ -150,6 +156,16 @@ require('lazy').setup({
     'ibhagwan/fzf-lua',
     dependencies = {
       'echasnovski/mini.nvim',
+    },
+    keys = {
+      { '<C-p>', '<cmd>FzfLua files<cr>' },
+      { '<leader>a', '<cmd>FzfLua live_grep<cr>' },
+      { '<leader>b', '<cmd>FzfLua buffers<cr>' },
+      { '<leader>l', '<cmd>FzfLua<cr>' },
+      { '<leader>s', '<cmd>FzfLua lsp_document_symbols<cr>' },
+      { 'gd', '<cmd>FzfLua lsp_definitions<cr>' },
+      { 'gi', '<cmd>FzfLua lsp_implementations<cr>' },
+      { 'gr', '<cmd>FzfLua lsp_references<cr>' },
     },
     opts = {
       { 'border-fused' },
@@ -449,6 +465,9 @@ require('lazy').setup({
     'hedyhli/outline.nvim',
     cond = not vim.g.vscode,
     opts = {},
+    keys = {
+      { '<leader>o', '<cmd>Outline<cr>' },
+    },
   },
 
   -- Jenkinsfiles (groovyls doesn't work for me)
@@ -642,7 +661,9 @@ require('lazy').setup({
       'echasnovski/mini.nvim',
       'nvim-lua/plenary.nvim',
     },
-
+    keys = {
+      { '<C-n>', '<cmd>Neotree toggle<cr>' },
+    },
     opts = {
       close_if_last_window = true,
       filesystem = {
@@ -686,10 +707,26 @@ require('lazy').setup({
     },
   },
 
+  -- File Creation
+  {
+    'stevearc/oil.nvim',
+    dependencies = {
+      'echasnovski/mini.nvim',
+    },
+    keys = {
+      { '<leader>n', '<cmd>Oil<cr>' },
+    },
+    lazy = false,
+    opts = {},
+  },
+
   -- Diagnostics
   {
     'folke/trouble.nvim',
     cond = not vim.g.vscode,
+    keys = {
+      { '<leader>e', '<cmd>Trouble diagnostics toggle<cr>' },
+    },
     opts = {
       focus = true,
     },
@@ -898,24 +935,11 @@ local common_maps = {
 }
 
 local nvim_only_maps = {
-  ['<C-n>'] = '<cmd>Neotree toggle<cr>',
-  ['<C-p>'] = '<cmd>FzfLua files<cr>',
   ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
-  ['<leader>a'] = '<cmd>FzfLua live_grep<cr>',
-  ['<leader>b'] = '<cmd>FzfLua buffers<cr>',
-  ['<leader>e'] = '<cmd>Trouble diagnostics toggle<cr>',
   ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
-  ['<leader>gd'] = '<cmd>Gdiff<cr>',
-  ['<leader>l'] = '<cmd>FzfLua<cr>',
-  ['<leader>o'] = '<cmd>Outline<cr>',
   ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
-  ['<leader>s'] = '<cmd>FzfLua lsp_document_symbols<cr>',
-  ['<leader>u'] = '<cmd>UndotreeToggle<cr>',
   ['<leader>y'] = '<cmd>lua vim.g.disable_autoformat = not vim.g.disable_autoformat<cr>',
   ['<leader>z'] = '<cmd>lua vim.g.cmptoggle = not vim.g.cmptoggle<cr>',
-  ['gd'] = '<cmd>FzfLua lsp_definitions<cr>',
-  ['gi'] = '<cmd>FzfLua lsp_implementations<cr>',
-  ['gr'] = '<cmd>FzfLua lsp_references<cr>',
 }
 
 -- If we're on Cursor, only load keybindings available
