@@ -32,6 +32,8 @@ vim.opt.softtabstop = 2
 vim.opt.tabstop = 2
 vim.opt.numberwidth = 4
 
+---@alias Flavor 'latte' | 'frappe' | 'macchiato' | 'mocha'
+---@type Flavor
 local flavor = 'mocha'
 
 require('lazy').setup({
@@ -83,7 +85,7 @@ require('lazy').setup({
       },
     },
     config = function()
-      vim.cmd.colorscheme('catppuccin')
+      vim.cmd.colorscheme('catppuccin-' .. flavor)
     end,
   },
 
@@ -214,8 +216,8 @@ require('lazy').setup({
         },
         list = {
           selection = {
-            preselect = false,
             auto_insert = false,
+            preselect = false,
           },
         },
         menu = {
@@ -260,8 +262,8 @@ require('lazy').setup({
             basedpyright = {
               analysis = {
                 autoSearchPaths = true,
-                useLibraryCodeForTypes = true,
                 diagnosticMode = 'workspace',
+                useLibraryCodeForTypes = true,
               },
               disableOrganizeImports = true,
             },
@@ -444,6 +446,9 @@ require('lazy').setup({
   -- Treesitter for fancy syntax
   {
     'nvim-treesitter/nvim-treesitter',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-context',
+    },
     build = ':TSUpdate',
     event = 'BufRead',
     main = 'nvim-treesitter.configs',
@@ -456,6 +461,9 @@ require('lazy').setup({
       },
       ignore_install = {},
       indent = { enable = false },
+      matchup = {
+        enable = true,
+      },
       modules = {},
       sync_install = false,
     },
@@ -468,11 +476,6 @@ require('lazy').setup({
     keys = {
       { '<leader>o', '<cmd>Outline<cr>' },
     },
-  },
-
-  -- Jenkinsfiles (groovyls doesn't work for me)
-  {
-    'martinda/Jenkinsfile-vim-syntax',
   },
 
   -- Typst support
@@ -508,7 +511,6 @@ require('lazy').setup({
   -- Rust support
   {
     'mrcjkb/rustaceanvim',
-    version = '^5',
     lazy = false,
   },
 

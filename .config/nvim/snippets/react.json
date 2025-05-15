@@ -1,0 +1,6 @@
+{
+  "useMemo": {
+    "body": ["useMemo(() => {", "  ${1:compute()};", "}, []);$0"],
+    "prefix": "useMemo"
+  }
+}
