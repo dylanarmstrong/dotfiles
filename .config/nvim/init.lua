@@ -446,9 +446,7 @@ require('lazy').setup({
   -- Treesitter for fancy syntax
   {
     'nvim-treesitter/nvim-treesitter',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter-context',
-    },
+    dependencies = {},
     build = ':TSUpdate',
     event = 'BufRead',
     main = 'nvim-treesitter.configs',
