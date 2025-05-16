@@ -252,6 +252,36 @@ require('lazy').setup({
 
   {
     'neovim/nvim-lspconfig',
+    config = function(_, opts)
+      local lspconfig = require('lspconfig')
+      for server, config in pairs(opts.servers) do
+        config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+        lspconfig[server].setup(config)
+      end
+
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('lsp_attach_auto_lint', { clear = true }),
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          local bufnr = args.buf
+          if not client then
+            return
+          end
+          if client.name == 'eslint' then
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              buffer = bufnr,
+              command = 'EslintFixAll',
+            })
+          elseif client.name == 'oxlint' then
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              buffer = bufnr,
+              command = 'OxcFixAll',
+            })
+          end
+        end,
+        desc = 'LSP: per-client attach handlers (eslint, oxlint)',
+      })
+    end,
     dependencies = {
       'saghen/blink.cmp',
     },
@@ -263,6 +293,7 @@ require('lazy').setup({
               analysis = {
                 autoSearchPaths = true,
                 diagnosticMode = 'workspace',
+                ignore = { '*' },
                 useLibraryCodeForTypes = true,
               },
               disableOrganizeImports = true,
@@ -291,7 +322,16 @@ require('lazy').setup({
           cmd = { os.getenv('HOME') .. '/src/elixir-ls/dist/language_server.sh' },
         },
         emmet_ls = {},
-        -- eslint = {},
+        eslint = {
+          handlers = {
+            ['eslint/noConfig'] = function()
+              return {}
+            end,
+            ['eslint/noLibrary'] = function()
+              return {}
+            end,
+          },
+        },
         graphql = {},
         groovyls = {
           cmd = {
@@ -333,7 +373,7 @@ require('lazy').setup({
           },
         },
         ocamlls = {},
-        -- oxlint = {},
+        oxlint = {},
         ruff = {},
         sourcekit = {},
         svelte = {},
@@ -344,44 +384,6 @@ require('lazy').setup({
         vimls = {},
       },
     },
-    config = function(_, opts)
-      local lspconfig = require('lspconfig')
-      for server, config in pairs(opts.servers) do
-        config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
-        lspconfig[server].setup(config)
-      end
-
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
-
-      lspconfig.eslint.setup({
-        capabilities = capabilities,
-        -- Fix issues on save
-        on_attach = function(_, bufnr)
-          vim.api.nvim_create_autocmd('BufWritePre', {
-            buffer = bufnr,
-            command = 'EslintFixAll',
-          })
-        end,
-        handlers = {
-          ['eslint/noConfig'] = function()
-            return {}
-          end,
-          ['eslint/noLibrary'] = function()
-            return {}
-          end,
-        },
-      })
-
-      lspconfig.oxlint.setup({
-        capabilities = capabilities,
-        on_attach = function(_, bufnr)
-          vim.api.nvim_create_autocmd('BufWritePre', {
-            buffer = bufnr,
-            command = 'OxcFixAll',
-          })
-        end,
-      })
-    end,
   },
 
   -- This seems less problematic than efm-langserver
@@ -446,8 +448,8 @@ require('lazy').setup({
   -- Treesitter for fancy syntax
   {
     'nvim-treesitter/nvim-treesitter',
-    dependencies = {},
     build = ':TSUpdate',
+    dependencies = {},
     event = 'BufRead',
     main = 'nvim-treesitter.configs',
     opts = {
@@ -459,9 +461,6 @@ require('lazy').setup({
       },
       ignore_install = {},
       indent = { enable = false },
-      matchup = {
-        enable = true,
-      },
       modules = {},
       sync_install = false,
     },
@@ -509,6 +508,7 @@ require('lazy').setup({
   -- Rust support
   {
     'mrcjkb/rustaceanvim',
+    ft = 'rust',
     lazy = false,
   },
 
@@ -905,21 +905,6 @@ vim.filetype.add({
     ['.*/templates/.*%.ya?ml'] = 'helm',
     ['helmfile.*%.ya?ml'] = 'helm',
   },
-})
-
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
-  callback = function(args)
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if client == nil then
-      return
-    end
-    if client.name == 'ruff' then
-      -- Disable hover in favor of Pyright
-      client.server_capabilities.hoverProvider = false
-    end
-  end,
-  desc = 'LSP: Disable hover capability from Ruff',
 })
 
 local common_maps = {
