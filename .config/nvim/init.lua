@@ -760,19 +760,6 @@ require('lazy').setup({
     },
   },
 
-  -- Do I have bad habits in neovim?
-  {
-    'm4xshen/hardtime.nvim',
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-    },
-    lazy = false,
-    opts = {
-      --  max_count = 10,
-      restriction_mode = 'hint',
-    },
-  },
-
   checker = { enabled = true },
 })
 
