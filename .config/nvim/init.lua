@@ -91,14 +91,12 @@ require('lazy').setup({
 
   {
     'lukas-reineke/indent-blankline.nvim',
-    cond = not vim.g.vscode,
     main = 'ibl',
     opts = {},
   },
 
   {
     'brenoprata10/nvim-highlight-colors',
-    cond = not vim.g.vscode,
     event = 'BufReadPre',
     opts = {
       render = 'virtual',
@@ -112,14 +110,12 @@ require('lazy').setup({
   -- Works more consistently than vim-sleuth I've found
   {
     'nmac427/guess-indent.nvim',
-    cond = not vim.g.vscode,
     opts = {},
   },
 
   -- Mini
   {
     'echasnovski/mini.nvim',
-    cond = not vim.g.vscode,
     config = function()
       -- Comments with gc
       require('mini.comment').setup()
@@ -132,7 +128,6 @@ require('lazy').setup({
   -- Git
   {
     'tpope/vim-fugitive',
-    cond = not vim.g.vscode,
     keys = {
       { '<leader>gd', '<cmd>Gdiff<cr>' },
     },
@@ -140,14 +135,12 @@ require('lazy').setup({
 
   {
     'lewis6991/gitsigns.nvim',
-    cond = not vim.g.vscode,
     opts = {},
   },
 
   -- Undo
   {
     'mbbill/undotree',
-    cond = not vim.g.vscode,
     keys = {
       { '<leader>u', '<cmd>UndotreeToggle<cr>' },
     },
@@ -390,7 +383,6 @@ require('lazy').setup({
   -- For formatting on save
   {
     'stevearc/conform.nvim',
-    cond = not vim.g.vscode,
     opts = {
       formatters = {
         stylua = {
@@ -468,7 +460,6 @@ require('lazy').setup({
 
   {
     'hedyhli/outline.nvim',
-    cond = not vim.g.vscode,
     opts = {},
     keys = {
       { '<leader>o', '<cmd>Outline<cr>' },
@@ -567,7 +558,6 @@ require('lazy').setup({
   -- Status line
   {
     'nvim-lualine/lualine.nvim',
-    cond = not vim.g.vscode,
     dependencies = {
       'catppuccin/nvim',
     },
@@ -655,7 +645,6 @@ require('lazy').setup({
   -- File browser
   {
     'nvim-neo-tree/neo-tree.nvim',
-    cond = not vim.g.vscode,
     dependencies = {
       'MunifTanjim/nui.nvim',
       'echasnovski/mini.nvim',
@@ -723,7 +712,6 @@ require('lazy').setup({
   -- Diagnostics
   {
     'folke/trouble.nvim',
-    cond = not vim.g.vscode,
     keys = {
       { '<leader>e', '<cmd>Trouble diagnostics toggle<cr>' },
     },
@@ -735,7 +723,6 @@ require('lazy').setup({
   -- Templates
   {
     'vigoux/templar.nvim',
-    cond = not vim.g.vscode,
     config = function()
       local templar = require('templar')
       templar.register('*.html')
@@ -907,7 +894,7 @@ vim.filetype.add({
   },
 })
 
-local common_maps = {
+local maps_n = {
   [':'] = ';',
   [';'] = ':',
   -- Uppercase Y will grab entire line
@@ -917,18 +904,12 @@ local common_maps = {
   ['k'] = 'gk',
   -- Replay macro q with space
   ['<space>'] = '@q',
-}
-
-local nvim_only_maps = {
   ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
   ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
   ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
   ['<leader>y'] = '<cmd>lua vim.g.disable_autoformat = not vim.g.disable_autoformat<cr>',
   ['<leader>z'] = '<cmd>lua vim.g.cmptoggle = not vim.g.cmptoggle<cr>',
 }
-
--- If we're on Cursor, only load keybindings available
-local maps_n = vim.g.vscode and common_maps or vim.tbl_extend('force', common_maps, nvim_only_maps)
 
 local maps = {
   i = {
