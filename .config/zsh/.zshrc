@@ -19,7 +19,7 @@ export SHOPIFY_CLI_NO_ANALYTICS=1
 
 # For the PATH
 NODE_VERSION=v22.15.0
-BREW_PREFIX="$(brew --prefix)"
+BREW_PREFIX="$(PATH="/opt/homebrew/bin:$PATH" brew --prefix)"
 
 # Exports
 export EDITOR=nvim
