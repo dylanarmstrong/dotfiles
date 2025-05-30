@@ -9,18 +9,21 @@ export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
 export XDG_RUNTIME_DIR=$HOME/.local/run
 
+# Telemetry
+export APOLLO_TELEMETRY_DISABLED=1
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ENV_HINTS=1
+export SHOPIFY_CLI_NO_ANALYTICS=1
+
 # For the PATH
 NODE_VERSION=v22.15.0
-
-# For arm64 / i386
-BREW_ROOT="/usr/local"
-if [[ $(arch) == 'arm64' ]]; then
-  BREW_ROOT="/opt/homebrew"
-fi
+BREW_PREFIX="$(brew --prefix)"
 
 # Exports
 export EDITOR=nvim
-export JAVA_HOME=$BREW_ROOT/opt/openjdk@17/
+export JAVA_HOME="$BREW_PREFIX/opt/openjdk@17"
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
@@ -49,7 +52,7 @@ export MACHINE_STORAGE_PATH="$XDG_DATA_HOME"/docker-machine
 export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export OPAMROOT="$XDG_DATA_HOME/opam"
-export NVM_DIR="$BREW_ROOT/opt/nvm"
+export NVM_DIR="$BREW_PREFIX/opt/nvm"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
 export PYTHONSTARTUP="/etc/python/pythonrc"
 export RANDFILE="$XDG_DATA_HOME/rnd"
@@ -61,14 +64,6 @@ export _Z_DATA="$XDG_DATA_HOME/z"
 
 # Private environment variables
 [ -r "$HOME"/.env ] && . "$HOME"/.env
-
-# Telemetry
-export APOLLO_TELEMETRY_DISABLED=1
-export DOTNET_CLI_TELEMETRY_OPTOUT=1
-export HOMEBREW_NO_ANALYTICS=1
-export HOMEBREW_NO_AUTO_UPDATE=1
-export HOMEBREW_NO_ENV_HINTS=1
-export SHOPIFY_CLI_NO_ANALYTICS=1
 
 # FZF
 # Catppuccin Mocha
@@ -194,10 +189,12 @@ zstyle ':vcs_info:*' unstagedstr '%F{1}*'
 function prompt_precmd() {
   vcs_info
 }
+
 function set_prompt {
   # shellcheck disable=SC2154
   PROMPT="%F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f "
 }
+
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
@@ -205,30 +202,32 @@ add-zsh-hook precmd set_prompt
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
 
 # Reset PATH
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:$BREW_ROOT/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$XDG_DATA_HOME/npm/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.cargo/bin:$HOME/.docker/bin:$HOME/.local/share/gem/bin
+export PATH="/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.local/share/gem/bin"
 
-[ -s "$BREW_ROOT/bin/fzf" ] && eval "$($BREW_ROOT/bin/fzf --zsh)"
-eval "$(zoxide init zsh)"
-. "$HOME/.cargo/env"
+[ -s "$BREW_PREFIX/opt/fzf/bin/fzf" ] && eval "$($BREW_PREFIX/opt/fzf/bin/fzf --zsh)"
+[ -s "$BREW_PREFIX/opt/uv/bin/uv" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uv" generate-shell-completion zsh)"
+[ -s "$BREW_PREFIX/opt/uv/bin/uvx" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uvx" --generate-shell-completion zsh)"
+[ -s "$BREW_PREFIX/opt/zoxide/bin/zoxide" ] && eval "$($BREW_PREFIX/opt/zoxide/bin/zoxide init zsh)"
+[ -s "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-eval "$(uv generate-shell-completion zsh)"
-eval "$(uvx --generate-shell-completion zsh)"
-
+# Opens a file in vim
 function fv() {
   local file
   file="$(fzf --height 80% --reverse --preview 'bat --style=numbers --color=always {} 2>/dev/null || cat {}')"
   if [ -n "$file" ]; then
-    nvim "$file"
+    vim "$file"
   fi
 }
 
+# Opens the directory a file is in
 function fz() {
   local file
   file="$(fzf --height 80% --reverse --preview 'bat --style=numbers --color=always {} 2>/dev/null || cat {}')"
   if [ -n "$file" ]; then
     local dir
     dir="$(dirname "$file")"
-    zoxide add "$dir"  # Add the directory to zoxide's database
+    # Add the directory to zoxide's database
+    zoxide add "$dir"
     cd "$dir"
   fi
 }
