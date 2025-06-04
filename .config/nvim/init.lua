@@ -18,7 +18,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Leader, needs to be before lazy load
 vim.g.mapleader = ','
 
-vim.g.cmptoggle = true
+-- Should conform run fixers on save
 vim.g.disable_autoformat = false
 
 -- Yes.. I know, not my plugins though
@@ -325,6 +325,7 @@ require('lazy').setup({
             end,
           },
         },
+        glsl_analyzer = {},
         graphql = {},
         groovyls = {
           cmd = {
@@ -423,6 +424,7 @@ require('lazy').setup({
       },
       format_on_save = function(bufnr)
         if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+          print('Format on save disabled')
           return
         end
         local bufname = vim.api.nvim_buf_get_name(bufnr)
@@ -456,6 +458,23 @@ require('lazy').setup({
       modules = {},
       sync_install = false,
     },
+  },
+
+  -- Embedded treesitter
+  {
+    'jmbuhr/otter.nvim',
+    init = function()
+      vim.api.nvim_create_autocmd('BufEnter', {
+        callback = function()
+          require('otter').activate()
+        end,
+      })
+    end,
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+    },
+    ft = 'markdown',
+    opts = {},
   },
 
   {
@@ -905,10 +924,9 @@ local maps_n = {
   -- Replay macro q with space
   ['<space>'] = '@q',
   ['<leader>D'] = '<cmd>lua vim.lsp.buf.type_definition()<cr>',
+  ['<leader>d'] = '<cmd>lua vim.g.disable_autoformat = not vim.g.disable_autoformat<cr>',
   ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
   ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
-  ['<leader>y'] = '<cmd>lua vim.g.disable_autoformat = not vim.g.disable_autoformat<cr>',
-  ['<leader>z'] = '<cmd>lua vim.g.cmptoggle = not vim.g.cmptoggle<cr>',
 }
 
 local maps = {
