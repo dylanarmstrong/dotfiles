@@ -181,9 +181,7 @@ require('lazy').setup({
   -- Completion
   {
     'saghen/blink.cmp',
-    dependencies = {
-      'rafamadriz/friendly-snippets',
-    },
+    dependencies = {},
     build = 'cargo build --release',
     opts = {
       keymap = {
@@ -229,7 +227,7 @@ require('lazy').setup({
         window = { border = 'rounded' },
       },
       sources = {
-        default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
+        default = { 'lazydev', 'lsp', 'path', 'buffer' },
         providers = {
           lazydev = {
             module = 'lazydev.integrations.blink',
