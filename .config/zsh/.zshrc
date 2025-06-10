@@ -156,7 +156,6 @@ zstyle ':completion:*:rsync:*' hosts off
 alias 7zx='7z x'
 alias bc='bc -l'
 alias c='clear'
-alias cd='z'
 alias cp='nocorrect cp -v'
 alias e='exit'
 alias gc='git checkout'
@@ -207,7 +206,6 @@ export PATH="/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.loc
 [ -s "$BREW_PREFIX/opt/fzf/bin/fzf" ] && eval "$($BREW_PREFIX/opt/fzf/bin/fzf --zsh)"
 [ -s "$BREW_PREFIX/opt/uv/bin/uv" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uv" generate-shell-completion zsh)"
 [ -s "$BREW_PREFIX/opt/uv/bin/uvx" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uvx" --generate-shell-completion zsh)"
-[ -s "$BREW_PREFIX/opt/zoxide/bin/zoxide" ] && eval "$($BREW_PREFIX/opt/zoxide/bin/zoxide init zsh)"
 [ -s "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # Opens a file in vim
@@ -224,11 +222,7 @@ function fz() {
   local file
   file="$(fzf --height 80% --reverse --preview 'bat --style=numbers --color=always {} 2>/dev/null || cat {}')"
   if [ -n "$file" ]; then
-    local dir
-    dir="$(dirname "$file")"
-    # Add the directory to zoxide's database
-    zoxide add "$dir"
-    cd "$dir"
+    cd "$(dirname "$file")"
   fi
 }
 

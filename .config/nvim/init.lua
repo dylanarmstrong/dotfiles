@@ -463,6 +463,7 @@ require('lazy').setup({
     'jmbuhr/otter.nvim',
     init = function()
       vim.api.nvim_create_autocmd('BufEnter', {
+        pattern = 'markdown',
         callback = function()
           require('otter').activate()
         end,
@@ -518,52 +519,6 @@ require('lazy').setup({
     'mrcjkb/rustaceanvim',
     ft = 'rust',
     lazy = false,
-  },
-
-  -- Obsidian
-  {
-    'obsidian-nvim/obsidian.nvim',
-    dependencies = {
-      'ibhagwan/fzf-lua',
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-      'saghen/blink.cmp',
-    },
-    init = function()
-      vim.api.nvim_create_autocmd('BufEnter', {
-        callback = function()
-          local buf = vim.api.nvim_get_current_buf()
-          local filepath = vim.api.nvim_buf_get_name(buf)
-          local filetype = vim.bo[buf].filetype
-
-          local is_markdown = filetype == 'markdown'
-          local in_vault = filepath:match(os.getenv('HOME') .. '/Documents/Obsidian/Vaulted')
-
-          if is_markdown and in_vault then
-            vim.wo.conceallevel = 1
-          else
-            vim.wo.conceallevel = 0
-          end
-        end,
-      })
-    end,
-    lazy = true,
-    event = 'BufReadPre ' .. os.getenv('HOME') .. '/Documents/Obsidian/Vaulted/*.md',
-    opts = {
-      completion = {
-        blink = true,
-        nvim_cmp = false,
-      },
-      picker = {
-        name = 'fzf-lua',
-      },
-      workspaces = {
-        {
-          name = 'Vaulted',
-          path = os.getenv('HOME') .. '/Documents/Obsidian/Vaulted',
-        },
-      },
-    },
   },
 
   -- Better repeating
