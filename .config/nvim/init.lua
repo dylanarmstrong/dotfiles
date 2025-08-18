@@ -367,7 +367,19 @@ require('lazy').setup({
         ocamlls = {},
         oxlint = {},
         ruff = {},
-        sourcekit = {},
+        sourcekit = {
+          cmd = {
+            'sourcekit-lsp',
+            '-Xswiftc',
+            '-sdk',
+            '-Xswiftc',
+            vim.fn.trim(vim.fn.system('xcrun --sdk iphoneos --show-sdk-path')),
+            '-Xswiftc',
+            '-target',
+            '-Xswiftc',
+            'arm64-apple-ios' .. vim.fn.trim(vim.fn.system('xcrun --sdk iphoneos --show-sdk-version')),
+          },
+        },
         svelte = {},
         terraformls = {},
         tailwindcss = {},
@@ -375,6 +387,24 @@ require('lazy').setup({
         ts_ls = {},
         vimls = {},
       },
+    },
+  },
+
+  -- Translate TS Errors to English
+  { 'dmmulroy/ts-error-translator.nvim' },
+
+  -- Review GH reviews
+  {
+    'pwntester/octo.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'ibhagwan/fzf-lua',
+      'nvim-tree/nvim-web-devicons',
+      -- Need to manually add support for:
+      -- 'echasnovski/mini.nvim',
+    },
+    opts = {
+      picker = 'fzf-lua',
     },
   },
 
