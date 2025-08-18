@@ -323,6 +323,7 @@ require('lazy').setup({
             end,
           },
         },
+        gopls = {},
         glsl_analyzer = {},
         graphql = {},
         groovyls = {
