@@ -362,8 +362,17 @@ require('lazy').setup({
             },
           },
         },
-        ocamlls = {},
+        ocamllsp = {},
         oxlint = {},
+        rescriptls = {
+          capabilities = {
+            workspace = {
+              didChangeWatchedFiles = {
+                dynamicRegistration = true,
+              },
+            },
+          },
+        },
         ruff = {},
         sourcekit = {
           cmd = {

@@ -10,6 +10,7 @@ For LSP support run the following:
 npm install -g pnpm
 
 pnpm add -g \
+    @rescript/language-server \
     @tailwindcss/language-server \
     bash-language-server \
     dockerfile-language-server-nodejs \
@@ -36,6 +37,8 @@ brew install \
     lua-language-server \
     shellcheck \
     zoxide
+
+opam install ocaml-lsp-server
 
 # Groovy Support
 pushd $HOME/src && \
