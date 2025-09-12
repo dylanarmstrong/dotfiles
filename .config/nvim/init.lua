@@ -282,10 +282,7 @@ require('lazy').setup({
           settings = {
             basedpyright = {
               analysis = {
-                autoSearchPaths = true,
-                diagnosticMode = 'workspace',
                 ignore = { '*' },
-                useLibraryCodeForTypes = true,
               },
               disableOrganizeImports = true,
             },
@@ -482,7 +479,7 @@ require('lazy').setup({
         enable = true,
         use_languagetree = true,
       },
-      ignore_install = {},
+      ignore_install = { 'ipkg' },
       indent = { enable = false },
       modules = {},
       sync_install = false,
@@ -714,7 +711,9 @@ require('lazy').setup({
 
   -- Diagnostics
   {
-    'folke/trouble.nvim',
+    'h-michael/trouble.nvim',
+    branch = 'fix/decoration-provider-api',
+    -- 'folke/trouble.nvim',
     keys = {
       { '<leader>e', '<cmd>Trouble diagnostics toggle<cr>' },
     },
