@@ -18,7 +18,7 @@ export HOMEBREW_NO_ENV_HINTS=1
 export SHOPIFY_CLI_NO_ANALYTICS=1
 
 # For the PATH
-NODE_VERSION=v24.8.0
+NODE_VERSION=v24.9.0
 BREW_PREFIX="$(PATH="/opt/homebrew/bin:$PATH" brew --prefix)"
 
 # Exports
