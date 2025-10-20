@@ -721,9 +721,7 @@ require('lazy').setup({
 
   -- Diagnostics
   {
-    'h-michael/trouble.nvim',
-    branch = 'fix/decoration-provider-api',
-    -- 'folke/trouble.nvim',
+    'folke/trouble.nvim',
     keys = {
       { '<leader>e', '<cmd>Trouble diagnostics toggle<cr>' },
     },
