@@ -23,7 +23,7 @@ vim.g.disable_autoformat = false
 
 -- Yes.. I know, not my plugins though
 ---@diagnostic disable-next-line
-vim.deprecate = function() end
+-- vim.deprecate = function() end
 
 -- Spaces (these should be adjusted by nmac427/guess-indent.nvim)
 vim.opt.expandtab = true
@@ -138,14 +138,6 @@ require('lazy').setup({
     opts = {},
   },
 
-  -- Undo
-  {
-    'mbbill/undotree',
-    keys = {
-      { '<leader>u', '<cmd>UndotreeToggle<cr>' },
-    },
-  },
-
   -- Finder
   {
     'ibhagwan/fzf-lua',
@@ -236,7 +228,10 @@ require('lazy').setup({
           },
         },
       },
-      fuzzy = { implementation = 'prefer_rust_with_warning' },
+      fuzzy = {
+        frecency = { path = vim.fn.stdpath('data') .. '/blink/cmp/fuzzy.db' },
+        implementation = 'prefer_rust_with_warning',
+      },
     },
     opts_extend = { 'sources.default' },
   },
@@ -244,14 +239,11 @@ require('lazy').setup({
   {
     'neovim/nvim-lspconfig',
     config = function(_, opts)
-      local lspconfig = require('lspconfig')
       for server, config in pairs(opts.servers) do
-        config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
-        lspconfig[server].setup(config)
+        vim.lsp.enable(server, config)
       end
 
       vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('lsp_attach_auto_lint', { clear = true }),
         callback = function(args)
           local client = vim.lsp.get_client_by_id(args.data.client_id)
           local bufnr = args.buf
@@ -261,7 +253,7 @@ require('lazy').setup({
           if client.name == 'eslint' then
             vim.api.nvim_create_autocmd('BufWritePre', {
               buffer = bufnr,
-              command = 'EslintFixAll',
+              command = 'LspEslintFixAll',
             })
           elseif client.name == 'oxlint' then
             vim.api.nvim_create_autocmd('BufWritePre', {
@@ -271,11 +263,9 @@ require('lazy').setup({
           end
         end,
         desc = 'LSP: per-client attach handlers (eslint, oxlint)',
+        group = vim.api.nvim_create_augroup('lsp_attach_auto_lint', { clear = true }),
       })
     end,
-    dependencies = {
-      'saghen/blink.cmp',
-    },
     opts = {
       servers = {
         basedpyright = {
@@ -492,6 +482,17 @@ require('lazy').setup({
       indent = { enable = false },
       modules = {},
       sync_install = false,
+    },
+  },
+
+  {
+    'nvim-treesitter/nvim-treesitter-context',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+    },
+    name = 'treesitter-context',
+    opts = {
+      max_lines = 3,
     },
   },
 
@@ -761,6 +762,8 @@ require('lazy').setup({
   checker = { enabled = true },
 })
 
+vim.cmd('packadd nvim.undotree')
+
 -- Per recommendation on nvim-tree
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -919,6 +922,7 @@ local maps_n = {
   ['<leader>d'] = '<cmd>lua vim.g.disable_autoformat = not vim.g.disable_autoformat<cr>',
   ['<leader>f'] = '<cmd>lua vim.lsp.buf.format { async = true }<cr>',
   ['<leader>rn'] = '<cmd>lua vim.lsp.buf.rename()<cr>',
+  ['<leader>u'] = '<cmd>Undotree<cr>',
 }
 
 local maps = {
