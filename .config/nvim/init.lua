@@ -390,21 +390,6 @@ require('lazy').setup({
   -- Translate TS Errors to English
   { 'dmmulroy/ts-error-translator.nvim' },
 
-  -- Review GH reviews
-  {
-    'pwntester/octo.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'ibhagwan/fzf-lua',
-      'nvim-tree/nvim-web-devicons',
-      -- Need to manually add support for:
-      -- 'echasnovski/mini.nvim',
-    },
-    opts = {
-      picker = 'fzf-lua',
-    },
-  },
-
   -- This seems less problematic than efm-langserver
   -- For formatting on save
   {
