@@ -1,8 +1,7 @@
 local window = require('hs.window')
 
 require('movement')
-require('pasteboard')
-require('tiling')
+require('wm')
 
 -- Just be instant please when moving windows
 window.animationDuration = 0
@@ -24,5 +23,3 @@ spoon.SpoonInstall:andUse('RoundedCorners', { config = { radius = 10 }, start = 
 
 -- When editing this, it's helpful to know when it's actually reloaded successfully
 -- hs.alert.show('Hammerspoon Loaded')
-
--- vim: shiftwidth=2:

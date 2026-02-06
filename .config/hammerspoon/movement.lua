@@ -70,5 +70,3 @@ fnutils.each({
     func
   )
 end)
-
--- vim: shiftwidth=2:

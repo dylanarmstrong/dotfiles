@@ -88,6 +88,7 @@ local apps = {
   kitty = 'net.kovidgoyal.kitty',
   music = 'com.apple.Music',
   obsidian = 'md.obsidian',
+  password = 'com.1password.1password',
   safari = 'com.apple.Safari',
   slack = 'com.tinyspeck.slackmacgap',
   thunderbird = 'org.mozilla.thunderbird',
@@ -117,4 +118,22 @@ fnutils.each({
   )
 end)
 
--- vim: shiftwidth=2:
+fnutils.each({
+  { key = 'b', app = apps.beeper },
+  { key = 'm', app = apps.music },
+  { key = 'o', app = apps.obsidian },
+  { key = 'p', app = apps.password },
+  { key = 's', app = apps.slack },
+  { key = 't', app = apps.kitty },
+}, function(obj)
+  hotkey.bind(
+    -- Modifier
+    obj.mod or alt_ctrl,
+    -- Key
+    obj.key,
+    -- Function on pressed
+    function()
+      application.launchOrFocusByBundleID(obj.app)
+    end
+  )
+end)
