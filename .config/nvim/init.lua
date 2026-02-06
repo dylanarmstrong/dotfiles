@@ -378,7 +378,7 @@ require('lazy').setup({
           },
         },
         svelte = {},
-        terraformls = {},
+        -- terraformls = {},
         tailwindcss = {},
         tinymist = {},
         ts_ls = {},
