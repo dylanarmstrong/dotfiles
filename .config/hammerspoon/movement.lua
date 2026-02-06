@@ -1,4 +1,3 @@
--- local application = require('hs.application')
 local fnutils = require('hs.fnutils')
 local hotkey = require('hs.hotkey')
 local window = require('hs.window')

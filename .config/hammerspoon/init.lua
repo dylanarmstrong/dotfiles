@@ -2,6 +2,7 @@ local window = require('hs.window')
 
 require('movement')
 require('pasteboard')
+require('tiling')
 
 -- Just be instant please when moving windows
 window.animationDuration = 0
