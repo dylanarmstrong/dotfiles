@@ -44,4 +44,4 @@ spoon.SpoonInstall:andUse('Seal', {
 })
 
 -- When editing this, it's helpful to know when it's actually reloaded successfully
-hs.alert.show('Hammerspoon Loaded')
+-- hs.alert.show('Hammerspoon Loaded')
