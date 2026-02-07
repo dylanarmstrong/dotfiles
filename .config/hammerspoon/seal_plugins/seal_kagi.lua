@@ -2,7 +2,7 @@
 -- Just a simple plugin for seal that is always available and opens kagi
 local obj = {}
 obj.__index = obj
-obj.__name = 'kagi'
+obj.__name = 'seal_kagi'
 obj.__icon = hs.image.imageFromName(hs.image.systemImageNames.NSTouchBarSearchTemplate)
 
 function obj:commands()
