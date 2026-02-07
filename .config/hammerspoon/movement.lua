@@ -50,7 +50,7 @@ fnutils.each({
   { key = 'B', pos = { 0, 0.5, 0.5, 0.5 } }, -- Bottom Left Half
   { key = 'N', pos = { 0.5, 0.5, 0.5, 0.5 } }, -- Bottom Right Half
 }, function(obj)
-  local func = function()
+  local handler = function()
     local func = obj.func or push
     local pos = obj.pos or {}
 
@@ -63,10 +63,10 @@ fnutils.each({
     -- Key
     obj.key,
     -- Function on pressed
-    func,
+    handler,
     -- Function on released
     nil,
     -- Function on repeated
-    func
+    handler
   )
 end)

@@ -3,6 +3,7 @@ local fnutils = require('hs.fnutils')
 local hotkey = require('hs.hotkey')
 local mouse = require('hs.mouse')
 local screen = require('hs.screen')
+local task = require('hs.task')
 local timer = require('hs.timer')
 local window = require('hs.window')
 
@@ -123,7 +124,7 @@ fnutils.each({
   { key = 'm', app = apps.music },
   { key = 'o', app = apps.obsidian },
   { key = 'p', app = apps.password },
-  { key = 's', app = apps.slack },
+  { key = 's', app = apps.safari },
   { key = 't', app = apps.kitty },
 }, function(obj)
   hotkey.bind(
@@ -136,4 +137,8 @@ fnutils.each({
       application.launchOrFocusByBundleID(obj.app)
     end
   )
+end)
+
+hotkey.bind(alt_ctrl, 'n', function()
+  task.new('/usr/bin/open', nil, { os.getenv('HOME') }):start()
 end)
