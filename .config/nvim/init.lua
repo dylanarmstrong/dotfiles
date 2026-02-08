@@ -240,7 +240,8 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     config = function(_, opts)
       for server, config in pairs(opts.servers) do
-        vim.lsp.enable(server, config)
+        vim.lsp.config(server, config)
+        vim.lsp.enable(server)
       end
 
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -250,19 +251,14 @@ require('lazy').setup({
           if not client then
             return
           end
-          if client.name == 'eslint' then
-            vim.api.nvim_create_autocmd('BufWritePre', {
-              buffer = bufnr,
-              command = 'LspEslintFixAll',
-            })
-          elseif client.name == 'oxlint' then
+          if client.name == 'oxlint' then
             vim.api.nvim_create_autocmd('BufWritePre', {
               buffer = bufnr,
               command = 'OxcFixAll',
             })
           end
         end,
-        desc = 'LSP: per-client attach handlers (eslint, oxlint)',
+        desc = 'LSP: per-client attach handlers (oxlint)',
         group = vim.api.nvim_create_augroup('lsp_attach_auto_lint', { clear = true }),
       })
     end,
@@ -300,16 +296,6 @@ require('lazy').setup({
           cmd = { os.getenv('HOME') .. '/src/elixir-ls/dist/language_server.sh' },
         },
         emmet_ls = {},
-        eslint = {
-          handlers = {
-            ['eslint/noConfig'] = function()
-              return {}
-            end,
-            ['eslint/noLibrary'] = function()
-              return {}
-            end,
-          },
-        },
         gopls = {},
         glsl_analyzer = {},
         graphql = {},
@@ -447,6 +433,28 @@ require('lazy').setup({
         }
       end,
     },
+  },
+
+  -- Linting
+  {
+    'mfussenegger/nvim-lint',
+    config = function()
+      local lint = require('lint')
+      lint.linters_by_ft = {
+        javascript = { 'eslint' },
+        javascriptreact = { 'eslint' },
+        typescript = { 'eslint' },
+        typescriptreact = { 'eslint' },
+      }
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+        callback = function()
+          local bufname = vim.api.nvim_buf_get_name(0)
+          if not bufname:match('/node_modules/') then
+            lint.try_lint()
+          end
+        end,
+      })
+    end,
   },
 
   -- Treesitter for fancy syntax
