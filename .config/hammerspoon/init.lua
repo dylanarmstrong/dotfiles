@@ -39,6 +39,26 @@ spoon.SpoonInstall:andUse('Seal', {
   },
   fn = function(seal)
     seal:loadPlugins({ 'apps', 'calc', 'kagi' })
+
+    -- I want kagi to always appear last
+    local originalChoicesCallback = seal.choicesCallback
+    seal.choicesCallback = function()
+      local choices = originalChoicesCallback()
+      local results, kagi = {}, {}
+      for _, c in ipairs(choices) do
+        if c.plugin == 'seal_kagi' then
+          table.insert(kagi, c)
+        else
+          table.insert(results, c)
+        end
+      end
+      for _, c in ipairs(kagi) do
+        table.insert(results, c)
+      end
+      return results
+    end
+
+    seal.chooser:choices(seal.choicesCallback)
   end,
   start = true,
 })
