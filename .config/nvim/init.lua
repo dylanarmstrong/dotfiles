@@ -446,11 +446,11 @@ require('lazy').setup({
         typescript = { 'eslint' },
         typescriptreact = { 'eslint' },
       }
-      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+      vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
         callback = function()
           local bufname = vim.api.nvim_buf_get_name(0)
           if not bufname:match('/node_modules/') then
-            lint.try_lint()
+            lint.try_lint(nil, { ignore_errors = true })
           end
         end,
       })
