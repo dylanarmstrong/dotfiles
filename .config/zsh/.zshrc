@@ -19,7 +19,7 @@ export SHOPIFY_CLI_NO_ANALYTICS=1
 export DISABLE_TELEMETRY=1
 
 # For the PATH
-NODE_VERSION=v24.13.0
+NODE_VERSION=v24.14.0
 BREW_PREFIX="$(PATH="/opt/homebrew/bin:$PATH" brew --prefix)"
 
 # Exports
@@ -173,6 +173,7 @@ alias mv='nocorrect mv -v'
 alias rm='nocorrect rm -v'
 alias scripts='jq '.scripts' package.json'
 alias ssh='TERM=xterm-256color ssh'
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias view='nvim -R'
 alias vim='nvim'
 alias wget='wget --hsts-file=$XDG_DATA_HOME/wget-hsts'
@@ -188,6 +189,33 @@ zstyle ':vcs_info:*' unstagedstr '%F{1}*'
 
 function prompt_precmd() {
   vcs_info
+
+  # Override vcs_info if we're in a jj repo
+  if command -v jj &>/dev/null && jj root 1>/dev/null 2>/dev/null; then
+    local jj_raw shortest remainder full_short bookmark_info suffix
+
+    jj_raw=$(jj log --no-graph -r @ -T '
+      change_id.shortest()
+      ++ "|"
+      ++ change_id.short()
+      ++ "|"
+      ++ bookmarks.join(", ")
+    ' 2>/dev/null)
+
+    shortest="${jj_raw%%|*}"
+    remainder="${jj_raw#*|}"
+    full_short="${remainder%%|*}"
+    bookmark_info="${remainder#*|}"
+    suffix="${full_short:${#shortest}}"
+
+    vcs_info_msg_0_="%B%F{5}${shortest}%b%F{8}${suffix}%f"
+
+    if [[ -n "$bookmark_info" ]]; then
+      vcs_info_msg_0_+=" %F{2}${bookmark_info}%f"
+    fi
+
+    vcs_info_msg_0_+=" "
+  fi
 }
 
 function set_prompt {
@@ -202,7 +230,7 @@ add-zsh-hook precmd set_prompt
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
 
 # Reset PATH
-export PATH="/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:$HOME/.docker/bin"
+export PATH="/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS"
 
 [ -s "$BREW_PREFIX/opt/fzf/bin/fzf" ] && eval "$($BREW_PREFIX/opt/fzf/bin/fzf --zsh)"
 [ -s "$BREW_PREFIX/opt/uv/bin/uv" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uv" generate-shell-completion zsh)"
