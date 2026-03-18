@@ -463,7 +463,6 @@ require('lazy').setup({
     build = ':TSUpdate',
     dependencies = {},
     lazy = false,
-    main = 'nvim-treesitter.configs',
     opts = {
       auto_install = true,
       ensure_installed = 'all',
@@ -596,7 +595,7 @@ require('lazy').setup({
         icons_enabled = false,
         component_separators = '|',
         section_separators = { left = '', right = '' },
-        theme = 'catppuccin',
+        theme = 'catppuccin-' .. flavor,
       }
 
       opts.sections = {
