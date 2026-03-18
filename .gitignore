@@ -1,5 +1,6 @@
-.config/hammerspoon/Spoons
 .config/aws/credentials
+.config/hammerspoon/Spoons
+.config/jj/repos
 .config/kitty/kitty.conf.bak
 .config/nvim/lazy-lock.json
 .config/nvim/plugin
