@@ -560,6 +560,11 @@ require('lazy').setup({
     lazy = false,
   },
 
+  {
+    'julienvincent/hunk.nvim',
+    cmd = { 'DiffEditor' },
+  },
+
   -- Better repeating
   'tpope/vim-repeat',
 

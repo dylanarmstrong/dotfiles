@@ -8,6 +8,8 @@ name = "Dylan Armstrong"
 default-command = "log"
 diff-formatter = ":git"
 pager = "delta"
+diff-editor = ["nvim", "-c", "DiffEditor $left $right $output"]
+diff-instructions = false
 
 [signing]
 backend = "ssh"
