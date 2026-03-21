@@ -178,6 +178,11 @@ alias view='nvim -R'
 alias vim='nvim'
 alias wget='wget --hsts-file=$XDG_DATA_HOME/wget-hsts'
 
+# Llama Servers (some conflict)
+## 8080
+alias llama-coder="llama-server -hf unsloth/Qwen3-Coder-Next-GGUF:UD-Q4_K_XL --port 8080 --ctx-size 131072 --temp 1.0 --top-p 0.95 --top-k 40 --min-p 0.01 --repeat-penalty 1.0"
+alias llama-coder-lite="llama-server -hf unsloth/Qwen3-Coder-Next-GGUF:UD-Q3_K_XL --port 8080 --ctx-size 131072 --temp 1.0 --top-p 0.95 --top-k 40 --min-p 0.01 --repeat-penalty 1.0"
+
 # Prompt
 setopt prompt_subst
 autoload -Uz add-zsh-hook vcs_info
@@ -230,7 +235,7 @@ add-zsh-hook precmd set_prompt
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
 
 # Reset PATH
-export PATH="/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS"
+export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin"
 
 [ -s "$BREW_PREFIX/opt/fzf/bin/fzf" ] && eval "$($BREW_PREFIX/opt/fzf/bin/fzf --zsh)"
 [ -s "$BREW_PREFIX/opt/uv/bin/uv" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uv" generate-shell-completion zsh)"
