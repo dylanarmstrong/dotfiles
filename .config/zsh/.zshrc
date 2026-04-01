@@ -17,9 +17,11 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_ENV_HINTS=1
 export SHOPIFY_CLI_NO_ANALYTICS=1
 export DISABLE_TELEMETRY=1
+export GH_TELEMETRY=false
+export DO_NOT_TRACK=true
 
 # For the PATH
-NODE_VERSION=v24.14.0
+NODE_VERSION=v24.15.0
 BREW_PREFIX="$(PATH="/opt/homebrew/bin:$PATH" brew --prefix)"
 
 # Exports
@@ -235,7 +237,7 @@ add-zsh-hook precmd set_prompt
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
 
 # Reset PATH
-export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$PNPM_HOME:$NVM_DIR/versions/node/$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin"
+export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$NVM_DIR/versions/node/$NODE_VERSION/bin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$PNPM_HOME:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:/opt/homebrew/Cellar/perl/5.42.2/bin"
 
 [ -s "$BREW_PREFIX/opt/fzf/bin/fzf" ] && eval "$($BREW_PREFIX/opt/fzf/bin/fzf --zsh)"
 [ -s "$BREW_PREFIX/opt/uv/bin/uv" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uv" generate-shell-completion zsh)"
