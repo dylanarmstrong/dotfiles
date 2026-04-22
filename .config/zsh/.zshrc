@@ -21,7 +21,6 @@ export GH_TELEMETRY=false
 export DO_NOT_TRACK=true
 
 # For the PATH
-NODE_VERSION=v24.15.0
 BREW_PREFIX="$(PATH="/opt/homebrew/bin:$PATH" brew --prefix)"
 
 # Exports
@@ -55,7 +54,6 @@ export MACHINE_STORAGE_PATH="$XDG_DATA_HOME"/docker-machine
 export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export OPAMROOT="$XDG_DATA_HOME/opam"
-export NVM_DIR="$BREW_PREFIX/opt/nvm"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
 export PYTHONSTARTUP="/etc/python/pythonrc"
 export RANDFILE="$XDG_DATA_HOME/rnd"
@@ -233,11 +231,8 @@ function set_prompt {
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
-# Lazy loaded Nvm
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
-
 # Reset PATH
-export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$NVM_DIR/versions/node/$NODE_VERSION/bin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$PNPM_HOME:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS/:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:/opt/homebrew/Cellar/perl/5.42.2/bin"
+export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$PNPM_HOME:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:/opt/homebrew/Cellar/perl/5.42.2/bin"
 
 [ -s "$BREW_PREFIX/opt/fzf/bin/fzf" ] && eval "$($BREW_PREFIX/opt/fzf/bin/fzf --zsh)"
 [ -s "$BREW_PREFIX/opt/uv/bin/uv" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uv" generate-shell-completion zsh)"
