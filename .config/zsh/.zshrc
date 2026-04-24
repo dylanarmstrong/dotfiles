@@ -21,7 +21,7 @@ export GH_TELEMETRY=false
 export DO_NOT_TRACK=true
 
 # For the PATH
-NODE_VERSION=24.15.0
+NODE_VERSION=24.16.0
 BREW_PREFIX="$(PATH="/opt/homebrew/bin:$PATH" brew --prefix)"
 
 # Exports
@@ -180,6 +180,7 @@ alias rm='nocorrect rm -v'
 alias scripts='jq '.scripts' package.json'
 alias ssh='TERM=xterm-256color ssh'
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+alias update="brew update && brew upgrade --greedy; pnpm self-update latest; pnpm update -g --latest"
 alias view='nvim -R'
 alias vim='nvim'
 alias wget='wget --hsts-file=$XDG_DATA_HOME/wget-hsts'
@@ -241,7 +242,7 @@ add-zsh-hook precmd set_prompt
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
 
 # Reset PATH
-export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME/bin:$PNPM_HOME/nodejs/$NODE_VERSION/bin:$$NVM_DIR/versions/node/v$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$DOCKER_CONFIG/bin:/Applications/kitty.app/Contents/MacOS:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:/opt/homebrew/Cellar/perl/5.42.2/bin"
+export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME/bin:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$DOCKER_CONFIG/bin:/Applications/kitty.app/Contents/MacOS:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:/opt/homebrew/Cellar/perl/5.42.2/bin"
 
 [ -s "$BREW_PREFIX/opt/fzf/bin/fzf" ] && eval "$($BREW_PREFIX/opt/fzf/bin/fzf --zsh)"
 [ -s "$BREW_PREFIX/opt/uv/bin/uv" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uv" generate-shell-completion zsh)"
