@@ -1,4 +1,4 @@
---when.repositories = ["~/work"]
+--when.hostnames = ["dylans-MacBook-Pro"]
 
 [user]
 email = "dylan.armstrong@gorgias.com"
