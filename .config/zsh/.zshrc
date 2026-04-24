@@ -46,12 +46,15 @@ export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
 export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME"/bundle
 export BUNDLE_USER_CACHE="$XDG_CACHE_HOME"/bundle
 export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME"/bundle
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export GEM_HOME="${XDG_DATA_HOME}"/gem
 export GEM_SPEC_CACHE="${XDG_CACHE_HOME}"/gem
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export MACHINE_STORAGE_PATH="$XDG_DATA_HOME"/docker-machine
+export MPLCONFIGDIR="$XDG_CONFIG_HOME"/matplotlib
 export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export OPAMROOT="$XDG_DATA_HOME/opam"
@@ -59,6 +62,7 @@ export NVM_DIR="$BREW_PREFIX/opt/nvm"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
 export PYTHONSTARTUP="/etc/python/pythonrc"
 export RANDFILE="$XDG_DATA_HOME/rnd"
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export SQLITE_HISTORY="$XDG_CACHE_HOME"/sqlite_history
 export TERMINFO="$XDG_DATA_HOME"/terminfo
 export TERMINFO_DIRS="$XDG_DATA_HOME"/terminfo:/usr/share/terminfo
@@ -237,12 +241,12 @@ add-zsh-hook precmd set_prompt
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
 
 # Reset PATH
-export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$PNPM_HOME:$PNPM_HOME/nodejs/$NODE_VERSION/bin:$$NVM_DIR/versions/node/v$NODE_VERSION/bin:BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$HOME/.docker/bin:/Applications/kitty.app/Contents/MacOS:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:/opt/homebrew/Cellar/perl/5.42.2/bin"
+export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME/bin:$PNPM_HOME/nodejs/$NODE_VERSION/bin:$$NVM_DIR/versions/node/v$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$DOCKER_CONFIG/bin:/Applications/kitty.app/Contents/MacOS:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:/opt/homebrew/Cellar/perl/5.42.2/bin"
 
 [ -s "$BREW_PREFIX/opt/fzf/bin/fzf" ] && eval "$($BREW_PREFIX/opt/fzf/bin/fzf --zsh)"
 [ -s "$BREW_PREFIX/opt/uv/bin/uv" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uv" generate-shell-completion zsh)"
 [ -s "$BREW_PREFIX/opt/uv/bin/uvx" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uvx" --generate-shell-completion zsh)"
-[ -s "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+[ -s "$CARGO_HOME/env" ] && . "$CARGO_HOME/env"
 
 # Opens a file in vim
 function fv() {
