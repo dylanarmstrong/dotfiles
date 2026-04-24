@@ -14,6 +14,7 @@ diff-formatter = ":git"
 pager = "delta"
 merge-editor = "nvim"
 diff-instructions = false
+diff-editor = ":builtin"
 
 [signing]
 backend = "ssh"
