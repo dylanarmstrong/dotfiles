@@ -2,23 +2,19 @@ local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 
 local plugin_commits = {
   ['brenoprata10/nvim-highlight-colors'] = 'e2cb22089cc2358b2b995c09578224f142de6039',
-  ['catppuccin/nvim'] = '426dbebe06b5c69fd846ceb17b42e12f890aedf1',
-  ['digitaltoad/vim-pug'] = 'ea39cd942cf3194230cf72bfb838901a5344d3b3',
+  ['catppuccin/nvim'] = '8edd468af4d63212b84d69b2ddb5ffc9023ef5eb',
   ['dmmulroy/ts-error-translator.nvim'] = '558abff11b9e8f4cefc0de09df780c56841c7a4b',
   ['echasnovski/mini.nvim'] = '5849ef04c32a6a8e55957b946c0a275801d87530',
   ['folke/flash.nvim'] = 'fcea7ff883235d9024dc41e638f164a450c14ca2',
   ['folke/lazy.nvim'] = '306a05526ada86a7b30af95c5cc81ffba93fef97',
   ['folke/lazydev.nvim'] = 'ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d',
   ['folke/trouble.nvim'] = 'bd67efe408d4816e25e8491cc5ad4088e708a69a',
-  ['hedyhli/outline.nvim'] = 'c293eb56db880a0539bf9d85b4a27816960b863e',
   ['ibhagwan/fzf-lua'] = 'ffa44ee9470743a7697d28df3a1a216fdfe2b09d',
   ['jmbuhr/otter.nvim'] = 'a455e68a99d395889ab30a25ac3846a135e93c46',
-  ['julienvincent/hunk.nvim'] = 'a73c34934e87af4f2e615fea3a57ee28b2dceec8',
   ['kaarmu/typst.vim'] = '1d5436c0f55490893892441c0eca55e6cdf4916c',
   ['lewis6991/gitsigns.nvim'] = '6d808f99bd63303646794406e270bd553ad7792e',
   ['lukas-reineke/indent-blankline.nvim'] = 'd28a3f70721c79e3c5f6693057ae929f3d9c0a03',
   ['mfussenegger/nvim-lint'] = 'eab58b48eb11d7745c11c505e0f3057165902461',
-  ['mrcjkb/rustaceanvim'] = 'c9eeb10fc3ca48cc1c75b79b420de67433629ba5',
   ['MunifTanjim/nui.nvim'] = 'de740991c12411b663994b2860f1a4fd0937c130',
   ['neovim/nvim-lspconfig'] = '81878de76c0de4ce289513734ad80c31ec7871b8',
   ['nmac427/guess-indent.nvim'] = '84a4987ff36798c2fc1169cbaff67960aed9776f',
@@ -29,7 +25,6 @@ local plugin_commits = {
   ['nvim-treesitter/nvim-treesitter-context'] = 'b0c45cefe2c8f7b55fc46f34e563bc428ef99636',
   ['saghen/blink.cmp'] = '78336bc89ee5365633bcf754d93df01678b5c08f',
   ['stevearc/conform.nvim'] = 'dca1a190aa85f9065979ef35802fb77131911106',
-  ['stevearc/oil.nvim'] = '0fcc83805ad11cf714a949c98c605ed717e0b83e',
   ['towolf/vim-helm'] = '2c8525fd98e57472769d137317bca83e477858ce',
   ['tpope/vim-fugitive'] = '3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0',
   ['tpope/vim-repeat'] = '65846025c15494983dafe5e3b46c8f88ab2e9635',
@@ -596,27 +591,11 @@ require('lazy').setup({
     opts = {},
   },
 
-  {
-    'hedyhli/outline.nvim',
-    commit = pin('hedyhli/outline.nvim'),
-    opts = {},
-    keys = {
-      { '<leader>o', '<cmd>Outline<cr>' },
-    },
-  },
-
   -- Typst support
   {
     'kaarmu/typst.vim',
     commit = pin('kaarmu/typst.vim'),
     ft = { 'typst' },
-  },
-
-  -- Pug support
-  {
-    'digitaltoad/vim-pug',
-    commit = pin('digitaltoad/vim-pug'),
-    ft = { 'pug' },
   },
 
   -- Helm support
@@ -637,20 +616,6 @@ require('lazy').setup({
         { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
       },
     },
-  },
-
-  -- Rust support
-  {
-    'mrcjkb/rustaceanvim',
-    commit = pin('mrcjkb/rustaceanvim'),
-    ft = 'rust',
-    lazy = false,
-  },
-
-  {
-    'julienvincent/hunk.nvim',
-    commit = pin('julienvincent/hunk.nvim'),
-    cmd = { 'DiffEditor' },
   },
 
   -- Better repeating
@@ -806,20 +771,6 @@ require('lazy').setup({
         },
       },
     },
-  },
-
-  -- File Creation
-  {
-    'stevearc/oil.nvim',
-    commit = pin('stevearc/oil.nvim'),
-    dependencies = {
-      { 'echasnovski/mini.nvim', commit = pin('echasnovski/mini.nvim') },
-    },
-    keys = {
-      { '<leader>n', '<cmd>Oil<cr>' },
-    },
-    lazy = false,
-    opts = {},
   },
 
   -- Diagnostics
