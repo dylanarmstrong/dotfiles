@@ -321,7 +321,7 @@ require('lazy').setup({
           if client.name == 'oxlint' then
             vim.api.nvim_create_autocmd('BufWritePre', {
               buffer = bufnr,
-              command = 'OxcFixAll',
+              command = 'LspOxlintFixAll',
             })
           end
         end,
@@ -431,7 +431,6 @@ require('lazy').setup({
           },
         },
         svelte = {},
-        -- terraformls = {},
         tailwindcss = {},
         tinymist = {},
         ts_ls = {},
@@ -452,6 +451,7 @@ require('lazy').setup({
       formatters = {
         blank_prettier = {
           command = 'prettier',
+          args = { '--stdin-filepath', '$FILENAME' },
         },
         stylua = {
           args = {
@@ -475,8 +475,8 @@ require('lazy').setup({
         graphql = { 'prettier' },
         handlebars = { 'prettier' },
         html = { 'prettier' },
-        javascript = { 'prettier' },
-        javascriptreact = { 'prettier' },
+        javascript = { 'blank_prettier' },
+        javascriptreact = { 'blank_prettier' },
         json = { 'prettier' },
         jsonc = { 'prettier' },
         less = { 'prettier' },
