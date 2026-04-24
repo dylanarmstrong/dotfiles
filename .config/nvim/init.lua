@@ -90,6 +90,7 @@ local flavor = 'mocha'
 require('lazy').setup({
   {
     'folke/lazy.nvim',
+    branch = 'main',
     commit = lazycommit,
   },
 
