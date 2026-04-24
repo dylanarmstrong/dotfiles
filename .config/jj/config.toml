@@ -4,11 +4,15 @@
 email = "dylan@dylan.is"
 name = "Dylan Armstrong"
 
+[merge-tools.nvim]
+merge-args = ["$output"]
+merge-tool-edits-conflict-markers = true
+
 [ui]
 default-command = "log"
 diff-formatter = ":git"
 pager = "delta"
-diff-editor = ["nvim", "-c", "DiffEditor $left $right $output"]
+merge-editor = "nvim"
 diff-instructions = false
 
 [signing]
