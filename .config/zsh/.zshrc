@@ -262,7 +262,7 @@ function fz() {
   local file
   file="$(fzf --height 80% --reverse --preview 'bat --style=numbers --color=always {} 2>/dev/null || cat {}')"
   if [ -n "$file" ]; then
-    cd "$(dirname "$file")"
+    cd "$(dirname "$file")" || exit 1
   fi
 }
 
