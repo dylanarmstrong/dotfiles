@@ -1,4 +1,3 @@
-#! /usr/bin/env bash
 # shellcheck disable=SC2034,SC1091
 # zmodload zsh/zprof
 
@@ -20,25 +19,38 @@ export DISABLE_TELEMETRY=1
 export GH_TELEMETRY=false
 export DO_NOT_TRACK=true
 
-# For the PATH
+# Tool versions
 NODE_VERSION=24.18.0
-BREW_PREFIX="$(PATH="/opt/homebrew/bin:$PATH" brew --prefix)"
 
 # Exports
 export EDITOR=nvim
-export JAVA_HOME="$BREW_PREFIX/opt/openjdk@17"
 export LANG=en_US.UTF-8
-export LC_ALL=$LANG
+unset LC_ALL LC_CTYPE
 export LC_COLLATE=C
-export LC_CTYPE=C
 export THEOS=$HOME/src/theos
 export THEOS_DEVICE_IP=localhost
 export THEOS_DEVICE_PORT=2222
+export PNPM_HOME="$XDG_DATA_HOME/pnpm"
+# On MacOS, symlink this: ln -sv /opt/homebrew/opt/nvm $XDG_DATA_HOME/nvm
+export NVM_DIR="$XDG_DATA_HOME/nvm"
+
+# Platform defaults
+if [[ "$OSTYPE" = darwin* ]]; then
+  if [ -x /opt/homebrew/bin/brew ]; then
+    BREW_PREFIX=/opt/homebrew
+  elif [ -x /usr/local/bin/brew ]; then
+    BREW_PREFIX=/usr/local
+  fi
+fi
+
+if [ -n "${BREW_PREFIX:-}" ] && [ -d "$BREW_PREFIX/opt/openjdk@17" ]; then
+  export JAVA_HOME="$BREW_PREFIX/opt/openjdk@17"
+elif command -v java-config >/dev/null 2>&1; then
+  JAVA_HOME=$(java-config --jre-home) && export JAVA_HOME
+fi
 
 # xdg-ninja
 HISTFILE="$XDG_CONFIG_HOME/zsh/history"
-
-defaults write org.hammerspoon.Hammerspoon MJConfigFile "$XDG_CONFIG_HOME"/hammerspoon/init.lua
 
 export ANSIBLE_HOME="$XDG_CONFIG_HOME/ansible"
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
@@ -58,19 +70,30 @@ export MPLCONFIGDIR="$XDG_CONFIG_HOME"/matplotlib
 export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export OPAMROOT="$XDG_DATA_HOME/opam"
-export NVM_DIR="$BREW_PREFIX/opt/nvm"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
-export PYTHONSTARTUP="/etc/python/pythonrc"
+[ -r /etc/python/pythonrc ] && export PYTHONSTARTUP=/etc/python/pythonrc
 export RANDFILE="$XDG_DATA_HOME/rnd"
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export SQLITE_HISTORY="$XDG_CACHE_HOME"/sqlite_history
-export TERMINFO="$XDG_DATA_HOME"/terminfo
-export TERMINFO_DIRS="$XDG_DATA_HOME"/terminfo:/usr/share/terminfo
+export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:"
 export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 export _Z_DATA="$XDG_DATA_HOME/z"
 
 # Private environment variables
 [ -r "$HOME"/.env ] && . "$HOME"/.env
+
+# PATH
+case "$OSTYPE" in
+  darwin*)
+    export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$DOCKER_CONFIG/bin:/Applications/kitty.app/Contents/MacOS:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:/opt/homebrew/Cellar/perl/5.42.2/bin"
+    ;;
+  linux*)
+    export PATH="/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$DOCKER_CONFIG/bin:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/usr/local/bin"
+    ;;
+esac
+
+# Lazy loaded Nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
 
 # FZF
 # Catppuccin Mocha
@@ -82,13 +105,11 @@ export FZF_DEFAULT_OPTS=" \
 --multi"
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='fd --type d --strip-cwd-prefix --hidden --follow --exclude .git'
 
 # https://github.com/keybase/keybase-issues/issues/2798
 # shellcheck disable=SC2155
 export GPG_TTY=$(tty)
-
-export PNPM_HOME="$HOME/Library/pnpm"
 
 # Options
 setopt always_to_end
@@ -118,6 +139,8 @@ setopt share_history
 bindkey -e
 bindkey "\e[B" history-beginning-search-forward
 bindkey "\e[A" history-beginning-search-backward
+bindkey -M emacs $'\e[1;3C' forward-word
+bindkey -M emacs $'\e[1;3D' backward-word
 bindkey "^L" forward-word
 bindkey "^H" backward-word
 bindkey " " magic-space
@@ -131,7 +154,6 @@ autoload -Uz compinit
 compinit
 
 zstyle ':completion:*' completer _expand _complete _correct _approximate
-zstyle ':completion:*' expand prefix suffix
 zstyle ':completion:*' file-sort name
 zstyle ':completion:*' list-suffixes true
 zstyle ':completion:*' matcher-list '' '+m:{a-z}={A-Z}' 'r:|[._-]=** r:|=**' 'l:|=* r:|=*'
@@ -140,7 +162,6 @@ zstyle ':completion:*' use-cache 1
 zstyle ':completion:*' cache-path "$HOME"/.zsh/cache
 zstyle ':completion:::::' completer _complete _approximate
 zstyle ':completion:*:approximate:*' max-errors 2
-zstyle ':completion:*' completer _complete _prefix
 zstyle ':completion::prefix-1:*' completer _complete
 zstyle ':completion:incremental:*' completer _complete _correct
 zstyle ':completion:predict:*' completer _complete
@@ -152,7 +173,7 @@ zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:options' auto-description '%d'
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-zstyle ':completion:*:*:*:*:processes' command 'ps -u $(whoami) -o pid,user,comm -w -w'
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*:ssh:*' hosts off
@@ -178,11 +199,13 @@ alias mkdir='nocorrect mkdir -v'
 alias mv='nocorrect mv -v'
 alias rm='nocorrect rm -v'
 alias scripts='jq '.scripts' package.json'
-alias ssh='TERM=xterm-256color ssh'
-alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias view='nvim -R'
 alias vim='nvim'
 alias wget='wget --hsts-file=$XDG_DATA_HOME/wget-hsts'
+
+if [[ "$OSTYPE" = darwin* ]] && [ -x /Applications/Tailscale.app/Contents/MacOS/Tailscale ]; then
+  alias tailscale=/Applications/Tailscale.app/Contents/MacOS/Tailscale
+fi
 
 # Llama Servers (some conflict)
 ## 8080
@@ -230,22 +253,21 @@ function prompt_precmd() {
 }
 
 function set_prompt {
+  local host_prefix
+
+  [ "$HOST" = gentoo-mbp ] && host_prefix='(gentoo) '
+
   # shellcheck disable=SC2154
-  PROMPT="%F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f "
+  PROMPT="${host_prefix}%F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f "
 }
 
 add-zsh-hook precmd prompt_precmd
 add-zsh-hook precmd set_prompt
 
-# Lazy loaded Nvm
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
+[ -n "${TTY:-}" ] && command -v fzf >/dev/null 2>&1 && eval "$(fzf --zsh)"
+command -v uv >/dev/null 2>&1 && eval "$(uv generate-shell-completion zsh)"
+command -v uvx >/dev/null 2>&1 && eval "$(uvx --generate-shell-completion zsh)"
 
-# Reset PATH
-export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$DOCKER_CONFIG/bin:/Applications/kitty.app/Contents/MacOS:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:/opt/homebrew/Cellar/perl/5.42.2/bin"
-
-[ -s "$BREW_PREFIX/opt/fzf/bin/fzf" ] && eval "$("$BREW_PREFIX/opt/fzf/bin/fzf" --zsh)"
-[ -s "$BREW_PREFIX/opt/uv/bin/uv" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uv" generate-shell-completion zsh)"
-[ -s "$BREW_PREFIX/opt/uv/bin/uvx" ] && eval "$("$BREW_PREFIX/opt/uv/bin/uvx" --generate-shell-completion zsh)"
 [ -s "$CARGO_HOME/env" ] && . "$CARGO_HOME/env"
 
 # Opens a file in vim
@@ -267,9 +289,17 @@ function fz() {
 }
 
 function update() {
-  brew update && brew upgrade --greedy
-  npm i -g pnpm@10 --before="$(date -u -v-3d '+%Y-%m-%dT%H:%M:%SZ')"
-  pnpm update -g --latest
+  case "$OSTYPE" in
+    darwin*)
+      brew update && brew upgrade --greedy
+      npm i -g pnpm@10 --before="$(date -u -v-3d '+%Y-%m-%dT%H:%M:%SZ')"
+      pnpm update -g --latest
+      ;;
+    linux*)
+      sudo emaint sync -a &&
+        sudo emerge --ask --verbose --update --deep --newuse @world
+      ;;
+  esac
 }
 
 # Used for work specific stuff that runs after everything else

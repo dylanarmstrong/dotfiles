@@ -79,10 +79,25 @@ The following must have the path adjusted accordingly in `.config/nvim/init.lua`
 kitty +kitten themes --reload-in=all Catppuccin-Mocha
 ```
 
+#### Hammerspoon
+
+Configure the XDG-based Hammerspoon entrypoint once on macOS:
+
+```bash
+defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"
+```
+
 #### Terminfo (for kitty on macOS)
 
 ```bash
-tic -x /Applications/kitty.app/Contents/Resources/kitty/terminfo/kitty.terminfo
+tic -x -o "$HOME/.local/share/terminfo" /Applications/kitty.app/Contents/Resources/kitty/terminfo/kitty.terminfo
+```
+
+Install the same terminal definition on a remote host before connecting with
+`TERM=xterm-kitty`:
+
+```bash
+infocmp -x xterm-kitty | ssh gentoo 'tic -x -o "$HOME/.local/share/terminfo" /dev/stdin'
 ```
 
 #### Rustup (for blink.cmp in Neovim)
