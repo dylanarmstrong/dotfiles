@@ -97,7 +97,7 @@ Install the same terminal definition on a remote host before connecting with
 `TERM=xterm-kitty`:
 
 ```bash
-infocmp -x xterm-kitty | ssh gentoo 'tic -x -o "$HOME/.local/share/terminfo" /dev/stdin'
+infocmp -x xterm-kitty | ssh gentoo 'tic -x -o "$HOME/.terminfo" /dev/stdin'
 ```
 
 #### Rustup (for blink.cmp in Neovim)
