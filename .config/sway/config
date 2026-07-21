@@ -1,3 +1,5 @@
+include catppuccin-mocha
+
 set $mod Mod4
 set $term kitty
 set $menu wmenu-run | xargs swaymsg exec --
@@ -108,15 +110,12 @@ bindsym $mod+Shift+z exit
 # decoration
 default_border pixel 1
 
-set $color1 #2d2d2d
-set $color2 #a09f93
-set $color3 #a09f93
-set $color4 #a09f93
-set $color5 #6699cc
-
-client.focused          $color1 $color1 $color3 $color3
-client.focused_inactive $color1 $color3 $color1 $color3
-client.unfocused        $color1 $color3 $color1 $color3
+client.focused          $lavender $base $text  $rosewater $lavender
+client.focused_inactive $overlay0 $base $text  $rosewater $overlay0
+client.unfocused        $overlay0 $base $text  $rosewater $overlay0
+client.urgent           $peach    $base $peach $overlay0  $peach
+client.placeholder      $overlay0 $base $text  $overlay0  $overlay0
+client.background       $base
 
 mode "resize" {
   bindsym h resize shrink width 10 px or 10 ppt
@@ -133,9 +132,14 @@ bindsym $mod+r mode "resize"
 bar {
   status_command $HOME/bin/conky-wrapper
   colors {
-    statusline          $color3
-    background          $color1
-    focused_workspace   $color1 $color1 $color5
-    inactive_workspace  $color1 $color1 $color4
+    background         $base
+    statusline         $text
+    focused_statusline $text
+    focused_separator  $base
+
+    focused_workspace  $base $mauve    $crust
+    active_workspace   $base $surface2 $text
+    inactive_workspace $base $base     $text
+    urgent_workspace   $base $red      $crust
   }
 }
