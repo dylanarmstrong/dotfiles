@@ -1,5 +1,6 @@
 local window = require('hs.window')
 
+require('chat_prompt')
 require('movement')
 require('workspaces')
 
