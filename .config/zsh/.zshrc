@@ -88,7 +88,7 @@ case "$OSTYPE" in
     export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$DOCKER_CONFIG/bin:/Applications/kitty.app/Contents/MacOS:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:/opt/homebrew/Cellar/perl/5.42.2/bin"
     ;;
   linux*)
-    export PATH="/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$DOCKER_CONFIG/bin:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/usr/local/bin"
+    export PATH="/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME:$HOME/.local/share/npm/bin:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$DOCKER_CONFIG/bin:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/usr/local/bin"
     ;;
 esac
 

@@ -2,7 +2,7 @@ include catppuccin-mocha
 
 set $mod Mod4
 set $term kitty
-set $menu wmenu-run | xargs swaymsg exec --
+set $menu wmenu-run -f "Berkeley Mono 12"
 
 # font
 font pango:Berkeley Mono 10
@@ -12,7 +12,31 @@ exec dbus-update-activation-environment --all
 exec mako
 
 # output
-output eDP-1 scale 2
+output eDP-1 scale 1.775
+output eDP-1 bg ~/pictures/wallpapers/wallhaven-d6mg33.png fill
+
+# input
+seat seat0 xcursor_theme Adwaita 24
+
+input type:touchpad {
+  tap enabled
+  tap_button_map lrm
+  drag disabled
+  drag_lock disabled
+  dwt enabled
+  natural_scroll disabled
+  click_method clickfinger
+  clickfinger_button_map lrm
+  middle_emulation disabled
+  scroll_method two_finger
+  scroll_factor 1.0
+  accel_profile adaptive
+  pointer_accel 0
+}
+
+bindgesture swipe:4:left workspace next
+bindgesture swipe:4:right workspace prev
+bindgesture pinch:4:inward exec $menu
 
 # basics
 floating_modifier $mod
