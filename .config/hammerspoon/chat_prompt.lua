@@ -1,36 +1,3 @@
---[[
-ChatGPT quick prompt
-
-Purpose:
-- Adds a dedicated Option-Space launcher in addition to the Command-Space Seal picker.
-- Opens a compact prompt composer near the bottom of the active screen.
-- Sends submitted text to https://chatgpt.com/?q=<encoded prompt>, which asks
-  ChatGPT to start the prompt automatically in the user's browser session.
-
-UX goals:
-- Resemble the official ChatGPT desktop composer without copying inapplicable
-  model or tool controls.
-- Stay visually compact for short prompts while allowing longer text to wrap.
-- Use Atkinson Hyperlegible Next at 16 px and the preferred palette declared
-  in the embedded CSS.
-- Keep the webview transparent with enough outer padding for an unclipped,
-  rounded shadow.
-
-Interaction rules:
-- Return submits; Shift-Return inserts a newline.
-- Escape or loss of focus dismisses the popup.
-- Showing and hiding use the same very fast fade.
-- Every dismissal clears the field before hiding so stale text never flashes
-  when the popup is opened again.
-- Showing explicitly activates Hammerspoon, focuses the webview window, then
-  focuses the textarea. The short focus guard prevents the initial activation
-  sequence from being mistaken for a user-initiated blur.
-
-Implementation note:
-- This uses hs.webview rather than hs.chooser because the chooser does not
-  expose the query field typography needed for this design.
-]]--
-
 local application = require('hs.application')
 local hotkey = require('hs.hotkey')
 local http = require('hs.http')
@@ -236,6 +203,8 @@ local fade_duration = 0.06
 local show_generation = 0
 local controller = usercontent.new('chatPrompt')
 
+local app_codex = application.find('com.openai.codex')
+
 local hide_chat_prompt = function()
   can_hide_on_blur = false
   show_generation = show_generation + 1
@@ -256,7 +225,38 @@ controller:setCallback(function(message)
 
   if body.action == 'submit' and body.prompt and body.prompt ~= '' then
     hide_chat_prompt()
-    urlevent.openURL('https://chatgpt.com/?q=' .. http.encodeForQuery(body.prompt))
+    if app_codex == nil then
+      urlevent.openURL('https://chatgpt.com/?q=' .. http.encodeForQuery(body.prompt))
+    else
+      app_codex:activate()
+      hs.timer.waitUntil(function()
+        return app_codex:isFrontmost()
+      end, function()
+        -- Switch to Work
+        hs.eventtap.keyStroke({ 'ctrl' }, '2', 20)
+
+        -- Delete any text there
+        hs.timer.doAfter(0.5, function()
+          hs.eventtap.keyStroke({ 'cmd' }, 'a', 20)
+          hs.eventtap.keyStroke({}, 'delete', 20)
+
+          -- Flips to Chat and focus its input
+          hs.timer.doAfter(0.5, function()
+            hs.eventtap.keyStroke({ 'cmd' }, 'n', 20)
+
+            -- Send prompt
+            hs.timer.doAfter(0.5, function()
+              hs.eventtap.keyStrokes(body.prompt)
+
+              -- Enter
+              hs.timer.doAfter(0.5, function()
+                hs.eventtap.keyStroke({}, 'return')
+              end)
+            end)
+          end)
+        end)
+      end, 0.05)
+    end
   end
 end)
 
