@@ -20,7 +20,7 @@ export GH_TELEMETRY=false
 export DO_NOT_TRACK=true
 
 # Tool versions
-NODE_VERSION=24.18.0
+NODE_VERSION=24.19.0
 
 # Exports
 export EDITOR=nvim
@@ -50,7 +50,7 @@ elif command -v java-config >/dev/null 2>&1; then
 fi
 
 # xdg-ninja
-HISTFILE="$XDG_CONFIG_HOME/zsh/history"
+export HISTFILE="$XDG_CONFIG_HOME/zsh/history"
 
 export ANSIBLE_HOME="$XDG_CONFIG_HOME/ansible"
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
@@ -211,6 +211,9 @@ fi
 ## 8080
 alias llama-coder="llama-server -hf unsloth/Qwen3-Coder-Next-GGUF:UD-Q4_K_XL --port 8080 --ctx-size 131072 --temp 1.0 --top-p 0.95 --top-k 40 --min-p 0.01 --repeat-penalty 1.0"
 alias llama-coder-lite="llama-server -hf unsloth/Qwen3-Coder-Next-GGUF:UD-Q3_K_XL --port 8080 --ctx-size 131072 --temp 1.0 --top-p 0.95 --top-k 40 --min-p 0.01 --repeat-penalty 1.0"
+
+# LLM Stuff
+export PI_OFFLINE=1
 
 # Prompt
 setopt prompt_subst
