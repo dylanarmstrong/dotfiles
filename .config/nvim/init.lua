@@ -433,7 +433,20 @@ require('lazy').setup({
         svelte = {},
         tailwindcss = {},
         tinymist = {},
-        ts_ls = {},
+        tsgo = {
+          cmd = function(dispatchers, config)
+            -- Global typescript@7 (native) provides `tsc`; prefer a project-local
+            -- tsgo (from @typescript/native-preview) when present.
+            local cmd = 'tsc'
+            if (config or {}).root_dir then
+              local local_cmd = vim.fs.joinpath(config.root_dir, 'node_modules/.bin', 'tsgo')
+              if vim.fn.executable(local_cmd) == 1 then
+                cmd = local_cmd
+              end
+            end
+            return vim.lsp.rpc.start({ cmd, '--lsp', '--stdio' }, dispatchers)
+          end,
+        },
         vimls = {},
       },
     },
@@ -852,6 +865,23 @@ vim.opt.number = true
 -- Undo
 vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath('data') .. '/undo'
+
+-- No undo persistence for some files
+local undo_ignore_patterns = { '~/.post_env' }
+if vim.env.HISTFILE then
+  table.insert(undo_ignore_patterns, vim.env.HISTFILE)
+end
+vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufNewFile' }, {
+  pattern = undo_ignore_patterns,
+  callback = function(args)
+    vim.api.nvim_set_option_value('undofile', false, { buf = args.buf })
+    local undopath = vim.fn.undofile(args.file)
+    if undopath ~= '' then
+      vim.uv.fs_unlink(undopath)
+    end
+  end,
+  desc = 'disable persistent undo for some files',
+})
 
 -- Ignore
 vim.opt.wildignore = '*/node_modules/*'
