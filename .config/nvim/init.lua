@@ -16,13 +16,13 @@ local plugin_commits = {
   ['lukas-reineke/indent-blankline.nvim'] = 'd28a3f70721c79e3c5f6693057ae929f3d9c0a03',
   ['mfussenegger/nvim-lint'] = 'a219b2c9e5b4765e5c845aba119dad55806fcaf1',
   ['MunifTanjim/nui.nvim'] = 'de740991c12411b663994b2860f1a4fd0937c130',
-  ['neovim/nvim-lspconfig'] = 'd224a1920728ba129880efc700d4a0180ac4ecbb',
+  ['neovim/nvim-lspconfig'] = '221c43884319e791519f0d6c94a7f2fbcd653278',
   ['nmac427/guess-indent.nvim'] = '84a4987ff36798c2fc1169cbaff67960aed9776f',
   ['nvim-lua/plenary.nvim'] = '74b06c6c75e4eeb3108ec01852001636d85a932b',
   ['nvim-lualine/lualine.nvim'] = '221ce6b2d999187044529f49da6554a92f740a96',
   ['nvim-neo-tree/neo-tree.nvim'] = 'b01ee1769144c4491ea44bc329cb84040e9793be',
-  ['nvim-treesitter/nvim-treesitter'] = '4916d6592ede8c07973490d9322f187e07dfefac',
-  ['nvim-treesitter/nvim-treesitter-context'] = 'b311b30818951d01f7b4bf650521b868b3fece16',
+  ['nvim-treesitter/nvim-treesitter'] = 'e82ef6ae2c3eeb96c6916b29917f96bf630b2cdb',
+  ['nvim-treesitter/nvim-treesitter-context'] = 'f3061339b8eaf9fda873600bc425b8d2d8502533',
   ['saghen/blink.cmp'] = '78336bc89ee5365633bcf754d93df01678b5c08f',
   ['stevearc/conform.nvim'] = '619363c30309d29ffa631e67c8183f2a72caa373',
   ['towolf/vim-helm'] = '2c8525fd98e57472769d137317bca83e477858ce',
@@ -357,6 +357,7 @@ require('lazy').setup({
             },
           },
         },
+        denols = {},
         dhall_lsp_server = {},
         dockerls = {},
         elixirls = {
@@ -433,20 +434,7 @@ require('lazy').setup({
         svelte = {},
         tailwindcss = {},
         tinymist = {},
-        tsgo = {
-          cmd = function(dispatchers, config)
-            -- Global typescript@7 (native) provides `tsc`; prefer a project-local
-            -- tsgo (from @typescript/native-preview) when present.
-            local cmd = 'tsc'
-            if (config or {}).root_dir then
-              local local_cmd = vim.fs.joinpath(config.root_dir, 'node_modules/.bin', 'tsgo')
-              if vim.fn.executable(local_cmd) == 1 then
-                cmd = local_cmd
-              end
-            end
-            return vim.lsp.rpc.start({ cmd, '--lsp', '--stdio' }, dispatchers)
-          end,
-        },
+        tsc = {},
         vimls = {},
       },
     },
