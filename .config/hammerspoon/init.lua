@@ -22,13 +22,5 @@ spoon.SpoonInstall:andUse('Caffeine', {
   start = true,
 })
 
--- Round corners to match natural rounded corners of MacOS
-spoon.SpoonInstall:andUse('RoundedCorners', {
-  config = {
-    radius = 10,
-  },
-  start = true,
-})
-
 -- When editing this, it's helpful to know when it's actually reloaded successfully
 -- hs.alert.show('Hammerspoon Loaded')
