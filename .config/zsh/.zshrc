@@ -20,7 +20,7 @@ export GH_TELEMETRY=false
 export DO_NOT_TRACK=true
 
 # Tool versions
-NODE_VERSION=24.19.0
+NODE_VERSION=24.21.0
 
 # Exports
 export EDITOR=nvim
