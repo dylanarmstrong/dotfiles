@@ -58,6 +58,9 @@
 [url "ssh://git@git.dylan.is/"]
   insteadOf = https://git.dylan.is/
 
+[url "ssh://git@gitlab.com/"]
+  insteadOf = https://gitlab.com/
+
 [gpg]
   format = ssh
 

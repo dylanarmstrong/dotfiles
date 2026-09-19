@@ -33,6 +33,8 @@ export THEOS_DEVICE_PORT=2222
 export PNPM_HOME="$XDG_DATA_HOME/pnpm"
 # On MacOS, symlink this: ln -sv /opt/homebrew/opt/nvm $XDG_DATA_HOME/nvm
 export NVM_DIR="$XDG_DATA_HOME/nvm"
+# "Temporary" fix for MacOS 27 QT
+export QT_STYLE_OVERRIDE=fusion
 
 # Platform defaults
 if [[ "$OSTYPE" = darwin* ]]; then
@@ -85,12 +87,14 @@ export _Z_DATA="$XDG_DATA_HOME/z"
 # PATH
 case "$OSTYPE" in
   darwin*)
-    export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$DOCKER_CONFIG/bin:/Applications/kitty.app/Contents/MacOS:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:/opt/homebrew/Cellar/perl/5.42.2/bin"
+    export PATH="/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$DOCKER_CONFIG/bin:/Applications/kitty.app/Contents/MacOS:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:/opt/homebrew/Cellar/perl/5.42.2/bin:$PATH"
     ;;
   linux*)
-    export PATH="/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME:$HOME/.local/share/npm/bin:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$DOCKER_CONFIG/bin:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/usr/local/bin"
+    export PATH="/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME:$HOME/.local/share/npm/bin:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$DOCKER_CONFIG/bin:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/usr/local/bin:$PATH"
     ;;
 esac
+
+export PATH="/etc/profiles/per-user/$USER/bin:$HOME/.nix-profile/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:$PATH"
 
 # Lazy loaded Nvm
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
@@ -212,9 +216,6 @@ fi
 alias llama-coder="llama-server -hf unsloth/Qwen3-Coder-Next-GGUF:UD-Q4_K_XL --port 8080 --ctx-size 131072 --temp 1.0 --top-p 0.95 --top-k 40 --min-p 0.01 --repeat-penalty 1.0"
 alias llama-coder-lite="llama-server -hf unsloth/Qwen3-Coder-Next-GGUF:UD-Q3_K_XL --port 8080 --ctx-size 131072 --temp 1.0 --top-p 0.95 --top-k 40 --min-p 0.01 --repeat-penalty 1.0"
 
-# LLM Stuff
-export PI_OFFLINE=1
-
 # Prompt
 setopt prompt_subst
 autoload -Uz add-zsh-hook vcs_info
@@ -289,20 +290,6 @@ function fz() {
   if [ -n "$file" ]; then
     cd "$(dirname "$file")" || exit 1
   fi
-}
-
-function update() {
-  case "$OSTYPE" in
-    darwin*)
-      brew update && brew upgrade --greedy
-      npm i -g pnpm@10 --before="$(date -u -v-3d '+%Y-%m-%dT%H:%M:%SZ')"
-      pnpm update -g --latest
-      ;;
-    linux*)
-      sudo emaint sync -a &&
-        sudo emerge --ask --verbose --update --deep --newuse @world
-      ;;
-  esac
 }
 
 # Used for work specific stuff that runs after everything else
