@@ -260,7 +260,7 @@ function prompt_precmd() {
 function set_prompt {
   local host_prefix
 
-  [ "$HOST" = gentoo-mbp ] && host_prefix='(gentoo) '
+  [ "$HOST" = nix-mbp ] && host_prefix='(nix) '
 
   # shellcheck disable=SC2154
   PROMPT="${host_prefix}%F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f "
