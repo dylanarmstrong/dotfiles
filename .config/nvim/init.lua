@@ -360,20 +360,10 @@ require('lazy').setup({
         denols = {},
         dhall_lsp_server = {},
         dockerls = {},
-        elixirls = {
-          cmd = { os.getenv('HOME') .. '/src/elixir-ls/dist/language_server.sh' },
-        },
         emmet_ls = {},
         gopls = {},
         glsl_analyzer = {},
         graphql = {},
-        groovyls = {
-          cmd = {
-            'java',
-            '-jar',
-            os.getenv('HOME') .. '/src/groovy-language-server/build/libs/groovy-language-server-all.jar',
-          },
-        },
         helm_ls = {},
         html = {},
         jsonls = {},
@@ -815,6 +805,8 @@ require('lazy').setup({
   },
 
   checker = { enabled = true },
+}, {
+  lockfile = vim.fn.stdpath('state') .. '/lazy-lock.json',
 })
 
 vim.cmd('packadd nvim.undotree')

@@ -1,5 +1,5 @@
 [include]
-  path = /Users/dylan/src/delta/catppuccin.gitconfig
+  path = catppuccin.gitconfig
 
 [pull]
   rebase = false

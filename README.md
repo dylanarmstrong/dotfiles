@@ -29,7 +29,6 @@ brew install \
     bat \
     dhall-lsp-server \
     difftastic \
-    elixir \
     git-delta \
     hashicorp/tap/terraform-ls \
     helm-ls \
@@ -39,39 +38,22 @@ brew install \
     zoxide
 
 opam install ocaml-lsp-server
-
-# Groovy Support
-pushd $HOME/src && \
-    git clone https://github.com/GroovyLanguageServer/groovy-language-server || true && \
-    pushd groovy-language-server && \
-    git pull && \
-    ./gradlew build && \
-    popd && \
-    popd
-
-# Elixir Support
-pushd $HOME/src && \
-    git clone https://github.com/elixir-lsp/elixir-ls || true && \
-    pushd elixir-ls && \
-    git pull && \
-    mix deps.get && \
-    MIX_ENV=prod mix compile && \
-    MIX_ENV=prod mix elixir_ls.release2 -o ./dist && \
-    popd && \
-    popd
 ```
 
-The following must have the path adjusted accordingly in `.config/nvim/init.lua`:
+Lazy manages the pinned plugins and writes its lockfile under Neovim's state
+directory. Plugin downloads, Blink builds, and Tree-sitter parsers remain
+writable runtime data; Nix generation rollback does not restore them.
 
-- [elixir-ls](https://github.com/elixir-lsp/elixir-ls)
+#### Git
 
-```lua
-  nvim_lsp.elixirls.setup {
-    capabilities = capabilities,
-    -- If you have a different `src` setup, adjust here:
-    cmd = { os.getenv('HOME') .. '/src/elixir-ls/dist/language_server.sh' }
-  }
-```
+Deploy the pinned Delta theme as
+`$XDG_CONFIG_HOME/git/catppuccin.gitconfig`, beside `git/config`.
+
+#### tmux
+
+With Home Manager, supply the `sensible` and `yank` plugins and incorporate
+`.config/tmux/tmux.conf` as `programs.tmux.extraConfig`. Do not also deploy that
+file directly to the generated tmux configuration's target.
 
 #### Kitty (Generate Theme)
 
@@ -80,6 +62,10 @@ kitty +kitten themes --reload-in=all Catppuccin-Mocha
 ```
 
 #### Hammerspoon
+
+Deploy the configuration files and tracked `SpoonInstall.spoon` individually;
+keep sibling Spoons writable for runtime installation. SpoonInstall's current
+update source is `master`, and downloaded Spoons are not restored by Nix rollback.
 
 Configure the XDG-based Hammerspoon entrypoint once on macOS:
 
