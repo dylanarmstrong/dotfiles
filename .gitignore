@@ -1,3 +1,4 @@
+.direnv/
 .config/aws/credentials
 .config/hammerspoon/Spoons
 .config/jj/repos
