@@ -192,6 +192,8 @@ alias 7zx='7z x'
 alias bc='bc -l'
 alias c='clear'
 alias cp='nocorrect cp -v'
+alias darwin-build='darwin-rebuild build --flake "$HOME/src/nix#Dylans-MacBook-Pro"'
+alias darwin-switch='darwin-build && sudo darwin-rebuild switch --flake "$HOME/src/nix#Dylans-MacBook-Pro"'
 alias e='exit'
 alias gc='git checkout'
 alias gd='git diff'
@@ -204,8 +206,15 @@ alias mitmproxy='mitmproxy --set confdir=$XDG_CONFIG_HOME/mitmproxy'
 alias mitmweb='mitmweb --set confdir=$XDG_CONFIG_HOME/mitmproxy'
 alias mkdir='nocorrect mkdir -v'
 alias mv='nocorrect mv -v'
+alias nixos-switch='nixos-rebuild switch \
+  --flake "$HOME/src/nix#nix-mbp" \
+  --build-host nix \
+  --target-host nix \
+  --no-reexec \
+  --ask-elevate-password'
 alias rm='nocorrect rm -v'
 alias scripts='jq '.scripts' package.json'
+alias update-flake='nix flake update --flake "$HOME/src/nix" dotfiles secrets'
 alias view='nvim -R'
 alias vim='nvim'
 alias wget='wget --hsts-file=$XDG_DATA_HOME/wget-hsts'
