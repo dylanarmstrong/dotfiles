@@ -258,9 +258,12 @@ function prompt_precmd() {
 }
 
 function set_prompt {
-  local host_prefix
+  local host_prefix=''
 
-  [ "$HOST" = nix-mbp ] && host_prefix='(nix) '
+  case "${HOST%%.*}" in
+    nix-mbp) host_prefix='(nix) ' ;;
+    macbook) host_prefix='' ;;
+  esac
 
   # shellcheck disable=SC2154
   PROMPT="${host_prefix}%F{39}%1~ ${vcs_info_msg_0_}%F{1}>%f "
