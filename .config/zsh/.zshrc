@@ -144,6 +144,8 @@ setopt share_history
 bindkey -e
 bindkey "\e[B" history-beginning-search-forward
 bindkey "\e[A" history-beginning-search-backward
+bindkey "\eOB" history-beginning-search-forward
+bindkey "\eOA" history-beginning-search-backward
 bindkey -M emacs $'\e[1;3C' forward-word
 bindkey -M emacs $'\e[1;3D' backward-word
 bindkey "^L" forward-word
@@ -275,6 +277,7 @@ add-zsh-hook precmd set_prompt
 [ -n "${TTY:-}" ] && command -v fzf >/dev/null 2>&1 && eval "$(fzf --zsh)"
 command -v uv >/dev/null 2>&1 && eval "$(uv generate-shell-completion zsh)"
 command -v uvx >/dev/null 2>&1 && eval "$(uvx --generate-shell-completion zsh)"
+command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
 [ -s "$CARGO_HOME/env" ] && . "$CARGO_HOME/env"
 
