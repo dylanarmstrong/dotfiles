@@ -208,12 +208,7 @@ alias mitmproxy='mitmproxy --set confdir=$XDG_CONFIG_HOME/mitmproxy'
 alias mitmweb='mitmweb --set confdir=$XDG_CONFIG_HOME/mitmproxy'
 alias mkdir='nocorrect mkdir -v'
 alias mv='nocorrect mv -v'
-alias nixos-switch='nixos-rebuild switch \
-  --flake "$HOME/src/nix#nix-mbp" \
-  --build-host nix \
-  --target-host nix \
-  --no-reexec \
-  --ask-elevate-password'
+alias nixos-switch='ssh -t nix "sudo systemctl start nixos-upgrade.service"'
 alias rm='nocorrect rm -v'
 alias scripts='jq '.scripts' package.json'
 alias update-flake='nix flake update --flake "$HOME/src/nix" dotfiles secrets'
