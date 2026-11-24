@@ -10,6 +10,11 @@ if [[ "$OSTYPE" = darwin* && -z "${XDG_RUNTIME_DIR:-}" ]]; then
   export XDG_RUNTIME_DIR=$HOME/.local/run
 fi
 
+# Home Manager session variables
+hm_session_vars="/etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh"
+[[ -r "$hm_session_vars" ]] && . "$hm_session_vars"
+unset hm_session_vars
+
 # Telemetry
 export APOLLO_TELEMETRY_DISABLED=1
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
@@ -18,7 +23,6 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_ENV_HINTS=1
 export SHOPIFY_CLI_NO_ANALYTICS=1
 export DISABLE_TELEMETRY=1
-export DISABLE_AUTOUPDATER=1
 export GH_TELEMETRY=false
 export DO_NOT_TRACK=true
 
