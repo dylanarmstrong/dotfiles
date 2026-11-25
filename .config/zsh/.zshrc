@@ -1,123 +1,10 @@
 # shellcheck disable=SC2034,SC1091
 # zmodload zsh/zprof
 
-# XDG
-export XDG_CACHE_HOME=$HOME/.cache
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_STATE_HOME=$HOME/.local/state
-if [[ "$OSTYPE" = darwin* && -z "${XDG_RUNTIME_DIR:-}" ]]; then
-  export XDG_RUNTIME_DIR=$HOME/.local/run
-fi
-
-# Home Manager session variables
-hm_session_vars="/etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh"
-[[ -r "$hm_session_vars" ]] && . "$hm_session_vars"
-unset hm_session_vars
-
-# Telemetry
-export APOLLO_TELEMETRY_DISABLED=1
-export DOTNET_CLI_TELEMETRY_OPTOUT=1
-export HOMEBREW_NO_ANALYTICS=1
-export HOMEBREW_NO_AUTO_UPDATE=1
-export HOMEBREW_NO_ENV_HINTS=1
-export SHOPIFY_CLI_NO_ANALYTICS=1
-export DISABLE_TELEMETRY=1
-export GH_TELEMETRY=false
-export DO_NOT_TRACK=true
-
-# Tool versions
-NODE_VERSION=24.21.0
-
-# Exports
-export EDITOR=nvim
-export LANG=en_US.UTF-8
+# Environment variables and PATH are managed by home-manager and loaded from ~/.zshenv.
 unset LC_ALL LC_CTYPE
-export LC_COLLATE=C
-export THEOS=$HOME/src/theos
-export THEOS_DEVICE_IP=localhost
-export THEOS_DEVICE_PORT=2222
-export PNPM_HOME="$XDG_DATA_HOME/pnpm"
-# On MacOS, symlink this: ln -sv /opt/homebrew/opt/nvm $XDG_DATA_HOME/nvm
-export NVM_DIR="$XDG_DATA_HOME/nvm"
-# "Temporary" fix for MacOS 27 QT
-export QT_STYLE_OVERRIDE=fusion
 
-# Platform defaults
-if [[ "$OSTYPE" = darwin* ]]; then
-  if [ -x /opt/homebrew/bin/brew ]; then
-    BREW_PREFIX=/opt/homebrew
-  elif [ -x /usr/local/bin/brew ]; then
-    BREW_PREFIX=/usr/local
-  fi
-fi
-
-if [ -n "${BREW_PREFIX:-}" ] && [ -d "$BREW_PREFIX/opt/openjdk@17" ]; then
-  export JAVA_HOME="$BREW_PREFIX/opt/openjdk@17"
-elif command -v java-config >/dev/null 2>&1; then
-  JAVA_HOME=$(java-config --jre-home) && export JAVA_HOME
-fi
-
-# xdg-ninja
-export HISTFILE="$XDG_CONFIG_HOME/zsh/history"
-
-export ANSIBLE_HOME="$XDG_CONFIG_HOME/ansible"
-export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
-export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
-export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME"/bundle
-export BUNDLE_USER_CACHE="$XDG_CACHE_HOME"/bundle
-export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME"/bundle
-export CARGO_HOME="$XDG_DATA_HOME"/cargo
-export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
-export GEM_HOME="${XDG_DATA_HOME}"/gem
-export GEM_SPEC_CACHE="${XDG_CACHE_HOME}"/gem
-export GNUPGHOME="$XDG_DATA_HOME"/gnupg
-export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
-export LESSHISTFILE="$XDG_STATE_HOME"/less/history
-export MACHINE_STORAGE_PATH="$XDG_DATA_HOME"/docker-machine
-export MPLCONFIGDIR="$XDG_CONFIG_HOME"/matplotlib
-export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
-export OPAMROOT="$XDG_DATA_HOME/opam"
-export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
-[ -r /etc/python/pythonrc ] && export PYTHONSTARTUP=/etc/python/pythonrc
-export RANDFILE="$XDG_DATA_HOME/rnd"
-export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
-export SQLITE_HISTORY="$XDG_CACHE_HOME"/sqlite_history
-export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:"
-export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
-export _Z_DATA="$XDG_DATA_HOME/z"
-
-# Private environment variables
-[ -r "$HOME"/.env ] && . "$HOME"/.env
-
-# PATH
-case "$OSTYPE" in
-  darwin*)
-    export PATH="/etc/profiles/per-user/$USER/bin:$HOME/.nix-profile/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/sbin:/usr/sbin:$BREW_PREFIX/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$BREW_PREFIX/opt/rustup/bin:$BREW_PREFIX/bin:$DOCKER_CONFIG/bin:/Applications/kitty.app/Contents/MacOS:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/Applications/Obsidian.app/Contents/MacOS:/usr/local/bin:$PATH"
-    ;;
-  linux*)
-    export PATH="/run/wrappers/bin:/etc/profiles/per-user/$USER/bin:$HOME/.nix-profile/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/sbin:/usr/sbin:/usr/local/sbin:$JAVA_HOME/bin:$HOME/bin:$HOME/.local/bin:$CARGO_HOME/bin:$PNPM_HOME:$HOME/.local/share/npm/bin:$NVM_DIR/versions/node/v$NODE_VERSION/bin:$DOCKER_CONFIG/bin:/bin:/usr/bin:$HOME/.local/share/gem/bin:$HOME/.ghcup/bin:/usr/local/bin:$PATH"
-    ;;
-  *)
-    export PATH="/etc/profiles/per-user/$USER/bin:$HOME/.nix-profile/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:$PATH"
-    ;;
-esac
-
-# Lazy loaded Nvm
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
-
-# FZF
-# Catppuccin Mocha
-export FZF_DEFAULT_OPTS=" \
---color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
---color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
---color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
---color=selected-bg:#45475a \
---multi"
-export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND='fd --type d --strip-cwd-prefix --hidden --follow --exclude .git'
+HISTFILE="$XDG_CONFIG_HOME/zsh/history"
 
 # https://github.com/keybase/keybase-issues/issues/2798
 # shellcheck disable=SC2155
@@ -290,8 +177,6 @@ command -v uv >/dev/null 2>&1 && eval "$(uv generate-shell-completion zsh)"
 command -v uvx >/dev/null 2>&1 && eval "$(uvx --generate-shell-completion zsh)"
 command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
-[ -s "$CARGO_HOME/env" ] && . "$CARGO_HOME/env"
-
 # Opens a file in vim
 function fv() {
   local file
@@ -309,8 +194,5 @@ function fz() {
     cd "$(dirname "$file")" || exit 1
   fi
 }
-
-# Used for work specific stuff that runs after everything else
-[ -r "$HOME"/.post_env ] && . "$HOME"/.post_env
 
 # zprof

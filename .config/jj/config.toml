@@ -25,5 +25,7 @@ key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJpQNEFHxmhIZv639zMV+jlJ4nHKV7Og5+BkQ
 log = "::@"
 git-sign-on-push = "~signed() & mine()"
 
-[signing.backends.ssh]
+[[--scope]]
+--when.platforms = ["macos"]
+[--scope.signing.backends.ssh]
 program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
