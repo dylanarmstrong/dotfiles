@@ -112,11 +112,6 @@ if [[ "$OSTYPE" = darwin* ]] && [ -x /Applications/Tailscale.app/Contents/MacOS/
   alias tailscale=/Applications/Tailscale.app/Contents/MacOS/Tailscale
 fi
 
-# Llama Servers (some conflict)
-## 8080
-alias llama-coder="llama-server -hf unsloth/Qwen3-Coder-Next-GGUF:UD-Q4_K_XL --port 8080 --ctx-size 131072 --temp 1.0 --top-p 0.95 --top-k 40 --min-p 0.01 --repeat-penalty 1.0"
-alias llama-coder-lite="llama-server -hf unsloth/Qwen3-Coder-Next-GGUF:UD-Q3_K_XL --port 8080 --ctx-size 131072 --temp 1.0 --top-p 0.95 --top-k 40 --min-p 0.01 --repeat-penalty 1.0"
-
 # Prompt
 setopt prompt_subst
 autoload -Uz add-zsh-hook vcs_info
