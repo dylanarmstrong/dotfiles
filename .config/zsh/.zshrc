@@ -162,6 +162,7 @@ function set_prompt {
 
   case "${HOST%%.*}" in
     nix-mbp) host_prefix='(nix) ' ;;
+    dylan-is) host_prefix='(dylan.is) ' ;;
     macbook) host_prefix='' ;;
   esac
 
