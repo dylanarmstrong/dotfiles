@@ -7,5 +7,4 @@
 .config/nvim/plugin
 .config/zsh/.zcompdump
 .config/zsh/.zsh_sessions
-.config/zsh/history
 .luarc.json

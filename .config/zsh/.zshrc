@@ -4,7 +4,8 @@
 # Environment variables and PATH are managed by home-manager and loaded from ~/.zshenv.
 unset LC_ALL LC_CTYPE
 
-HISTFILE="$XDG_CONFIG_HOME/zsh/history"
+HISTFILE="$XDG_STATE_HOME/zsh/history"
+[[ -d ${HISTFILE:h} ]] || mkdir -p -m 700 "${HISTFILE:h}"
 
 # https://github.com/keybase/keybase-issues/issues/2798
 # shellcheck disable=SC2155
